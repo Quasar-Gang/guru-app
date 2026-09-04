@@ -187,7 +187,7 @@ export default function GuruApp() {
         notify("三種節奏的計畫已準備好");
         return;
       }
-      if (state.status === "failed") throw new Error("計畫生成失敗");
+      if (state.status === "failed") throw new Error("Plan generation failed");
       await new Promise((resolve) => window.setTimeout(resolve, 1500));
     }
     notify("AI 還在整理計畫，稍後再回來查看", "info");
@@ -207,9 +207,9 @@ export default function GuruApp() {
     try {
       const signed = await api<{ import_id: string; upload_url?: string; url?: string; headers?: Record<string, string> }>("/imports/presign", { method: "POST", body: JSON.stringify({ filename: file.name, content_type: file.type || "application/octet-stream", size_bytes: file.size }) });
       const uploadUrl = signed.upload_url || signed.url;
-      if (!uploadUrl) throw new Error("缺少上傳網址");
+      if (!uploadUrl) throw new Error("The upload URL is missing");
       const uploaded = await fetch(uploadUrl, { method: "PUT", headers: signed.headers, body: file });
-      if (!uploaded.ok) throw new Error("上傳失敗");
+      if (!uploaded.ok) throw new Error("Upload failed");
       await api(`/imports/${signed.import_id}/complete`, { method: "POST", body: "{}" });
       setImportIds((all) => [...all, signed.import_id]);
       setImportLabel(`${file.name} 已加入`);
