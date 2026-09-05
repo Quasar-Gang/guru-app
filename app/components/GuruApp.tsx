@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import {
   GuruApiClient,
   GuruApiError,
@@ -76,7 +76,9 @@ export default function GuruApp() {
   const [weeks, setWeeks] = useState("12 週");
   const [capacity, setCapacity] = useState("每週 3–4 小時");
   const [creating, setCreating] = useState(false);
+  const [generationStatus, setGenerationStatus] = useState("");
   const [toast, setToast] = useState<Toast>(null);
+  const toastTimer = useRef<number | null>(null);
   const [apiBase, setApiBase] = useState("");
   const [token, setToken] = useState("");
   const [connected, setConnected] = useState(false);
@@ -96,11 +98,14 @@ export default function GuruApp() {
   const [sessionId, setSessionId] = useState("");
   const [importIds, setImportIds] = useState<string[]>([]);
   const [importLabel, setImportLabel] = useState("");
+  const planRequest = useRef(0);
+  const generationSession = useRef("");
   const client = useMemo(() => new GuruApiClient(apiBase, token), [apiBase, token]);
 
   const notify = useCallback((message: string, tone: "success" | "info" | "error" = "success") => {
+    if (toastTimer.current !== null) window.clearTimeout(toastTimer.current);
     setToast({ message, tone });
-    window.setTimeout(() => setToast(null), 2600);
+    toastTimer.current = window.setTimeout(() => setToast(null), 3000);
   }, []);
 
   const reportError = useCallback((error: unknown) => {
@@ -109,12 +114,14 @@ export default function GuruApp() {
   }, [notify]);
 
   const loadPlanData = useCallback(async (apiClient: GuruApiClient, planId: string) => {
+    const request = ++planRequest.current;
     const today = localDate();
     const [detail, taskList, history] = await Promise.all([
       apiClient.getPlan(planId),
       apiClient.listTasks(planId, today, today),
       apiClient.listCheckins(planId),
     ]);
+    if (request !== planRequest.current) return;
     setPlanDetail(detail);
     setCheckins(history);
     setTasks(taskList.items.map(toDisplayTask));
@@ -188,8 +195,10 @@ export default function GuruApp() {
   }, [activePlan, client, connected, loadPlanData, reportError]);
 
   const completed = tasks.filter((task) => task.status === "done").length;
-  const todayMinutes = tasks.filter((task) => task.status !== "done").reduce((sum, task) => sum + task.duration, 0);
-  const currentPlan = plans.find((plan) => plan.id === activePlan) || plans[1] || plans[0];
+  const pending = tasks.filter((task) => task.status === "pending");
+  const todayMinutes = pending.reduce((sum, task) => sum + task.duration, 0);
+  const visiblePlans = plans.filter((plan) => plan.status !== "archived");
+  const currentPlan = visiblePlans.find((plan) => plan.id === activePlan) || visiblePlans[0];
 
   const updateTaskStatus = async (task: Task, status: TaskStatus) => {
     const nextStatus: TaskStatus = task.status === status ? "pending" : status;
@@ -221,6 +230,7 @@ export default function GuruApp() {
 
   const createPlan = async () => {
     if (!goal.trim()) return;
+    if (generationSession.current) { notify("已有一份計畫正在生成", "info"); return; }
     setCreating(true);
     if (!connected) {
       await new Promise((resolve) => window.setTimeout(resolve, 900));
@@ -238,23 +248,29 @@ export default function GuruApp() {
         ...(personaId ? { persona_role_model_id: personaId } : {}),
         ...(importIds.length ? { import_ids: importIds } : {}),
       });
+      generationSession.current = session.session_id;
       setSessionId(session.session_id);
+      setGenerationStatus("guru 正在分析目標並生成三種可執行節奏…");
       notify(`計畫已送出，工作編號 ${session.job_id}`, "info");
       setCreating(false);
       setShowCreate(false);
       await pollSession(session.session_id);
-    } catch (error) { setCreating(false); reportError(error); }
+    } catch (error) { generationSession.current = ""; setGenerationStatus(""); setCreating(false); reportError(error); }
   };
 
   const pollSession = async (id: string) => {
     for (let attempt = 0; attempt < 40; attempt += 1) {
       const state = await client.getPlanSession(id);
+      if (generationSession.current !== id) return;
       if (state.status === "questioning") {
+        setGenerationStatus("需要你補充幾個細節，才能繼續生成計畫。");
         setQuestions(state.questions || []);
         setShowQuestions(true);
         return;
       }
       if (state.status === "done") {
+        generationSession.current = "";
+        setGenerationStatus("");
         if (state.plans.length) {
           setPlans(state.plans);
           setActivePlan(state.plans.find((plan) => plan.status === "active")?.id || state.plans[1]?.id || state.plans[0].id);
@@ -263,10 +279,11 @@ export default function GuruApp() {
         notify("三種節奏的計畫已準備好");
         return;
       }
-      if (state.status === "failed") throw new Error(state.error || "Plan generation failed");
+      if (state.status === "failed") { generationSession.current = ""; setGenerationStatus(""); throw new Error(state.error || "Plan generation failed"); }
       await new Promise((resolve) => window.setTimeout(resolve, 1500));
     }
     notify("AI 還在整理計畫，稍後再回來查看", "info");
+    setGenerationStatus("生成仍在背景進行，你可以繼續使用其他頁面。");
   };
 
   const submitAnswers = async (answers: Record<string, string>) => {
@@ -280,8 +297,9 @@ export default function GuruApp() {
           ? { question_id: question.id, choice: answer, skipped: false }
           : { question_id: question.id, custom: answer, skipped: false };
       }));
+      setGenerationStatus("收到補充資訊，guru 正在完成計畫…");
       await pollSession(sessionId);
-    } catch (error) { reportError(error); }
+    } catch (error) { generationSession.current = ""; setGenerationStatus(""); reportError(error); }
   };
 
   const uploadContext = async (file: File) => {
@@ -369,7 +387,10 @@ export default function GuruApp() {
 
   const archivePlan = async () => {
     if (connected) { try { await client.archivePlan(activePlan); } catch (error) { reportError(error); return; } }
+    const remaining = plans.filter((plan) => plan.id !== activePlan && plan.status !== "archived");
     setPlans((all) => all.map((plan) => plan.id === activePlan ? { ...plan, status: "archived" } : plan));
+    setActivePlan(remaining[0]?.id || "");
+    if (!remaining.length) { setTasks([]); setPlanDetail(null); setCheckins(null); }
     setShowManage(false); notify("計畫已封存", "info");
   };
 
@@ -411,32 +432,33 @@ export default function GuruApp() {
       <aside className="sidebar">
         <button className="brand" onClick={() => setView("today")} aria-label="回到今天"><span className="brand-mark">g</span><span>guru</span></button>
         <button className="new-goal" onClick={() => setShowCreate(true)}><span>＋</span> 建立新目標</button>
-        <nav aria-label="主要導覽">{navItems.map((item) => <button key={item.key} className={view === item.key ? "nav-item active" : "nav-item"} onClick={() => setView(item.key)}><span className="nav-icon">{item.icon}</span>{item.label}</button>)}</nav>
+        <nav aria-label="主要導覽">{navItems.map((item) => <button key={item.key} aria-current={view === item.key ? "page" : undefined} className={view === item.key ? "nav-item active" : "nav-item"} onClick={() => setView(item.key)}><span className="nav-icon">{item.icon}</span>{item.label}</button>)}</nav>
         <div className="sidebar-bottom">
           <button className="connection" onClick={() => setShowSettings(true)}><span className={connected ? "status-dot online" : "status-dot"} /><span><b>{connected ? "後端已連線" : "展示模式"}</b><small>{connected ? "guru-core" : "設定 API 以同步"}</small></span><span className="chevron">›</span></button>
-          <div className="user-card"><span className="avatar">{userEmail ? userEmail[0].toUpperCase() : "Y"}</span><span><b>{userEmail || "Yu"}</b><small>讓今天有進度</small></span><button aria-label="更多選項">•••</button></div>
+          <div className="user-card"><span className="avatar">{userEmail ? userEmail[0].toUpperCase() : "Y"}</span><span><b>{userEmail || "Yu"}</b><small>讓今天有進度</small></span><button onClick={() => setShowSettings(true)} aria-label="開啟帳號設定">•••</button></div>
         </div>
       </aside>
       <main className="main">
-        <header className="mobile-header"><button className="brand"><span className="brand-mark">g</span><span>guru</span></button><button onClick={() => setShowCreate(true)} aria-label="建立新目標">＋</button></header>
-        {view === "today" && <TodayView tasks={tasks} completed={completed} minutes={todayMinutes} onStatus={updateTaskStatus} onCheckin={submitCheckin} onRevision={() => setShowRevision(true)} plan={currentPlan} detail={planDetail} history={checkins} />}
-        {view === "plan" && <PlanView plan={currentPlan} detail={planDetail} plans={plans} onCompare={() => setShowCompare(true)} onExport={exportPlan} onRevision={() => setShowRevision(true)} onManage={() => setShowManage(true)} />}
-        {view === "progress" && <ProgressView detail={planDetail} history={checkins} />}
+        <header className="mobile-header"><button className="brand" onClick={() => setView("today")} aria-label="回到今天"><span className="brand-mark">g</span><span>guru</span></button><div><button className="mobile-settings" onClick={() => setShowSettings(true)} aria-label="連線與帳號設定">⌁</button><button onClick={() => setShowCreate(true)} aria-label="建立新目標">＋</button></div></header>
+        {generationStatus && <div className="generation-banner" role="status"><span className="generation-pulse" /><div><b>計畫生成中</b><small>{generationStatus}</small></div><button onClick={() => setGenerationStatus("")} aria-label="隱藏生成狀態">×</button></div>}
+        {view === "today" && <TodayView tasks={tasks} completed={completed} remaining={pending.length} minutes={todayMinutes} onStatus={updateTaskStatus} onCheckin={submitCheckin} onRevision={() => setShowRevision(true)} plan={currentPlan} detail={planDetail} history={checkins} />}
+        {view === "plan" && <PlanView plan={currentPlan} detail={planDetail} plans={visiblePlans} isDemo={!connected} onCompare={() => setShowCompare(true)} onExport={exportPlan} onRevision={() => setShowRevision(true)} onManage={() => setShowManage(true)} />}
+        {view === "progress" && <ProgressView detail={planDetail} history={checkins} isDemo={!connected} />}
       </main>
-      <nav className="mobile-nav" aria-label="行動版導覽">{navItems.map((item) => <button key={item.key} className={view === item.key ? "active" : ""} onClick={() => setView(item.key)}><span>{item.icon}</span>{item.label}</button>)}</nav>
+      <nav className="mobile-nav" aria-label="行動版導覽">{navItems.map((item) => <button key={item.key} aria-current={view === item.key ? "page" : undefined} className={view === item.key ? "active" : ""} onClick={() => setView(item.key)}><span>{item.icon}</span>{item.label}</button>)}</nav>
       {showCreate && <CreateModal goal={goal} setGoal={setGoal} weeks={weeks} setWeeks={setWeeks} capacity={capacity} setCapacity={setCapacity} traitId={traitId} setTraitId={setTraitId} personaId={personaId} setPersonaId={setPersonaId} traits={traits} personas={personas} importLabel={importLabel} onUpload={uploadContext} onCalendar={connectCalendar} creating={creating} onCreate={createPlan} onClose={() => setShowCreate(false)} />}
-      {showCompare && <CompareModal plans={plans} activeId={activePlan} onChoose={choosePlan} onClose={() => setShowCompare(false)} />}
+      {showCompare && <CompareModal plans={visiblePlans} activeId={activePlan} onChoose={choosePlan} onClose={() => setShowCompare(false)} />}
       {showRevision && <RevisionModal onClose={() => setShowRevision(false)} onSubmit={createRevision} />}
       {revision && <RevisionProposalModal revision={revision} onDecision={decideRevision} onClose={() => setRevision(null)} />}
       {showSettings && <SettingsModal apiBase={apiBase} token={token} setApiBase={setApiBase} setToken={setToken} onGoogleLogin={loginWithGoogle} onSave={saveSettings} onClose={() => setShowSettings(false)} />}
-      {showQuestions && <QuestionsModal questions={questions} onSubmit={submitAnswers} onClose={() => setShowQuestions(false)} />}
+      {showQuestions && <QuestionsModal questions={questions} onSubmit={submitAnswers} onClose={() => { generationSession.current = ""; setGenerationStatus(""); setShowQuestions(false); }} />}
       {showManage && currentPlan && <ManageModal plan={currentPlan} onRename={renamePlan} onArchive={archivePlan} onDelete={deletePlan} onClose={() => setShowManage(false)} />}
-      {toast && <div className={`toast ${toast.tone || "success"}`} role="status"><span>{toast.tone === "error" ? "!" : toast.tone === "info" ? "↗" : "✓"}</span>{toast.message}</div>}
+      {toast && <div className={`toast ${toast.tone || "success"}`} role={toast.tone === "error" ? "alert" : "status"}><span>{toast.tone === "error" ? "!" : toast.tone === "info" ? "↗" : "✓"}</span>{toast.message}</div>}
     </div>
   );
 }
 
-function TodayView({ tasks, completed, minutes, onStatus, onCheckin, onRevision, plan, detail, history }: { tasks: Task[]; completed: number; minutes: number; onStatus: (task: Task, status: TaskStatus) => void; onCheckin: () => void; onRevision: () => void; plan?: Plan; detail: PlanDetail | null; history: CheckinHistory | null }) {
+function TodayView({ tasks, completed, remaining, minutes, onStatus, onCheckin, onRevision, plan, detail, history }: { tasks: Task[]; completed: number; remaining: number; minutes: number; onStatus: (task: Task, status: TaskStatus) => void; onCheckin: () => void; onRevision: () => void; plan?: Plan; detail: PlanDetail | null; history: CheckinHistory | null }) {
   const now = new Date();
   const dayProgress = tasks.length ? Math.round((completed / tasks.length) * 100) : 0;
   const monday = new Date(now); monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
@@ -448,32 +470,55 @@ function TodayView({ tasks, completed, minutes, onStatus, onCheckin, onRevision,
   const phase = detail?.phases.find((item) => item.week_start <= weekIndex && item.week_end >= weekIndex);
   const overall = Math.round((detail?.progress.completion_rate ?? plan?.completion_rate ?? 0) * 100);
   const dateLabel = now.toLocaleDateString("zh-TW", { month: "long", day: "numeric", weekday: "long" });
-  return <div className="page page-enter"><div className="top-row"><div><p className="eyebrow">{dateLabel}</p><h1>今天也往前一點。</h1><p className="lede">不用完美，完成眼前這一步就好。</p></div><div className="streak"><span>↗</span><div><b>整體達成率 {overall}%</b><small>{detail ? `${detail.progress.done} / ${detail.progress.total} 項完成` : "展示資料"}</small></div></div></div><section className="week-strip" aria-label="本週日期"><div className="week-copy"><b>第 {weekIndex + 1} 週</b><span>{phase?.name || "目前階段"}</span></div><div className="days">{weekDays.map((day) => <div key={day.key} className={day.today ? "day today" : "day"}><small>{day.d}</small><span>{day.n}</span>{day.done && <i>✓</i>}</div>)}</div><div className="week-score"><strong>{weekScore}%</strong><span>本週</span></div></section><div className="section-heading"><div><p className="eyebrow">TODAY</p><h2>今天的安排</h2></div><span>{tasks.length - completed} 項 · {minutes} 分鐘</span></div><div className="task-list">{tasks.map((task, index) => <article className={`task-card ${task.status === "done" ? "is-done" : ""}`} key={task.id}><div className={`task-accent ${task.color}`} /><button className="check" onClick={() => onStatus(task, "done")} aria-label={task.status === "done" ? `取消完成 ${task.title}` : `完成 ${task.title}`}>{task.status === "done" ? "✓" : ""}</button><div className="task-time"><b>{task.time}</b><span>{task.endTime}</span></div><div className="task-content"><div className="task-title-row"><h3>{task.title}</h3><span>{task.type === "habit" ? "習慣" : task.type === "checkpoint" ? "里程碑" : "訓練"}</span></div><p>{task.description}</p><div className="task-actions"><button className={task.status === "done" ? "active" : ""} onClick={() => onStatus(task, "done")}>完成</button><button className={task.status === "missed" ? "active missed" : ""} onClick={() => onStatus(task, "missed")}>未達</button><button className={task.status === "skipped" ? "active" : ""} onClick={() => onStatus(task, "skipped")}>略過</button></div></div><span className="task-state">{task.status === "missed" ? "✕" : task.status === "skipped" ? "—" : ""}</span><span className="task-number">{String(index + 1).padStart(2, "0")}</span></article>)}</div>{tasks.length === 0 && <section className="panel"><h3>今天沒有排定任務</h3><p>可以休息，或建立一個新的目標。</p></section>}<div className="checkin-row"><button className="secondary" onClick={onCheckin}>儲存今日回顧</button><span>記錄會用來計算達成率與調整後續計畫。</span></div><section className="plan-note"><div className="note-icon">✦</div><div><p className="eyebrow">YOUR PLAN</p><h3>{plan?.title || "尚未建立計畫"}</h3><p>若今天的安排不合適，可以只調整之後的任務。</p></div>{plan && <button className="text-button" onClick={onRevision}>重新排程 <span>→</span></button>}</section><section className="quote"><p>「真正的進步，是你願意在普通的一天，做一件不普通的小事。」</p><span>— 你的 guru</span><div className="progress-ring" style={{ "--progress": `${dayProgress}%` } as React.CSSProperties}><b>{dayProgress}%</b><small>今日</small></div></section></div>;
+  return <div className="page page-enter"><div className="top-row"><div><p className="eyebrow">{dateLabel}</p><h1>今天也往前一點。</h1><p className="lede">不用完美，完成眼前這一步就好。</p></div><div className="streak"><span>↗</span><div><b>整體達成率 {overall}%</b><small>{detail ? `${detail.progress.done} / ${detail.progress.total} 項完成` : "展示資料"}</small></div></div></div><section className="week-strip" aria-label="本週日期"><div className="week-copy"><b>第 {weekIndex + 1} 週</b><span>{phase?.name || "目前階段"}</span></div><div className="days">{weekDays.map((day) => <div key={day.key} className={day.today ? "day today" : "day"}><small>{day.d}</small><span>{day.n}</span>{day.done && <i>✓</i>}</div>)}</div><div className="week-score"><strong>{weekScore}%</strong><span>本週</span></div></section><div className="section-heading"><div><p className="eyebrow">TODAY</p><h2>今天的安排</h2></div><span>{remaining} 項 · {minutes} 分鐘</span></div><div className="task-list">{tasks.map((task) => <article className={`task-card ${task.status === "done" ? "is-done" : ""}`} key={task.id}><div className={`task-accent ${task.color}`} /><button className="check" aria-pressed={task.status === "done"} onClick={() => onStatus(task, "done")} aria-label={task.status === "done" ? `取消完成 ${task.title}` : `完成 ${task.title}`}>{task.status === "done" ? "✓" : ""}</button><div className="task-time"><b>{task.time}</b><span>{task.endTime}</span></div><div className="task-content"><div className="task-title-row"><h3>{task.title}</h3><span>{task.type === "habit" ? "習慣" : task.type === "checkpoint" ? "里程碑" : "訓練"}</span></div><p>{task.description}</p><div className="task-actions"><button aria-pressed={task.status === "missed"} className={task.status === "missed" ? "active missed" : ""} onClick={() => onStatus(task, "missed")}>未達</button><button aria-pressed={task.status === "skipped"} className={task.status === "skipped" ? "active" : ""} onClick={() => onStatus(task, "skipped")}>略過</button></div></div><span className="task-state">{task.status === "missed" ? "✕" : task.status === "skipped" ? "—" : ""}</span></article>)}</div>{tasks.length === 0 && <section className="panel empty-state"><h3>今天沒有排定任務</h3><p>可以休息，或建立一個新的目標。</p></section>}<div className="checkin-row"><button className="secondary" onClick={onCheckin}>儲存今日回顧</button><span>記錄會用來計算達成率與調整後續計畫。</span></div><section className="plan-note"><div className="note-icon">✦</div><div><p className="eyebrow">YOUR PLAN</p><h3>{plan?.title || "尚未建立計畫"}</h3><p>若今天的安排不合適，可以只調整之後的任務。</p></div>{plan && <button className="text-button" onClick={onRevision}>重新排程 <span>→</span></button>}</section><section className="quote"><p>「真正的進步，是你願意在普通的一天，做一件不普通的小事。」</p><span>— 你的 guru</span><div className="progress-ring" role="img" aria-label={`今日完成率 ${dayProgress}%`} style={{ "--progress": `${dayProgress}%` } as React.CSSProperties}><b>{dayProgress}%</b><small>今日</small></div></section></div>;
 }
 
-function PlanView({ plan, detail, plans, onCompare, onExport, onRevision, onManage }: { plan?: Plan; detail: PlanDetail | null; plans: Plan[]; onCompare: () => void; onExport: (target: "markdown" | "google_calendar") => void; onRevision: () => void; onManage: () => void }) {
+function PlanView({ plan, detail, plans, isDemo, onCompare, onExport, onRevision, onManage }: { plan?: Plan; detail: PlanDetail | null; plans: Plan[]; isDemo: boolean; onCompare: () => void; onExport: (target: "markdown" | "google_calendar") => void; onRevision: () => void; onManage: () => void }) {
   const demoPhases = [{ index: 0, name: "建立基礎", week_start: 0, week_end: 3, focus: "養成固定節奏，完成 5K 不停走" }, { index: 1, name: "提升配速", week_start: 4, week_end: 9, focus: "加入間歇訓練，逐步接近目標配速" }, { index: 2, name: "減量測驗", week_start: 10, week_end: 11, focus: "降低訓練量，保持狀態迎接測驗" }];
-  const phases = detail?.phases.length ? detail.phases : demoPhases;
+  const phases = detail?.phases.length ? detail.phases : isDemo ? demoPhases : [];
   const progress = detail?.progress;
-  const criteria = detail?.success_criteria.length ? detail.success_criteria : ["第 12 週完成 5K 測驗不超過 30 分鐘", "全程不停下步行", "完成至少 80% 計畫任務"];
-  return <div className="page page-enter"><div className="plan-hero"><div><p className="eyebrow">ACTIVE PLAN</p><h1>{plan?.title}</h1><p className="lede">{detail?.goal_statement || plan?.goal_statement}</p></div><div className="hero-actions"><button className="quiet-button" onClick={onManage}>•••</button><button className="secondary" onClick={onCompare}>比較三種節奏</button><button className="primary" onClick={onRevision}>重新排程</button></div></div><div className="metrics"><div><small>目前進度</small><strong>{Math.round((progress?.completion_rate ?? plan?.completion_rate ?? 0) * 100)}<em>%</em></strong><span>{progress ? `${progress.done} / ${progress.total} 項完成` : "尚未開始"}</span></div><div><small>每週投入</small><strong>{Math.round((plan?.total_minutes_per_week || 0) / 6) / 10}<em>h</em></strong><span>每週 {plan?.sessions_per_week || 0} 次</span></div><div><small>預計完成</small><strong>{plan?.deadline.slice(5).replace("-", ".") || "11.29"}</strong><span>{plan?.duration_weeks || 12} 週計畫</span></div></div><section className="panel"><div className="panel-head"><div><p className="eyebrow">ROADMAP</p><h2>計畫路線</h2></div><span className="pill">{plan?.difficulty === "easy" ? "從容節奏" : plan?.difficulty === "extremely_hard" ? "突破節奏" : "穩健節奏"}</span></div><div className="phase-list">{phases.map((phase, index) => { const phaseRate = progress?.phase_rates.find((item) => item.phase_index === phase.index)?.rate || 0; const pct = Math.round(phaseRate * 100); return <div className="phase" key={`${phase.index}-${phase.name}`}><div className={pct > 0 || index === 0 ? "phase-index active" : "phase-index"}>{index + 1}</div><div className="phase-copy"><div><b>{phase.name}</b><span>W{phase.week_start + 1}–{phase.week_end + 1}</span></div><p>{phase.focus}</p><div className="phase-bar"><i style={{ width: `${pct}%` }} /></div></div><strong>{pct}%</strong></div>; })}</div></section><div className="two-col"><section className="panel"><div className="panel-head"><div><p className="eyebrow">SUCCESS</p><h2>達成標準</h2></div></div><ul className="criteria">{criteria.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span>{item}</li>)}</ul></section><section className="panel export-panel"><div><p className="eyebrow">TAKE IT WITH YOU</p><h2>同步你的計畫</h2><p>guru 是唯一真實來源。日曆會跟著你的調整更新。</p></div><button onClick={() => onExport("google_calendar")}><span className="google-dot">G</span>Google Calendar <b>→</b></button><button onClick={() => onExport("markdown")}><span className="md-dot">M↓</span>下載 Markdown <b>→</b></button></section></div><p className="plan-count">同一個目標共有 {plans.length} 種可選節奏，你可以隨時更換。</p></div>;
+  const criteria = detail?.success_criteria.length ? detail.success_criteria : isDemo ? ["第 12 週完成 5K 測驗不超過 30 分鐘", "全程不停下步行", "完成至少 80% 計畫任務"] : [];
+  return <div className="page page-enter"><div className="plan-hero"><div><p className="eyebrow">ACTIVE PLAN</p><h1>{plan?.title || "你的計畫"}</h1><p className="lede">{detail?.goal_statement || plan?.goal_statement || "建立一個目標後，路線與進度會出現在這裡。"}</p></div>{plan && <div className="hero-actions"><button className="quiet-button" onClick={onManage} aria-label="管理計畫">•••</button><button className="secondary" onClick={onCompare}>比較三種節奏</button><button className="primary" onClick={onRevision}>重新排程</button></div>}</div><div className="metrics"><div><small>目前進度</small><strong>{Math.round((progress?.completion_rate ?? plan?.completion_rate ?? 0) * 100)}<em>%</em></strong><span>{progress ? `${progress.done} / ${progress.total} 項完成` : "尚未開始"}</span></div><div><small>每週投入</small><strong>{Math.round((plan?.total_minutes_per_week || 0) / 6) / 10}<em>h</em></strong><span>每週 {plan?.sessions_per_week || 0} 次</span></div><div><small>預計完成</small><strong>{plan?.deadline.slice(5).replace("-", ".") || "—"}</strong><span>{plan?.duration_weeks || 0} 週計畫</span></div></div><section className="panel"><div className="panel-head"><div><p className="eyebrow">ROADMAP</p><h2>計畫路線</h2></div>{plan && <span className="pill">{plan.difficulty === "easy" ? "從容節奏" : plan.difficulty === "extremely_hard" ? "突破節奏" : "穩健節奏"}</span>}</div><div className="phase-list">{phases.map((phase, index) => { const phaseRate = progress?.phase_rates.find((item) => item.phase_index === phase.index)?.rate || 0; const pct = Math.round(phaseRate * 100); return <div className="phase" key={`${phase.index}-${phase.name}`}><div className={pct > 0 || index === 0 ? "phase-index active" : "phase-index"}>{index + 1}</div><div className="phase-copy"><div><b>{phase.name}</b><span>W{phase.week_start + 1}–{phase.week_end + 1}</span></div><p>{phase.focus}</p><div className="phase-bar" role="progressbar" aria-label={`${phase.name}進度`} aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}><i style={{ width: `${pct}%` }} /></div></div><strong>{pct}%</strong></div>; })}{phases.length === 0 && <p className="empty-copy">尚未有可顯示的計畫路線。</p>}</div></section><div className="two-col"><section className="panel"><div className="panel-head"><div><p className="eyebrow">SUCCESS</p><h2>達成標準</h2></div></div><ul className="criteria">{criteria.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span>{item}</li>)}</ul>{criteria.length === 0 && <p className="empty-copy">計畫產生後會列出明確的達成標準。</p>}</section><section className="panel export-panel"><div><p className="eyebrow">TAKE IT WITH YOU</p><h2>同步你的計畫</h2><p>guru 是唯一真實來源。日曆會跟著你的調整更新。</p></div><button disabled={!plan} onClick={() => onExport("google_calendar")}><span className="google-dot">G</span>Google Calendar <b>→</b></button><button disabled={!plan} onClick={() => onExport("markdown")}><span className="md-dot">M↓</span>下載 Markdown <b>→</b></button></section></div><p className="plan-count">同一個目標共有 {plans.length} 種可選節奏，你可以隨時更換。</p></div>;
 }
 
-function ProgressView({ detail, history }: { detail: PlanDetail | null; history: CheckinHistory | null }) {
+function ProgressView({ detail, history, isDemo }: { detail: PlanDetail | null; history: CheckinHistory | null; isDemo: boolean }) {
   const recent = history?.daily_rates.slice(-7) || [];
-  const bars = recent.length ? recent.map((item) => Math.round(item.rate * 100)) : [38, 58, 28, 74, 55, 88, 64];
+  const bars = recent.length ? recent.map((item) => Math.round(item.rate * 100)) : isDemo ? [38, 58, 28, 74, 55, 88, 64] : [0, 0, 0, 0, 0, 0, 0];
   const labels = recent.length ? recent.map((item) => new Date(`${item.date}T12:00:00`).toLocaleDateString("zh-TW", { weekday: "short" }).replace("週", "")) : ["五", "六", "日", "一", "二", "三", "四"];
   const rate = Math.round((detail?.progress.completion_rate || 0) * 100);
-  return <div className="page page-enter"><div className="top-row"><div><p className="eyebrow">YOUR MOMENTUM</p><h1>進度不是直線。</h1><p className="lede">每一次記錄，都讓下一步更貼近現實。</p></div><div className="streak"><span>✓</span><div><b>整體達成率 {rate}%</b><small>來自實際任務完成紀錄</small></div></div></div><div className="metrics"><div><small>已完成</small><strong>{detail?.progress.done || 0}</strong><span>個計畫任務</span></div><div><small>未達標</small><strong>{detail?.progress.missed || 0}</strong><span>個計畫任務</span></div><div><small>已回顧</small><strong>{history?.items.length || 0}<em>天</em></strong><span>每日紀錄</span></div></div><section className="panel chart-panel"><div className="panel-head"><div><p className="eyebrow">LAST 7 CHECK-INS</p><h2>每天都有留下痕跡</h2></div><span className="trend">{recent.length} 筆紀錄</span></div><div className="bar-chart">{bars.map((height, index) => <div key={`${labels[index]}-${index}`}><span style={{ height: `${height}%` }} className={index === bars.length - 1 ? "highlight" : ""} /><small>{labels[index]}</small></div>)}</div></section><section className="insight"><div className="note-icon">✦</div><div><p className="eyebrow">GURU INSIGHT</p><h2>{rate >= 80 ? "你的節奏很穩定。" : "保留紀錄，比追求完美重要。"}</h2><p>這些 check-in 會成為重新排程時的真實依據。</p></div></section></div>;
+  return <div className="page page-enter"><div className="top-row"><div><p className="eyebrow">YOUR MOMENTUM</p><h1>進度不是直線。</h1><p className="lede">每一次記錄，都讓下一步更貼近現實。</p></div><div className="streak"><span>✓</span><div><b>整體達成率 {rate}%</b><small>來自實際任務完成紀錄</small></div></div></div><div className="metrics"><div><small>已完成</small><strong>{detail?.progress.done || 0}</strong><span>個計畫任務</span></div><div><small>未達標</small><strong>{detail?.progress.missed || 0}</strong><span>個計畫任務</span></div><div><small>已回顧</small><strong>{history?.items.length || 0}<em>天</em></strong><span>每日紀錄</span></div></div><section className="panel chart-panel"><div className="panel-head"><div><p className="eyebrow">LAST 7 CHECK-INS</p><h2>每天都有留下痕跡</h2></div><span className="trend">{recent.length} 筆紀錄</span></div><div className="bar-chart" role="img" aria-label={`最近七次回顧完成率：${bars.join("%、")}％`}>{bars.map((height, index) => <div key={`${labels[index]}-${index}`}><span style={{ height: `${height}%` }} className={index === bars.length - 1 ? "highlight" : ""} /><small>{labels[index]}</small></div>)}</div></section><section className="insight"><div className="note-icon">✦</div><div><p className="eyebrow">GURU INSIGHT</p><h2>{rate >= 80 ? "你的節奏很穩定。" : "保留紀錄，比追求完美重要。"}</h2><p>這些 check-in 會成為重新排程時的真實依據。</p></div></section></div>;
 }
 
-function ModalShell({ children, onClose, wide = false }: { children: React.ReactNode; onClose: () => void; wide?: boolean }) { return <div className="modal-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}><div className={wide ? "modal wide" : "modal"} role="dialog" aria-modal="true"><button className="modal-close" onClick={onClose} aria-label="關閉">×</button>{children}</div></div>; }
+function ModalShell({ children, onClose, wide = false }: { children: React.ReactNode; onClose: () => void; wide?: boolean }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const titleId = useId();
+  useEffect(() => {
+    const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const dialog = dialogRef.current;
+    const title = dialog?.querySelector("h2");
+    title?.setAttribute("id", titleId);
+    const focusable = () => Array.from(dialog?.querySelectorAll<HTMLElement>('button:not(:disabled), input:not(:disabled), textarea:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])') || []);
+    focusable()[0]?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") { event.preventDefault(); onClose(); return; }
+      if (event.key !== "Tab") return;
+      const items = focusable();
+      if (!items.length) return;
+      const first = items[0]; const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => { document.removeEventListener("keydown", onKeyDown); if (title?.id === titleId) title.removeAttribute("id"); previous?.focus(); };
+  }, [onClose, titleId]);
+  return <div className="modal-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><div ref={dialogRef} className={wide ? "modal wide" : "modal"} role="dialog" aria-modal="true" aria-labelledby={titleId}><button className="modal-close" onClick={onClose} aria-label="關閉">×</button>{children}</div></div>;
+}
 
 function CreateModal({ goal, setGoal, weeks, setWeeks, capacity, setCapacity, traitId, setTraitId, personaId, setPersonaId, traits, personas, importLabel, onUpload, onCalendar, creating, onCreate, onClose }: { goal: string; setGoal: (v: string) => void; weeks: string; setWeeks: (v: string) => void; capacity: string; setCapacity: (v: string) => void; traitId: string; setTraitId: (v: string) => void; personaId: string; setPersonaId: (v: string) => void; traits: RoleModel[]; personas: RoleModel[]; importLabel: string; onUpload: (file: File) => void; onCalendar: () => void; creating: boolean; onCreate: () => void; onClose: () => void }) { return <ModalShell onClose={onClose}><div className="step-label"><span>01</span> / 03</div><p className="eyebrow">NEW DIRECTION</p><h2 className="modal-title">你想完成什麼？</h2><p className="modal-subtitle">只需要一個目標。其他資訊留白也沒關係，guru 會在需要時追問。</p><label className="field"><span>你的目標 <b>必填</b></span><textarea autoFocus value={goal} onChange={(e) => setGoal(e.target.value)} placeholder="例如：12 週後，在 30 分鐘內跑完 5 公里" rows={4} /></label><div className="form-grid"><label className="field"><span>希望用多久 <i>選填</i></span><select value={weeks} onChange={(e) => setWeeks(e.target.value)}><option>8 週</option><option>12 週</option><option>16 週</option><option>不確定</option></select></label><label className="field"><span>每週可投入 <i>選填</i></span><select value={capacity} onChange={(e) => setCapacity(e.target.value)}><option>每週 1–2 小時</option><option>每週 3–4 小時</option><option>每週 5 小時以上</option><option>不確定</option></select></label></div><div className="form-grid role-fields"><label className="field"><span>執行風格 <i>選填</i></span><select value={traitId} onChange={(e) => setTraitId(e.target.value)}>{traits.map((role) => <option value={role.id} key={role.id || "trait-none"}>{role.name}</option>)}</select></label><label className="field"><span>參考榜樣 <i>選填</i></span><select value={personaId} onChange={(e) => setPersonaId(e.target.value)}>{personas.map((role) => <option value={role.id} key={role.id || "persona-none"}>{role.name}</option>)}</select></label></div><div className="context-tools"><label className="upload-button"><input type="file" accept=".csv,.xlsx,.md,.html,.pdf,.docx" onChange={(e) => { const file = e.target.files?.[0]; if (file) onUpload(file); }} /><span>↑</span>{importLabel || "加入參考文件"}</label><button type="button" onClick={onCalendar}><span>G</span>參考 Google Calendar</button></div><div className="role-preview"><span className="role-symbol">✦</span><div><b>AI 只會追問真正缺少的資訊</b><small>最多 2 輪，每題也都可以略過</small></div></div><button className="primary full" disabled={!goal.trim() || creating} onClick={onCreate}>{creating ? "正在理解你的目標…" : "開始生成計畫"}<span>→</span></button></ModalShell>; }
 
-function CompareModal({ plans, activeId, onChoose, onClose }: { plans: Plan[]; activeId: string; onChoose: (plan: Plan) => void; onClose: () => void }) { const labels: Record<Difficulty, { name: string; tag: string; desc: string }> = { easy: { name: "從容", tag: "可長期維持", desc: "壓力最低，給生活保留更多彈性。" }, hard: { name: "穩健", tag: "guru 推薦", desc: "在挑戰與可持續之間取得平衡。" }, extremely_hard: { name: "突破", tag: "高強度", desc: "更密集的節奏，用較短時間達標。" } }; return <ModalShell onClose={onClose} wide><p className="eyebrow center">CHOOSE YOUR PACE</p><h2 className="modal-title center">同一個終點，三種走法。</h2><p className="modal-subtitle center">所有方案都有相同達成標準，差別只在投入強度與時間。</p><div className="compare-grid">{plans.map((plan) => { const copy = labels[plan.difficulty]; const recommended = plan.difficulty === "hard"; return <article className={recommended ? "compare-card recommended" : "compare-card"} key={plan.id}>{recommended && <span className="recommend-flag">推薦</span>}<p>{copy.tag}</p><h3>{copy.name}</h3><span className="compare-line" /><p className="compare-desc">{copy.desc}</p><dl><div><dt>期程</dt><dd>{plan.duration_weeks} 週</dd></div><div><dt>每週</dt><dd>{plan.sessions_per_week} 次</dd></div><div><dt>投入</dt><dd>{Math.round(plan.total_minutes_per_week / 6) / 10} 小時</dd></div></dl><button className={recommended ? "primary full" : "secondary full"} onClick={() => onChoose(plan)}>{activeId === plan.id ? "目前採用" : `選擇${copy.name}`}</button></article>; })}</div></ModalShell>; }
+function CompareModal({ plans, activeId, onChoose, onClose }: { plans: Plan[]; activeId: string; onChoose: (plan: Plan) => void; onClose: () => void }) { const labels: Record<Difficulty, { name: string; tag: string; desc: string }> = { easy: { name: "從容", tag: "可長期維持", desc: "壓力最低，給生活保留更多彈性。" }, hard: { name: "穩健", tag: "guru 推薦", desc: "在挑戰與可持續之間取得平衡。" }, extremely_hard: { name: "突破", tag: "高強度", desc: "更密集的節奏，用較短時間達標。" } }; return <ModalShell onClose={onClose} wide><p className="eyebrow center">CHOOSE YOUR PACE</p><h2 className="modal-title center">同一個終點，三種走法。</h2><p className="modal-subtitle center">所有方案都有相同達成標準，差別只在投入強度與時間。</p><div className="compare-grid">{plans.map((plan) => { const copy = labels[plan.difficulty]; const recommended = plan.difficulty === "hard"; const active = activeId === plan.id; return <article className={recommended ? "compare-card recommended" : "compare-card"} key={plan.id}>{recommended && <span className="recommend-flag">推薦</span>}<p>{copy.tag}</p><h3>{copy.name}</h3><span className="compare-line" /><p className="compare-desc">{copy.desc}</p><dl><div><dt>期程</dt><dd>{plan.duration_weeks} 週</dd></div><div><dt>每週</dt><dd>{plan.sessions_per_week} 次</dd></div><div><dt>投入</dt><dd>{Math.round(plan.total_minutes_per_week / 6) / 10} 小時</dd></div></dl><button className={recommended ? "primary full" : "secondary full"} disabled={active} aria-pressed={active} onClick={() => onChoose(plan)}>{active ? "目前採用" : `選擇${copy.name}`}</button></article>; })}</div></ModalShell>; }
 
-function RevisionModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: (strategy: "postpone" | "reduce") => void }) { const [strategy, setStrategy] = useState<"postpone" | "reduce">("postpone"); return <ModalShell onClose={onClose}><p className="eyebrow">ADJUST, DON&apos;T ABANDON</p><h2 className="modal-title">怎麼調整比較適合？</h2><p className="modal-subtitle">已完成與錯過的紀錄都會保留，guru 只重新安排今天之後的任務。</p><div className="strategy-list"><button className={strategy === "postpone" ? "strategy active" : "strategy"} onClick={() => setStrategy("postpone")}><span>→</span><div><b>延後截止日</b><small>保留目標與每週強度，給自己多一點時間。</small></div><i>{strategy === "postpone" ? "✓" : ""}</i></button><button className={strategy === "reduce" ? "strategy active" : "strategy"} onClick={() => setStrategy("reduce")}><span>↘</span><div><b>降低目標</b><small>截止日不變，縮小任務範圍到做得到的程度。</small></div><i>{strategy === "reduce" ? "✓" : ""}</i></button></div><button className="primary full" onClick={() => onSubmit(strategy)}>讓 guru 重新安排 <span>→</span></button></ModalShell>; }
+function RevisionModal({ onClose, onSubmit }: { onClose: () => void; onSubmit: (strategy: "postpone" | "reduce") => void }) { const [strategy, setStrategy] = useState<"postpone" | "reduce">("postpone"); return <ModalShell onClose={onClose}><p className="eyebrow">ADJUST, DON&apos;T ABANDON</p><h2 className="modal-title">怎麼調整比較適合？</h2><p className="modal-subtitle">已完成與錯過的紀錄都會保留，guru 只重新安排今天之後的任務。</p><div className="strategy-list"><button className={strategy === "postpone" ? "strategy active" : "strategy"} aria-pressed={strategy === "postpone"} onClick={() => setStrategy("postpone")}><span>→</span><div><b>延後截止日</b><small>保留目標與每週強度，給自己多一點時間。</small></div><i>{strategy === "postpone" ? "✓" : ""}</i></button><button className={strategy === "reduce" ? "strategy active" : "strategy"} aria-pressed={strategy === "reduce"} onClick={() => setStrategy("reduce")}><span>↘</span><div><b>降低目標</b><small>截止日不變，縮小任務範圍到做得到的程度。</small></div><i>{strategy === "reduce" ? "✓" : ""}</i></button></div><button className="primary full" onClick={() => onSubmit(strategy)}>讓 guru 重新安排 <span>→</span></button></ModalShell>; }
 
 function RevisionProposalModal({ revision, onDecision, onClose }: { revision: Revision; onDecision: (decision: "accept" | "reject") => void; onClose: () => void }) {
   const changed = revision.diff.filter((item) => item.kind !== "unchanged");
