@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import GuruApp from "./components/GuruApp";
+import { IntakeStation } from "./components/intake/IntakeStation";
+import { createClient } from "@/lib/api/client";
 
 export const metadata: Metadata = {
-  title: "guru — 把目標變成今天做得到的事",
-  description: "依你的時間、節奏與榜樣，生成真正排得進生活的行動計畫。",
+  title: "方向假設",
+  description: "先定期間，再讀痕跡，最後拿痕跡跟你想要的能力對一次。產出是假設 v0，不是願景。",
 };
 
-export default function Home() {
-  return <GuruApp />;
+export default async function IntakePage() {
+  const snapshot = await createClient().getSnapshot();
+  return <IntakeStation snapshot={snapshot} />;
 }

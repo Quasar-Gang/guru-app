@@ -1,0 +1,120 @@
+/*
+ * Local extension layer — design-system debt, tracked on purpose.
+ *
+ * Mist ships no Table and no segmented control (see `COMPONENTS.md`, "components
+ * we do not have"). Station 3 is a report, and a report is a table, so the two
+ * live here instead of being open-coded into the page. The rules below use only
+ * mist sys tokens: no literal colours, no literal sizes, no shadows.
+ *
+ * Repayment path: move these into the design system's `components.css`, re-copy
+ * `app/styles/mist.components.css`, delete this file.
+ */
+
+/* ── Table ───────────────────────────────────────────────────────── */
+
+.mist-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mist-table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  min-inline-size: var(--mist-sys-size-shell-narrow);
+}
+
+.mist-table th,
+.mist-table td {
+  text-align: start;
+  padding: var(--mist-sys-spacing-inset-sm) var(--mist-sys-spacing-inset-md);
+  border-block-end: var(--mist-sys-border-width-hairline) solid var(--mist-sys-color-hairline);
+  vertical-align: top;
+}
+
+.mist-table th {
+  font: var(--mist-sys-typescale-label);
+  color: var(--mist-sys-color-on-surface-subtle);
+  white-space: nowrap;
+}
+
+.mist-table td {
+  font: var(--mist-sys-typescale-body);
+  color: var(--mist-sys-color-on-surface);
+}
+
+.mist-table__group td {
+  background: var(--mist-sys-color-surface-inset);
+  font: var(--mist-sys-typescale-label);
+  color: var(--mist-sys-color-on-surface-subtle);
+}
+
+.mist-table__name {
+  display: block;
+  font: var(--mist-sys-typescale-body-strong);
+}
+
+.mist-table__unit {
+  display: block;
+  font: var(--mist-sys-typescale-caption);
+  color: var(--mist-sys-color-on-surface-subtle);
+}
+
+.mist-table__tight {
+  white-space: nowrap;
+}
+
+.mist-table__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--mist-sys-spacing-stack-xs);
+  align-items: flex-start;
+}
+
+/* ── Segmented control ───────────────────────────────────────────── */
+
+.mist-seg {
+  display: inline-flex;
+  border: var(--mist-sys-border-width-hairline) solid var(--mist-sys-color-outline);
+  border-radius: var(--mist-sys-shape-pill);
+  overflow: hidden;
+}
+
+.mist-seg__item {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  padding: var(--mist-sys-spacing-inset-xs) var(--mist-sys-spacing-inset-md);
+  min-block-size: var(--mist-sys-size-touch-sm);
+  background: var(--mist-sys-color-surface-card);
+  color: var(--mist-sys-color-on-surface-muted);
+  font: var(--mist-sys-typescale-body);
+}
+
+.mist-seg__item + .mist-seg__item {
+  border-inline-start: var(--mist-sys-border-width-hairline) solid var(--mist-sys-color-outline);
+}
+
+.mist-seg__item:hover {
+  background: var(--mist-sys-color-surface-hover);
+}
+
+.mist-seg__item[aria-pressed="true"] {
+  background: var(--mist-sys-color-surface-strong);
+  color: var(--mist-sys-color-on-strong);
+}
+
+.mist-seg__item:focus-visible {
+  outline: var(--mist-sys-border-width-focus) solid var(--mist-sys-color-outline-focus);
+  outline-offset: calc(-1 * var(--mist-sys-border-width-focus));
+}
+
+/* ── Row that reads as a deleted line ────────────────────────────── */
+
+.is-removed .mist-table__name,
+.is-removed .mist-body-strong {
+  text-decoration: line-through;
+}
+
+.is-removed {
+  color: var(--mist-sys-color-on-disabled);
+}

@@ -1,0 +1,1112 @@
+/*
+ * Mist Design System — CSS Custom Properties
+ * 由 tokens/mist.tokens-studio.json 產生，請勿手改。
+ * 重新產生：python3 scripts/to_css.py tokens/mist.tokens-studio.json --css css/mist.tokens.css --docs docs/tokens.md
+ *
+ * 三層繼承靠 var() 串接，不是攤平成字面值——改 ref 一處，sys 與 comp
+ * 在瀏覽器裡即時連動。元件樣式只引用 --mist-comp-*。
+ */
+
+:root {
+
+  /* ═══════════════════════════════════════════════════════════════
+     REFERENCE — 原始值。只有這層存實際數值，換膚時改這裡。
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* ref / border-width */
+  --mist-ref-border-width-focus: 2px;
+  --mist-ref-border-width-hairline: 1px;
+  --mist-ref-border-width-none: 0px;
+
+  /* ref / color / ember */
+  --mist-ref-color-ember-10: #FDEDE8;
+  --mist-ref-color-ember-20: #F9C9BA;
+  --mist-ref-color-ember-30: #F08F6D;
+  --mist-ref-color-ember-40: #E8542A;
+  --mist-ref-color-ember-50: #C4401C;
+  --mist-ref-color-ember-60: #8A2B12;
+
+  /* ref / color / neutral */
+  --mist-ref-color-neutral-0: #FFFFFF;
+  --mist-ref-color-neutral-3: #F7F7F9;
+  --mist-ref-color-neutral-5: #F1F2F4;
+  --mist-ref-color-neutral-10: #EAEBEE;
+  --mist-ref-color-neutral-15: #E1E3E8;
+  --mist-ref-color-neutral-20: #D5D8DF;
+  --mist-ref-color-neutral-30: #B9BDC8;
+  --mist-ref-color-neutral-40: #9BA0AE;
+  --mist-ref-color-neutral-50: #7B8090;
+  --mist-ref-color-neutral-60: #5B6072;
+  --mist-ref-color-neutral-70: #3D4253;
+  --mist-ref-color-neutral-80: #292E3D;
+  --mist-ref-color-neutral-90: #1B2436;
+  --mist-ref-color-neutral-100: #0E121B;
+
+  /* ref / color / sky */
+  --mist-ref-color-sky-10: #EDF3FA;
+  --mist-ref-color-sky-20: #CFE0F2;
+  --mist-ref-color-sky-30: #A5C4E4;
+  --mist-ref-color-sky-40: #7BA7D9;
+  --mist-ref-color-sky-50: #5583B5;
+  --mist-ref-color-sky-60: #3A5B80;
+
+  /* ref / color / slate */
+  --mist-ref-color-slate-30: #A8AEC2;
+  --mist-ref-color-slate-40: #8B92AB;
+  --mist-ref-color-slate-50: #737B96;
+
+  /* ref / font / family */
+  --mist-ref-font-family-brand: "Plus Jakarta Sans";
+  --mist-ref-font-family-cjk: "Noto Sans TC";
+
+  /* ref / font / line-height */
+  --mist-ref-font-line-height-100: 1;
+  --mist-ref-font-line-height-110: 1.1;
+  --mist-ref-font-line-height-130: 1.3;
+  --mist-ref-font-line-height-150: 1.5;
+
+  /* ref / font / size */
+  --mist-ref-font-size-12: 12px;
+  --mist-ref-font-size-14: 14px;
+  --mist-ref-font-size-20: 20px;
+  --mist-ref-font-size-28: 28px;
+  --mist-ref-font-size-40: 40px;
+  --mist-ref-font-size-56: 56px;
+
+  /* ref / font / weight */
+  --mist-ref-font-weight-medium: 500;
+  --mist-ref-font-weight-regular: 400;
+
+  /* ref / shape */
+  --mist-ref-shape-3xl: 40px;
+  --mist-ref-shape-full: 9999px;
+  --mist-ref-shape-none: 0px;
+  --mist-ref-shape-xl: 24px;
+
+  /* ref / size */
+  --mist-ref-size-2: 2px;
+  --mist-ref-size-8: 8px;
+  --mist-ref-size-12: 12px;
+  --mist-ref-size-16: 16px;
+  --mist-ref-size-20: 20px;
+  --mist-ref-size-24: 24px;
+  --mist-ref-size-32: 32px;
+  --mist-ref-size-40: 40px;
+  --mist-ref-size-44: 44px;
+  --mist-ref-size-48: 48px;
+  --mist-ref-size-56: 56px;
+  --mist-ref-size-64: 64px;
+  --mist-ref-size-72: 72px;
+  --mist-ref-size-96: 96px;
+  --mist-ref-size-160: 160px;
+  --mist-ref-size-176: 176px;
+  --mist-ref-size-240: 240px;
+  --mist-ref-size-280: 280px;
+  --mist-ref-size-720: 720px;
+  --mist-ref-size-900: 900px;
+  --mist-ref-size-1200: 1200px;
+  --mist-ref-size-1600: 1600px;
+
+  /* ref / spacing */
+  --mist-ref-spacing-0: 0px;
+  --mist-ref-spacing-0-5: 4px;
+  --mist-ref-spacing-0-25: 2px;
+  --mist-ref-spacing-1: 8px;
+  --mist-ref-spacing-1-5: 12px;
+  --mist-ref-spacing-2: 16px;
+  --mist-ref-spacing-3: 24px;
+  --mist-ref-spacing-4: 32px;
+  --mist-ref-spacing-5: 40px;
+  --mist-ref-spacing-6: 48px;
+  --mist-ref-spacing-8: 64px;
+
+  /* ═══════════════════════════════════════════════════════════════
+     SYSTEM — 語義角色。只引用 ref，賦予原始值職責。
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* sys / border-width */
+  --mist-sys-border-width-focus: var(--mist-ref-border-width-focus);
+  --mist-sys-border-width-hairline: var(--mist-ref-border-width-hairline);
+  --mist-sys-border-width-none: var(--mist-ref-border-width-none);
+  --mist-sys-border-width-strong: var(--mist-ref-border-width-focus);
+
+  /* sys / color */
+  --mist-sys-color-accent: var(--mist-ref-color-ember-40);
+  --mist-sys-color-accent-alt: var(--mist-ref-color-sky-40);
+  --mist-sys-color-accent-alt-bold: var(--mist-ref-color-sky-60);
+  --mist-sys-color-accent-alt-container: var(--mist-ref-color-sky-10);
+  --mist-sys-color-accent-bold: var(--mist-ref-color-ember-50);
+  --mist-sys-color-accent-container: var(--mist-ref-color-ember-10);
+  --mist-sys-color-chart-alt: var(--mist-ref-color-ember-40);
+  --mist-sys-color-chart-dot: var(--mist-ref-color-sky-40);
+  --mist-sys-color-chart-line: var(--mist-ref-color-neutral-20);
+  --mist-sys-color-chart-mark: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-hairline: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-on-accent: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-accent-alt: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-disabled: var(--mist-ref-color-neutral-40);
+  --mist-sys-color-on-status-active: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-status-attention: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-status-done: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-status-idle: var(--mist-ref-color-neutral-60);
+  --mist-sys-color-on-strong: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-strong-muted: var(--mist-ref-color-neutral-40);
+  --mist-sys-color-on-surface: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-on-surface-muted: var(--mist-ref-color-neutral-60);
+  --mist-sys-color-on-surface-subtle: var(--mist-ref-color-neutral-40);
+  --mist-sys-color-outline: var(--mist-ref-color-neutral-20);
+  --mist-sys-color-outline-focus: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-outline-strong: var(--mist-ref-color-neutral-30);
+  --mist-sys-color-status-active: var(--mist-ref-color-sky-40);
+  --mist-sys-color-status-attention: var(--mist-ref-color-ember-40);
+  --mist-sys-color-status-done: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-status-idle: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-surface-app: var(--mist-ref-color-neutral-10);
+  --mist-sys-color-surface-card: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-surface-card-hover: var(--mist-ref-color-neutral-3);
+  --mist-sys-color-surface-disabled: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-surface-highlight: var(--mist-ref-color-neutral-3);
+  --mist-sys-color-surface-hover: var(--mist-ref-color-neutral-5);
+  --mist-sys-color-surface-inset: var(--mist-ref-color-neutral-10);
+  --mist-sys-color-surface-inset-hover: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-surface-inset-pressed: var(--mist-ref-color-neutral-20);
+  --mist-sys-color-surface-page: var(--mist-ref-color-slate-40);
+  --mist-sys-color-surface-pressed: var(--mist-ref-color-neutral-10);
+  --mist-sys-color-surface-strong: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-surface-strong-hover: var(--mist-ref-color-neutral-80);
+  --mist-sys-color-surface-strong-pressed: var(--mist-ref-color-neutral-100);
+  --mist-sys-color-surface-sunken: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-surface-track: var(--mist-ref-color-neutral-20);
+
+  /* sys / shape */
+  --mist-sys-shape-block: var(--mist-ref-shape-xl);
+  --mist-sys-shape-card: var(--mist-ref-shape-xl);
+  --mist-sys-shape-container: var(--mist-ref-shape-3xl);
+  --mist-sys-shape-none: var(--mist-ref-shape-none);
+  --mist-sys-shape-pill: var(--mist-ref-shape-full);
+
+  /* sys / size */
+  --mist-sys-size-bar: var(--mist-ref-size-8);
+  --mist-sys-size-bar-lg: var(--mist-ref-size-12);
+  --mist-sys-size-canvas-h: var(--mist-ref-size-900);
+  --mist-sys-size-canvas-w: var(--mist-ref-size-1600);
+  --mist-sys-size-card-min: var(--mist-ref-size-280);
+  --mist-sys-size-control-sm: var(--mist-ref-size-32);
+  --mist-sys-size-control-xs: var(--mist-ref-size-24);
+  --mist-sys-size-dot: var(--mist-ref-size-8);
+  --mist-sys-size-field-multiline: var(--mist-ref-size-96);
+  --mist-sys-size-hair: var(--mist-ref-size-2);
+  --mist-sys-size-icon-lg: var(--mist-ref-size-24);
+  --mist-sys-size-icon-md: var(--mist-ref-size-20);
+  --mist-sys-size-icon-sm: var(--mist-ref-size-16);
+  --mist-sys-size-icon-xl: var(--mist-ref-size-32);
+  --mist-sys-size-node-min: var(--mist-ref-size-176);
+  --mist-sys-size-plot-lg: var(--mist-ref-size-240);
+  --mist-sys-size-plot-md: var(--mist-ref-size-160);
+  --mist-sys-size-plot-sm: var(--mist-ref-size-72);
+  --mist-sys-size-shell: var(--mist-ref-size-1200);
+  --mist-sys-size-shell-narrow: var(--mist-ref-size-720);
+  --mist-sys-size-tile-min: var(--mist-ref-size-96);
+  --mist-sys-size-touch-lg: var(--mist-ref-size-56);
+  --mist-sys-size-touch-md: var(--mist-ref-size-48);
+  --mist-sys-size-touch-sm: var(--mist-ref-size-40);
+
+  /* sys / spacing */
+  --mist-sys-spacing-inset-2xl: var(--mist-ref-spacing-5);
+  --mist-sys-spacing-inset-2xs: var(--mist-ref-spacing-0-5);
+  --mist-sys-spacing-inset-3xs: var(--mist-ref-spacing-0-25);
+  --mist-sys-spacing-inset-lg: var(--mist-ref-spacing-3);
+  --mist-sys-spacing-inset-md: var(--mist-ref-spacing-2);
+  --mist-sys-spacing-inset-sm: var(--mist-ref-spacing-1-5);
+  --mist-sys-spacing-inset-xl: var(--mist-ref-spacing-4);
+  --mist-sys-spacing-inset-xs: var(--mist-ref-spacing-1);
+  --mist-sys-spacing-page-inset: var(--mist-ref-spacing-4);
+  --mist-sys-spacing-stack-2xl: var(--mist-ref-spacing-6);
+  --mist-sys-spacing-stack-lg: var(--mist-ref-spacing-3);
+  --mist-sys-spacing-stack-md: var(--mist-ref-spacing-2);
+  --mist-sys-spacing-stack-sm: var(--mist-ref-spacing-1-5);
+  --mist-sys-spacing-stack-xl: var(--mist-ref-spacing-4);
+  --mist-sys-spacing-stack-xs: var(--mist-ref-spacing-1);
+
+  /* sys / typescale */
+  --mist-sys-typescale-body: var(--mist-ref-font-weight-regular) var(--mist-ref-font-size-14)/var(--mist-ref-font-line-height-150) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-body-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-body-font-size: var(--mist-ref-font-size-14);
+  --mist-sys-typescale-body-font-weight: var(--mist-ref-font-weight-regular);
+  --mist-sys-typescale-body-line-height: var(--mist-ref-font-line-height-150);
+  --mist-sys-typescale-body-strong: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-14)/var(--mist-ref-font-line-height-150) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-body-strong-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-body-strong-font-size: var(--mist-ref-font-size-14);
+  --mist-sys-typescale-body-strong-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-body-strong-line-height: var(--mist-ref-font-line-height-150);
+  --mist-sys-typescale-caption: var(--mist-ref-font-weight-regular) var(--mist-ref-font-size-12)/var(--mist-ref-font-line-height-130) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-caption-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-caption-font-size: var(--mist-ref-font-size-12);
+  --mist-sys-typescale-caption-font-weight: var(--mist-ref-font-weight-regular);
+  --mist-sys-typescale-caption-line-height: var(--mist-ref-font-line-height-130);
+  --mist-sys-typescale-display: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-56)/var(--mist-ref-font-line-height-100) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-display-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-display-font-size: var(--mist-ref-font-size-56);
+  --mist-sys-typescale-display-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-display-line-height: var(--mist-ref-font-line-height-100);
+  --mist-sys-typescale-heading-1: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-40)/var(--mist-ref-font-line-height-110) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-heading-1-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-heading-1-font-size: var(--mist-ref-font-size-40);
+  --mist-sys-typescale-heading-1-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-heading-1-line-height: var(--mist-ref-font-line-height-110);
+  --mist-sys-typescale-heading-2: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-28)/var(--mist-ref-font-line-height-110) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-heading-2-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-heading-2-font-size: var(--mist-ref-font-size-28);
+  --mist-sys-typescale-heading-2-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-heading-2-line-height: var(--mist-ref-font-line-height-110);
+  --mist-sys-typescale-heading-3: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-20)/var(--mist-ref-font-line-height-130) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-heading-3-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-heading-3-font-size: var(--mist-ref-font-size-20);
+  --mist-sys-typescale-heading-3-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-heading-3-line-height: var(--mist-ref-font-line-height-130);
+  --mist-sys-typescale-label: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-12)/var(--mist-ref-font-line-height-130) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-label-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-label-font-size: var(--mist-ref-font-size-12);
+  --mist-sys-typescale-label-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-label-line-height: var(--mist-ref-font-line-height-130);
+
+  /* ═══════════════════════════════════════════════════════════════
+     COMPONENT — 元件專用。只引用 sys，元件樣式只碰這層。
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* comp / a11y / focus-ring */
+  --mist-comp-a11y-focus-ring-color: var(--mist-sys-color-outline-focus);
+  --mist-comp-a11y-focus-ring-offset: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-a11y-focus-ring-width: var(--mist-sys-border-width-focus);
+
+  /* comp / badge / container */
+  --mist-comp-badge-container-color-active: var(--mist-sys-color-status-active);
+  --mist-comp-badge-container-color-attention: var(--mist-sys-color-status-attention);
+  --mist-comp-badge-container-color-done: var(--mist-sys-color-status-done);
+  --mist-comp-badge-container-color-down: var(--mist-sys-color-status-attention);
+  --mist-comp-badge-container-color-idle: var(--mist-sys-color-status-idle);
+  --mist-comp-badge-container-color-up: var(--mist-sys-color-status-done);
+  --mist-comp-badge-container-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-badge-container-height: var(--mist-sys-size-control-xs);
+  --mist-comp-badge-container-padding-x: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-badge-container-shape: var(--mist-sys-shape-pill);
+
+  /* comp / badge */
+  --mist-comp-badge-icon-size: var(--mist-sys-size-icon-sm);
+
+  /* comp / badge / label */
+  --mist-comp-badge-label-color-active: var(--mist-sys-color-on-status-active);
+  --mist-comp-badge-label-color-attention: var(--mist-sys-color-on-status-attention);
+  --mist-comp-badge-label-color-done: var(--mist-sys-color-on-status-done);
+  --mist-comp-badge-label-color-down: var(--mist-sys-color-on-status-attention);
+  --mist-comp-badge-label-color-idle: var(--mist-sys-color-on-status-idle);
+  --mist-comp-badge-label-color-up: var(--mist-sys-color-on-status-done);
+  --mist-comp-badge-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-badge-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-badge-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-badge-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-badge-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / button-ghost / container */
+  --mist-comp-button-ghost-container-border-width: var(--mist-sys-border-width-none);
+  --mist-comp-button-ghost-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-ghost-container-color-enabled: var(--mist-sys-color-surface-inset);
+  --mist-comp-button-ghost-container-color-hover: var(--mist-sys-color-surface-inset-hover);
+  --mist-comp-button-ghost-container-color-pressed: var(--mist-sys-color-surface-inset-pressed);
+  --mist-comp-button-ghost-container-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-button-ghost-container-height: var(--mist-sys-size-touch-sm);
+  --mist-comp-button-ghost-container-padding-x: var(--mist-sys-spacing-inset-md);
+  --mist-comp-button-ghost-container-shape: var(--mist-sys-shape-pill);
+
+  /* comp / button-ghost / icon */
+  --mist-comp-button-ghost-icon-size: var(--mist-sys-size-icon-md);
+
+  /* comp / button-ghost / label */
+  --mist-comp-button-ghost-label-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-button-ghost-label-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-button-ghost-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-button-ghost-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-button-ghost-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-button-ghost-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-button-ghost-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / button-icon / border */
+  --mist-comp-button-icon-border-color-enabled: var(--mist-sys-color-outline);
+
+  /* comp / button-icon / container */
+  --mist-comp-button-icon-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-button-icon-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-icon-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-button-icon-container-color-hover: var(--mist-sys-color-surface-hover);
+  --mist-comp-button-icon-container-color-pressed: var(--mist-sys-color-surface-pressed);
+  --mist-comp-button-icon-container-shape: var(--mist-sys-shape-pill);
+  --mist-comp-button-icon-container-size: var(--mist-sys-size-touch-sm);
+
+  /* comp / button-icon / icon */
+  --mist-comp-button-icon-icon-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-button-icon-icon-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-button-icon-icon-size: var(--mist-sys-size-icon-md);
+
+  /* comp / button-primary / container */
+  --mist-comp-button-primary-container-border-width: var(--mist-sys-border-width-none);
+  --mist-comp-button-primary-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-primary-container-color-enabled: var(--mist-sys-color-surface-strong);
+  --mist-comp-button-primary-container-color-hover: var(--mist-sys-color-surface-strong-hover);
+  --mist-comp-button-primary-container-color-pressed: var(--mist-sys-color-surface-strong-pressed);
+  --mist-comp-button-primary-container-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-button-primary-container-height: var(--mist-sys-size-touch-md);
+  --mist-comp-button-primary-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-button-primary-container-shape: var(--mist-sys-shape-pill);
+
+  /* comp / button-primary / icon */
+  --mist-comp-button-primary-icon-size: var(--mist-sys-size-icon-md);
+
+  /* comp / button-primary / label */
+  --mist-comp-button-primary-label-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-button-primary-label-color-enabled: var(--mist-sys-color-on-strong);
+  --mist-comp-button-primary-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-button-primary-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-button-primary-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-button-primary-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-button-primary-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / button-secondary / border */
+  --mist-comp-button-secondary-border-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-secondary-border-color-enabled: var(--mist-sys-color-outline);
+  --mist-comp-button-secondary-border-color-hover: var(--mist-sys-color-outline);
+
+  /* comp / button-secondary / container */
+  --mist-comp-button-secondary-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-button-secondary-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-secondary-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-button-secondary-container-color-hover: var(--mist-sys-color-surface-hover);
+  --mist-comp-button-secondary-container-color-pressed: var(--mist-sys-color-surface-pressed);
+  --mist-comp-button-secondary-container-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-button-secondary-container-height: var(--mist-sys-size-touch-md);
+  --mist-comp-button-secondary-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-button-secondary-container-shape: var(--mist-sys-shape-pill);
+
+  /* comp / button-secondary / icon */
+  --mist-comp-button-secondary-icon-size: var(--mist-sys-size-icon-md);
+
+  /* comp / button-secondary / label */
+  --mist-comp-button-secondary-label-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-button-secondary-label-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-button-secondary-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-button-secondary-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-button-secondary-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-button-secondary-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-button-secondary-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / chart / axis */
+  --mist-comp-chart-axis-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-chart-axis-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-chart-axis-label-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-chart-axis-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-chart-axis-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-chart-axis-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-chart-axis-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-chart-axis-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-chart-axis-pill-color: var(--mist-sys-color-surface-inset);
+  --mist-comp-chart-axis-pill-padding-x: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-chart-axis-pill-shape: var(--mist-sys-shape-pill);
+
+  /* comp / chart / axis-label */
+  --mist-comp-chart-axis-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-chart-axis-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-chart-axis-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-chart-axis-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-chart-axis-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-chart-axis-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / chart / cursor */
+  --mist-comp-chart-cursor-dot-color-accent: var(--mist-sys-color-accent);
+  --mist-comp-chart-cursor-dot-color-primary: var(--mist-sys-color-chart-mark);
+  --mist-comp-chart-cursor-dot-color-secondary: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-cursor-dot-ring-color: var(--mist-sys-color-surface-card);
+  --mist-comp-chart-cursor-dot-ring-width: var(--mist-sys-border-width-focus);
+  --mist-comp-chart-cursor-dot-size: var(--mist-sys-size-dot);
+  --mist-comp-chart-cursor-line-color: var(--mist-sys-color-outline);
+  --mist-comp-chart-cursor-line-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / chart / grid */
+  --mist-comp-chart-grid-color: var(--mist-sys-color-hairline);
+  --mist-comp-chart-grid-dash: 4 4;
+  --mist-comp-chart-grid-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / chart / hairbar */
+  --mist-comp-chart-hairbar-color: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-hairbar-color-accent: var(--mist-sys-color-chart-alt);
+  --mist-comp-chart-hairbar-color-mark: var(--mist-sys-color-chart-mark);
+  --mist-comp-chart-hairbar-gap: var(--mist-sys-spacing-inset-3xs);
+  --mist-comp-chart-hairbar-height: var(--mist-sys-size-plot-sm);
+  --mist-comp-chart-hairbar-line-width: var(--mist-sys-size-hair);
+  --mist-comp-chart-hairbar-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / chart / highlight */
+  --mist-comp-chart-highlight-color: var(--mist-sys-color-surface-highlight);
+  --mist-comp-chart-highlight-shape: var(--mist-sys-shape-block);
+
+  /* comp / chart / line */
+  --mist-comp-chart-line-color: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-line-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / chart / node */
+  --mist-comp-chart-node-color-enabled: var(--mist-sys-color-surface-inset);
+  --mist-comp-chart-node-color-selected: var(--mist-sys-color-surface-strong);
+  --mist-comp-chart-node-label-color-enabled: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-chart-node-label-color-selected: var(--mist-sys-color-on-strong);
+  --mist-comp-chart-node-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-chart-node-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-chart-node-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-chart-node-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-chart-node-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+  --mist-comp-chart-node-shape: var(--mist-sys-shape-pill);
+  --mist-comp-chart-node-size: var(--mist-sys-size-touch-sm);
+
+  /* comp / chart / plot */
+  --mist-comp-chart-plot-col-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-chart-plot-col-padding-y: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-chart-plot-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-chart-plot-height: var(--mist-sys-size-plot-lg);
+  --mist-comp-chart-plot-height-md: var(--mist-sys-size-plot-md);
+
+  /* comp / chart / series */
+  --mist-comp-chart-series-color-primary: var(--mist-sys-color-chart-mark);
+  --mist-comp-chart-series-color-secondary: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-series-width: var(--mist-sys-size-hair);
+
+  /* comp / chart / stem */
+  --mist-comp-chart-stem-color: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-stem-color-selected: var(--mist-sys-color-chart-mark);
+  --mist-comp-chart-stem-shape: var(--mist-sys-shape-pill);
+  --mist-comp-chart-stem-width: var(--mist-sys-size-bar-lg);
+
+  /* comp / chart / tooltip */
+  --mist-comp-chart-tooltip-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-chart-tooltip-height: var(--mist-sys-size-control-sm);
+  --mist-comp-chart-tooltip-label-color: var(--mist-sys-color-on-strong);
+  --mist-comp-chart-tooltip-padding-x: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-chart-tooltip-shape: var(--mist-sys-shape-pill);
+  --mist-comp-chart-tooltip-type: var(--mist-sys-typescale-label);
+  --mist-comp-chart-tooltip-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-chart-tooltip-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-chart-tooltip-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-chart-tooltip-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / chart / tooltip-card */
+  --mist-comp-chart-tooltip-card-border-color: var(--mist-sys-color-outline);
+  --mist-comp-chart-tooltip-card-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-chart-tooltip-card-color: var(--mist-sys-color-surface-card);
+  --mist-comp-chart-tooltip-card-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-chart-tooltip-card-padding: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-chart-tooltip-card-shape: var(--mist-sys-shape-card);
+  --mist-comp-chart-tooltip-card-title-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-chart-tooltip-card-title-type: var(--mist-sys-typescale-caption);
+  --mist-comp-chart-tooltip-card-title-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-chart-tooltip-card-title-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-chart-tooltip-card-title-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-chart-tooltip-card-title-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-chart-tooltip-card-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-chart-tooltip-card-value-type: var(--mist-sys-typescale-heading-3);
+  --mist-comp-chart-tooltip-card-value-type-font-family: var(--mist-sys-typescale-heading-3-font-family);
+  --mist-comp-chart-tooltip-card-value-type-font-size: var(--mist-sys-typescale-heading-3-font-size);
+  --mist-comp-chart-tooltip-card-value-type-font-weight: var(--mist-sys-typescale-heading-3-font-weight);
+  --mist-comp-chart-tooltip-card-value-type-line-height: var(--mist-sys-typescale-heading-3-line-height);
+
+  /* comp / diagram / band */
+  --mist-comp-diagram-band-dot-shape: var(--mist-sys-shape-pill);
+  --mist-comp-diagram-band-dot-size: var(--mist-sys-size-dot);
+  --mist-comp-diagram-band-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-diagram-band-label-color: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-diagram-band-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-diagram-band-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-diagram-band-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-diagram-band-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-diagram-band-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / diagram / canvas */
+  --mist-comp-diagram-canvas-color: var(--mist-sys-color-surface-sunken);
+  --mist-comp-diagram-canvas-height: var(--mist-sys-size-canvas-h);
+  --mist-comp-diagram-canvas-width: var(--mist-sys-size-canvas-w);
+
+  /* comp / diagram / caption */
+  --mist-comp-diagram-caption-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-caption-type: var(--mist-sys-typescale-body);
+  --mist-comp-diagram-caption-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-diagram-caption-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-diagram-caption-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-diagram-caption-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / diagram / edge */
+  --mist-comp-diagram-edge-arrow-size: var(--mist-sys-size-icon-sm);
+  --mist-comp-diagram-edge-color: var(--mist-sys-color-outline);
+  --mist-comp-diagram-edge-color-accent: var(--mist-sys-color-accent);
+  --mist-comp-diagram-edge-color-alt: var(--mist-sys-color-accent-alt);
+  --mist-comp-diagram-edge-color-mark: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-edge-dash: 6 6;
+  --mist-comp-diagram-edge-width: var(--mist-sys-border-width-focus);
+
+  /* comp / diagram / edge-label */
+  --mist-comp-diagram-edge-label-backdrop: var(--mist-sys-color-surface-sunken);
+  --mist-comp-diagram-edge-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-edge-label-padding-x: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-diagram-edge-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-diagram-edge-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-diagram-edge-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-diagram-edge-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-diagram-edge-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / diagram / heading */
+  --mist-comp-diagram-heading-color: var(--mist-sys-color-on-surface);
+  --mist-comp-diagram-heading-type: var(--mist-sys-typescale-heading-2);
+  --mist-comp-diagram-heading-type-font-family: var(--mist-sys-typescale-heading-2-font-family);
+  --mist-comp-diagram-heading-type-font-size: var(--mist-sys-typescale-heading-2-font-size);
+  --mist-comp-diagram-heading-type-font-weight: var(--mist-sys-typescale-heading-2-font-weight);
+  --mist-comp-diagram-heading-type-line-height: var(--mist-sys-typescale-heading-2-line-height);
+
+  /* comp / diagram / label */
+  --mist-comp-diagram-label-color: var(--mist-sys-color-on-surface);
+  --mist-comp-diagram-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-diagram-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-diagram-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-diagram-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-diagram-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / diagram / node */
+  --mist-comp-diagram-node-border-color: var(--mist-sys-color-outline-strong);
+  --mist-comp-diagram-node-border-width: var(--mist-sys-border-width-strong);
+  --mist-comp-diagram-node-color: var(--mist-sys-color-surface-card);
+  --mist-comp-diagram-node-gap: var(--mist-sys-spacing-inset-3xs);
+  --mist-comp-diagram-node-min-width: var(--mist-sys-size-node-min);
+  --mist-comp-diagram-node-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-diagram-node-padding-y: var(--mist-sys-spacing-inset-md);
+  --mist-comp-diagram-node-shape: var(--mist-sys-shape-card);
+
+  /* comp / diagram / node-strong */
+  --mist-comp-diagram-node-strong-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-diagram-node-strong-label-color: var(--mist-sys-color-on-strong);
+  --mist-comp-diagram-node-strong-sub-color: var(--mist-sys-color-on-strong-muted);
+
+  /* comp / diagram / note */
+  --mist-comp-diagram-note-color: var(--mist-sys-color-surface-card);
+  --mist-comp-diagram-note-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-diagram-note-padding: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-diagram-note-shape: var(--mist-sys-shape-card);
+  --mist-comp-diagram-note-text-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-note-title-color: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-diagram-note-title-type: var(--mist-sys-typescale-label);
+  --mist-comp-diagram-note-title-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-diagram-note-title-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-diagram-note-title-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-diagram-note-title-type-line-height: var(--mist-sys-typescale-label-line-height);
+  --mist-comp-diagram-note-type: var(--mist-sys-typescale-caption);
+  --mist-comp-diagram-note-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-diagram-note-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-diagram-note-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-diagram-note-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-diagram-note-width: var(--mist-sys-size-card-min);
+
+  /* comp / diagram / rule */
+  --mist-comp-diagram-rule-color-accent: var(--mist-sys-color-accent);
+  --mist-comp-diagram-rule-color-alt: var(--mist-sys-color-accent-alt);
+  --mist-comp-diagram-rule-color-mark: var(--mist-sys-color-chart-mark);
+  --mist-comp-diagram-rule-height: var(--mist-sys-size-hair);
+  --mist-comp-diagram-rule-shape: var(--mist-sys-shape-pill);
+  --mist-comp-diagram-rule-width: var(--mist-sys-size-touch-sm);
+
+  /* comp / diagram / stack */
+  --mist-comp-diagram-stack-border-color: var(--mist-sys-color-outline);
+  --mist-comp-diagram-stack-color: var(--mist-sys-color-surface-card);
+  --mist-comp-diagram-stack-color-accent: var(--mist-sys-color-accent-container);
+  --mist-comp-diagram-stack-color-alt: var(--mist-sys-color-accent-alt-container);
+  --mist-comp-diagram-stack-offset: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / diagram / step */
+  --mist-comp-diagram-step-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-diagram-step-color-accent: var(--mist-sys-color-accent-bold);
+  --mist-comp-diagram-step-color-alt: var(--mist-sys-color-accent-alt-bold);
+  --mist-comp-diagram-step-label-color: var(--mist-sys-color-on-strong);
+  --mist-comp-diagram-step-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-diagram-step-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-diagram-step-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-diagram-step-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-diagram-step-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+  --mist-comp-diagram-step-shape: var(--mist-sys-shape-pill);
+  --mist-comp-diagram-step-size: var(--mist-sys-size-icon-lg);
+
+  /* comp / diagram / sub */
+  --mist-comp-diagram-sub-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-sub-type: var(--mist-sys-typescale-caption);
+  --mist-comp-diagram-sub-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-diagram-sub-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-diagram-sub-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-diagram-sub-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / donut / center */
+  --mist-comp-donut-center-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-donut-center-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-donut-center-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-donut-center-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-donut-center-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-donut-center-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-donut-center-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-donut-center-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-donut-center-value-type: var(--mist-sys-typescale-heading-2);
+  --mist-comp-donut-center-value-type-font-family: var(--mist-sys-typescale-heading-2-font-family);
+  --mist-comp-donut-center-value-type-font-size: var(--mist-sys-typescale-heading-2-font-size);
+  --mist-comp-donut-center-value-type-font-weight: var(--mist-sys-typescale-heading-2-font-weight);
+  --mist-comp-donut-center-value-type-line-height: var(--mist-sys-typescale-heading-2-line-height);
+
+  /* comp / donut / container */
+  --mist-comp-donut-container-gap: var(--mist-sys-spacing-stack-md);
+  --mist-comp-donut-container-size: var(--mist-sys-size-plot-lg);
+
+  /* comp / donut / highlight */
+  --mist-comp-donut-highlight-color: var(--mist-sys-color-surface-highlight);
+  --mist-comp-donut-highlight-width: var(--mist-sys-size-icon-lg);
+
+  /* comp / donut / legend */
+  --mist-comp-donut-legend-dot-shape: var(--mist-sys-shape-pill);
+  --mist-comp-donut-legend-dot-size: var(--mist-sys-size-dot);
+  --mist-comp-donut-legend-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-donut-legend-item-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-donut-legend-label-color-enabled: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-donut-legend-label-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-donut-legend-label-type: var(--mist-sys-typescale-body);
+  --mist-comp-donut-legend-label-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-donut-legend-label-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-donut-legend-label-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-donut-legend-label-type-line-height: var(--mist-sys-typescale-body-line-height);
+  --mist-comp-donut-legend-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-donut-legend-value-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-donut-legend-value-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-donut-legend-value-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-donut-legend-value-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-donut-legend-value-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / donut / segment */
+  --mist-comp-donut-segment-color-accent: var(--mist-sys-color-chart-alt);
+  --mist-comp-donut-segment-color-alt: var(--mist-sys-color-chart-dot);
+  --mist-comp-donut-segment-color-mark: var(--mist-sys-color-chart-mark);
+  --mist-comp-donut-segment-color-muted: var(--mist-sys-color-chart-line);
+  --mist-comp-donut-segment-width: var(--mist-sys-size-bar);
+  --mist-comp-donut-segment-width-selected: var(--mist-sys-size-bar-lg);
+
+  /* comp / donut / track */
+  --mist-comp-donut-track-color: var(--mist-sys-color-surface-track);
+  --mist-comp-donut-track-width: var(--mist-sys-size-bar);
+
+  /* comp / field / border */
+  --mist-comp-field-border-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-field-border-color-enabled: var(--mist-sys-color-outline);
+  --mist-comp-field-border-color-focus: var(--mist-sys-color-outline-focus);
+
+  /* comp / field / container */
+  --mist-comp-field-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-field-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-field-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-field-container-min-height: var(--mist-sys-size-touch-md);
+  --mist-comp-field-container-min-height-multiline: var(--mist-sys-size-field-multiline);
+  --mist-comp-field-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-field-container-padding-y: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-field-container-padding-y-multiline: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-field-container-shape: var(--mist-sys-shape-block);
+
+  /* comp / field / group */
+  --mist-comp-field-group-gap: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / field / label */
+  --mist-comp-field-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-field-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-field-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-field-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-field-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-field-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / field / text */
+  --mist-comp-field-text-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-field-text-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-field-text-color-placeholder: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-field-text-type: var(--mist-sys-typescale-body);
+  --mist-comp-field-text-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-field-text-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-field-text-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-field-text-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / funnel / bar */
+  --mist-comp-funnel-bar-color: var(--mist-sys-color-chart-line);
+  --mist-comp-funnel-bar-color-marked: var(--mist-sys-color-chart-mark);
+  --mist-comp-funnel-bar-gap: var(--mist-sys-spacing-inset-3xs);
+  --mist-comp-funnel-bar-shape: var(--mist-sys-shape-pill);
+  --mist-comp-funnel-bar-width: var(--mist-sys-size-bar);
+
+  /* comp / funnel / container */
+  --mist-comp-funnel-container-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-funnel-container-height: var(--mist-sys-size-plot-md);
+
+  /* comp / funnel / stage */
+  --mist-comp-funnel-stage-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-funnel-stage-name-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-funnel-stage-name-type: var(--mist-sys-typescale-caption);
+  --mist-comp-funnel-stage-name-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-funnel-stage-name-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-funnel-stage-name-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-funnel-stage-name-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-funnel-stage-pct-color: var(--mist-sys-color-on-surface);
+  --mist-comp-funnel-stage-pct-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-funnel-stage-pct-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-funnel-stage-pct-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-funnel-stage-pct-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-funnel-stage-pct-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+  --mist-comp-funnel-stage-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-funnel-stage-value-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-funnel-stage-value-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-funnel-stage-value-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-funnel-stage-value-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-funnel-stage-value-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / generating-state / caret */
+  --mist-comp-generating-state-caret-color: var(--mist-sys-color-accent);
+  --mist-comp-generating-state-caret-gap: var(--mist-sys-spacing-inset-3xs);
+  --mist-comp-generating-state-caret-width: var(--mist-sys-border-width-focus);
+
+  /* comp / generating-state / container */
+  --mist-comp-generating-state-container-color: var(--mist-sys-color-surface-card);
+  --mist-comp-generating-state-container-gap: var(--mist-sys-spacing-stack-md);
+  --mist-comp-generating-state-container-padding: var(--mist-sys-spacing-inset-xl);
+  --mist-comp-generating-state-container-shape: var(--mist-sys-shape-card);
+
+  /* comp / generating-state / dot */
+  --mist-comp-generating-state-dot-color: var(--mist-sys-color-chart-dot);
+  --mist-comp-generating-state-dot-color-alt: var(--mist-sys-color-accent);
+  --mist-comp-generating-state-dot-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-generating-state-dot-shape: var(--mist-sys-shape-pill);
+  --mist-comp-generating-state-dot-size: var(--mist-sys-size-dot);
+
+  /* comp / generating-state / hint */
+  --mist-comp-generating-state-hint-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-generating-state-hint-type: var(--mist-sys-typescale-body);
+  --mist-comp-generating-state-hint-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-generating-state-hint-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-generating-state-hint-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-generating-state-hint-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / generating-state / label */
+  --mist-comp-generating-state-label-color: var(--mist-sys-color-on-surface);
+  --mist-comp-generating-state-label-type: var(--mist-sys-typescale-heading-3);
+  --mist-comp-generating-state-label-type-font-family: var(--mist-sys-typescale-heading-3-font-family);
+  --mist-comp-generating-state-label-type-font-size: var(--mist-sys-typescale-heading-3-font-size);
+  --mist-comp-generating-state-label-type-font-weight: var(--mist-sys-typescale-heading-3-font-weight);
+  --mist-comp-generating-state-label-type-line-height: var(--mist-sys-typescale-heading-3-line-height);
+
+  /* comp / generating-state / line */
+  --mist-comp-generating-state-line-color: var(--mist-sys-color-surface-inset);
+  --mist-comp-generating-state-line-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-generating-state-line-height: var(--mist-sys-size-bar-lg);
+  --mist-comp-generating-state-line-shape: var(--mist-sys-shape-pill);
+
+  /* comp / nav / brand */
+  --mist-comp-nav-brand-color: var(--mist-sys-color-on-surface);
+  --mist-comp-nav-brand-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-nav-brand-mark-color: var(--mist-sys-color-accent);
+  --mist-comp-nav-brand-mark-shape: var(--mist-sys-shape-pill);
+  --mist-comp-nav-brand-mark-size: var(--mist-sys-size-icon-xl);
+  --mist-comp-nav-brand-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-nav-brand-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-nav-brand-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-nav-brand-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-nav-brand-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / nav / container */
+  --mist-comp-nav-container-gap: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-nav-container-height: var(--mist-sys-size-touch-md);
+
+  /* comp / nav / item */
+  --mist-comp-nav-item-color-active: var(--mist-sys-color-on-surface);
+  --mist-comp-nav-item-color-enabled: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-nav-item-padding-y: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-nav-item-type: var(--mist-sys-typescale-body);
+  --mist-comp-nav-item-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-nav-item-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-nav-item-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-nav-item-type-line-height: var(--mist-sys-typescale-body-line-height);
+  --mist-comp-nav-item-underline-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-nav-item-underline-width: var(--mist-sys-border-width-focus);
+
+  /* comp / option-card / body */
+  --mist-comp-option-card-body-gap: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / option-card / border */
+  --mist-comp-option-card-border-color-enabled: var(--mist-sys-color-hairline);
+  --mist-comp-option-card-border-color-hover: var(--mist-sys-color-outline);
+  --mist-comp-option-card-border-color-selected: var(--mist-sys-color-surface-strong);
+
+  /* comp / option-card / container */
+  --mist-comp-option-card-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-option-card-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-option-card-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-option-card-container-color-hover: var(--mist-sys-color-surface-card-hover);
+  --mist-comp-option-card-container-color-selected: var(--mist-sys-color-surface-card);
+  --mist-comp-option-card-container-gap: var(--mist-sys-spacing-inset-md);
+  --mist-comp-option-card-container-min-height: var(--mist-sys-size-touch-lg);
+  --mist-comp-option-card-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-option-card-container-padding-y: var(--mist-sys-spacing-inset-md);
+  --mist-comp-option-card-container-shape: var(--mist-sys-shape-block);
+
+  /* comp / option-card / description */
+  --mist-comp-option-card-description-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-option-card-description-type: var(--mist-sys-typescale-caption);
+  --mist-comp-option-card-description-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-option-card-description-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-option-card-description-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-option-card-description-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / option-card / highlight */
+  --mist-comp-option-card-highlight-color: var(--mist-sys-color-surface-highlight);
+
+  /* comp / option-card / label */
+  --mist-comp-option-card-label-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-option-card-label-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-option-card-label-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-option-card-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-option-card-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-option-card-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-option-card-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-option-card-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / option-card / marker */
+  --mist-comp-option-card-marker-color-enabled: var(--mist-sys-color-surface-inset);
+  --mist-comp-option-card-marker-color-selected: var(--mist-sys-color-surface-strong);
+  --mist-comp-option-card-marker-icon-color: var(--mist-sys-color-on-strong);
+  --mist-comp-option-card-marker-icon-size: var(--mist-sys-size-icon-sm);
+  --mist-comp-option-card-marker-shape: var(--mist-sys-shape-pill);
+  --mist-comp-option-card-marker-size: var(--mist-sys-size-icon-lg);
+
+  /* comp / progress / indicator */
+  --mist-comp-progress-indicator-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-progress-indicator-shape: var(--mist-sys-shape-pill);
+
+  /* comp / progress / label */
+  --mist-comp-progress-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-progress-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-progress-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-progress-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-progress-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-progress-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / progress / step */
+  --mist-comp-progress-step-color-current: var(--mist-sys-color-surface-strong);
+  --mist-comp-progress-step-color-done: var(--mist-sys-color-surface-strong);
+  --mist-comp-progress-step-color-todo: var(--mist-sys-color-surface-track);
+  --mist-comp-progress-step-gap: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / progress / thin */
+  --mist-comp-progress-thin-height: var(--mist-sys-size-bar);
+
+  /* comp / progress / track */
+  --mist-comp-progress-track-color: var(--mist-sys-color-surface-track);
+  --mist-comp-progress-track-height: var(--mist-sys-size-bar-lg);
+  --mist-comp-progress-track-shape: var(--mist-sys-shape-pill);
+
+  /* comp / spec-card / border */
+  --mist-comp-spec-card-border-color-enabled: var(--mist-sys-color-hairline);
+  --mist-comp-spec-card-border-color-hover: var(--mist-sys-color-outline);
+  --mist-comp-spec-card-border-color-selected: var(--mist-sys-color-surface-strong);
+
+  /* comp / spec-card / container */
+  --mist-comp-spec-card-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-spec-card-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-spec-card-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-spec-card-container-color-hover: var(--mist-sys-color-surface-card-hover);
+  --mist-comp-spec-card-container-color-selected: var(--mist-sys-color-surface-card);
+  --mist-comp-spec-card-container-gap: var(--mist-sys-spacing-stack-sm);
+  --mist-comp-spec-card-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-spec-card-container-padding-y: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-spec-card-container-shape: var(--mist-sys-shape-block);
+
+  /* comp / spec-card / detail */
+  --mist-comp-spec-card-detail-color: var(--mist-sys-color-on-surface);
+  --mist-comp-spec-card-detail-type: var(--mist-sys-typescale-body);
+  --mist-comp-spec-card-detail-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-spec-card-detail-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-spec-card-detail-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-spec-card-detail-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / spec-card / foot */
+  --mist-comp-spec-card-foot-color-enabled: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-spec-card-foot-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-spec-card-foot-divider-color: var(--mist-sys-color-hairline);
+  --mist-comp-spec-card-foot-divider-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-spec-card-foot-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-spec-card-foot-icon-size: var(--mist-sys-size-icon-sm);
+  --mist-comp-spec-card-foot-padding-y: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-spec-card-foot-type: var(--mist-sys-typescale-label);
+  --mist-comp-spec-card-foot-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-spec-card-foot-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-spec-card-foot-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-spec-card-foot-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / spec-card / grid */
+  --mist-comp-spec-card-grid-gap: var(--mist-sys-spacing-stack-lg);
+  --mist-comp-spec-card-grid-min-width: var(--mist-sys-size-card-min);
+
+  /* comp / spec-card / head */
+  --mist-comp-spec-card-head-gap: var(--mist-sys-spacing-inset-sm);
+
+  /* comp / spec-card / highlight */
+  --mist-comp-spec-card-highlight-color: var(--mist-sys-color-surface-highlight);
+
+  /* comp / spec-card / id */
+  --mist-comp-spec-card-id-color-enabled: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-spec-card-id-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-spec-card-id-type: var(--mist-sys-typescale-label);
+  --mist-comp-spec-card-id-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-spec-card-id-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-spec-card-id-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-spec-card-id-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / spec-card / lede */
+  --mist-comp-spec-card-lede-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-spec-card-lede-type: var(--mist-sys-typescale-body);
+  --mist-comp-spec-card-lede-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-spec-card-lede-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-spec-card-lede-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-spec-card-lede-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / spec-card / row */
+  --mist-comp-spec-card-row-divider-color: var(--mist-sys-color-hairline);
+  --mist-comp-spec-card-row-divider-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-spec-card-row-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-spec-card-row-padding-y: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-spec-card-row-term-width: var(--mist-sys-size-plot-sm);
+
+  /* comp / spec-card / term */
+  --mist-comp-spec-card-term-color: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-spec-card-term-type: var(--mist-sys-typescale-label);
+  --mist-comp-spec-card-term-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-spec-card-term-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-spec-card-term-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-spec-card-term-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / spec-card / title */
+  --mist-comp-spec-card-title-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-spec-card-title-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-spec-card-title-type: var(--mist-sys-typescale-heading-3);
+  --mist-comp-spec-card-title-type-font-family: var(--mist-sys-typescale-heading-3-font-family);
+  --mist-comp-spec-card-title-type-font-size: var(--mist-sys-typescale-heading-3-font-size);
+  --mist-comp-spec-card-title-type-font-weight: var(--mist-sys-typescale-heading-3-font-weight);
+  --mist-comp-spec-card-title-type-line-height: var(--mist-sys-typescale-heading-3-line-height);
+
+  /* comp / stat-tile / accent-rule */
+  --mist-comp-stat-tile-accent-rule-color: var(--mist-sys-color-accent);
+  --mist-comp-stat-tile-accent-rule-color-mark: var(--mist-sys-color-on-surface);
+  --mist-comp-stat-tile-accent-rule-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-stat-tile-accent-rule-width: var(--mist-sys-border-width-focus);
+
+  /* comp / stat-tile / container */
+  --mist-comp-stat-tile-container-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-stat-tile-container-min-width: var(--mist-sys-size-tile-min);
+  --mist-comp-stat-tile-container-padding: var(--mist-sys-spacing-inset-md);
+
+  /* comp / stat-tile / divider */
+  --mist-comp-stat-tile-divider-color: var(--mist-sys-color-hairline);
+  --mist-comp-stat-tile-divider-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / stat-tile / label */
+  --mist-comp-stat-tile-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-stat-tile-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-stat-tile-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-stat-tile-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-stat-tile-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-stat-tile-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / stat-tile / value */
+  --mist-comp-stat-tile-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-stat-tile-value-type: var(--mist-sys-typescale-display);
+  --mist-comp-stat-tile-value-type-font-family: var(--mist-sys-typescale-display-font-family);
+  --mist-comp-stat-tile-value-type-font-size: var(--mist-sys-typescale-display-font-size);
+  --mist-comp-stat-tile-value-type-font-weight: var(--mist-sys-typescale-display-font-weight);
+  --mist-comp-stat-tile-value-type-line-height: var(--mist-sys-typescale-display-line-height);
+
+  /* comp / stat-tile / value-sm */
+  --mist-comp-stat-tile-value-sm-type: var(--mist-sys-typescale-heading-1);
+  --mist-comp-stat-tile-value-sm-type-font-family: var(--mist-sys-typescale-heading-1-font-family);
+  --mist-comp-stat-tile-value-sm-type-font-size: var(--mist-sys-typescale-heading-1-font-size);
+  --mist-comp-stat-tile-value-sm-type-font-weight: var(--mist-sys-typescale-heading-1-font-weight);
+  --mist-comp-stat-tile-value-sm-type-line-height: var(--mist-sys-typescale-heading-1-line-height);
+
+  /* comp / surface / app */
+  --mist-comp-surface-app-color: var(--mist-sys-color-surface-app);
+  --mist-comp-surface-app-gap: var(--mist-sys-spacing-stack-lg);
+  --mist-comp-surface-app-padding: var(--mist-sys-spacing-inset-2xl);
+  --mist-comp-surface-app-shape: var(--mist-sys-shape-container);
+
+  /* comp / surface / card */
+  --mist-comp-surface-card-color: var(--mist-sys-color-surface-card);
+  --mist-comp-surface-card-gap: var(--mist-sys-spacing-stack-md);
+  --mist-comp-surface-card-padding: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-surface-card-shape: var(--mist-sys-shape-card);
+
+  /* comp / surface / card-lg */
+  --mist-comp-surface-card-lg-gap: var(--mist-sys-spacing-stack-lg);
+  --mist-comp-surface-card-lg-padding: var(--mist-sys-spacing-inset-xl);
+
+  /* comp / surface / divider */
+  --mist-comp-surface-divider-color: var(--mist-sys-color-hairline);
+  --mist-comp-surface-divider-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / surface / inset */
+  --mist-comp-surface-inset-color: var(--mist-sys-color-surface-inset);
+  --mist-comp-surface-inset-padding: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-surface-inset-shape: var(--mist-sys-shape-block);
+
+  /* comp / surface / page */
+  --mist-comp-surface-page-color: var(--mist-sys-color-surface-page);
+  --mist-comp-surface-page-padding: var(--mist-sys-spacing-page-inset);
+
+  /* comp / surface / shell */
+  --mist-comp-surface-shell-max-width: var(--mist-sys-size-shell);
+  --mist-comp-surface-shell-max-width-narrow: var(--mist-sys-size-shell-narrow);
+
+  /* comp / task-item / body */
+  --mist-comp-task-item-body-gap: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / task-item / checkbox */
+  --mist-comp-task-item-checkbox-border-color-done: var(--mist-sys-color-surface-strong);
+  --mist-comp-task-item-checkbox-border-color-enabled: var(--mist-sys-color-outline);
+  --mist-comp-task-item-checkbox-border-width: var(--mist-sys-border-width-focus);
+  --mist-comp-task-item-checkbox-color-done: var(--mist-sys-color-surface-strong);
+  --mist-comp-task-item-checkbox-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-task-item-checkbox-icon-color: var(--mist-sys-color-on-strong);
+  --mist-comp-task-item-checkbox-icon-size: var(--mist-sys-size-icon-sm);
+  --mist-comp-task-item-checkbox-shape: var(--mist-sys-shape-pill);
+  --mist-comp-task-item-checkbox-size: var(--mist-sys-size-icon-lg);
+
+  /* comp / task-item / container */
+  --mist-comp-task-item-container-color-done: var(--mist-sys-color-surface-highlight);
+  --mist-comp-task-item-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-task-item-container-color-hover: var(--mist-sys-color-surface-card-hover);
+  --mist-comp-task-item-container-gap: var(--mist-sys-spacing-inset-md);
+  --mist-comp-task-item-container-min-height: var(--mist-sys-size-touch-md);
+  --mist-comp-task-item-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-task-item-container-padding-y: var(--mist-sys-spacing-inset-md);
+  --mist-comp-task-item-container-shape: var(--mist-sys-shape-block);
+
+  /* comp / task-item / label */
+  --mist-comp-task-item-label-color-done: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-task-item-label-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-task-item-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-task-item-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-task-item-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-task-item-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-task-item-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / task-item / meta */
+  --mist-comp-task-item-meta-color: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-task-item-meta-type: var(--mist-sys-typescale-caption);
+  --mist-comp-task-item-meta-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-task-item-meta-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-task-item-meta-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-task-item-meta-type-line-height: var(--mist-sys-typescale-caption-line-height);
+}

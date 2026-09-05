@@ -1,10 +1,126 @@
 # guru web
 
-The React MVP client for `guru-core`. It sends a goal, availability, imported context, and optional role models to the backend; presents three plan difficulties; and supports daily tasks, check-ins, progress, revisions, and exports.
+A coach that tracks a life goal the way a fitness coach tracks a body: measure
+the current state, diagnose the weak spot, write the next cycle's prescription —
+once a quarter.
+
+It asks the user to record **nothing**. It reads the traces they already leave —
+calendar, notes, résumé, health, work systems — books them against the branches
+of a goal tree, and reports four outcomes. The fourth is the one that matters:
+
+> **Action happened, the retest did not move.** Every other tracker shows that
+> state as green.
+
+The product does not claim an action works. Proving "this goal needs this
+action" takes a control group and several years. It only makes *doing without
+effect* visible.
+
+---
+
+## The three stations
+
+| Route | Station | What it is | What it decides |
+|---|---|---|---|
+| `/` | 1 · direction hypothesis | Input and confirmation | How long, what traces exist, which capability the user wants, and how that squares with what they actually did |
+| `/plan` | 2 · goal tree draft | A plan awaiting sign-off | The four elements per branch, the effect hypothesis, the falsification condition, and which three branches get a slot |
+| `/ledger` | 3 · quarterly reconciliation | A report | The four booking outcomes, the four diagnostic criteria, next quarter's anchors, and a delete-only weekly draft |
+
+Each station takes a different form on purpose — cards, outline, table. Shared
+tokens make them one product; different forms make them different screens.
+
+Every number in station 3 is computed by the engine from the trace set in
+[`lib/mock/snapshot.ts`](lib/mock/snapshot.ts). Nothing in the ledger is a
+typed-in result, so changing a rule changes the report.
+
+---
+
+## Architecture
+
+```
+app/
+  layout.tsx                 Root shell. Loads the design system in fixed order
+  page.tsx                   Station 1  →  components/intake/
+  plan/page.tsx              Station 2  →  components/plan/
+  ledger/page.tsx            Station 3  →  components/ledger/
+  components/StationShell    Surface stack: page → shell → app → card
+  styles/                    Vendored mist design system + one extension layer
+lib/
+  contracts.ts               The domain types. Also the API contract
+  horizon.ts                 Horizon → quarters, retest schedule, slot cap
+  attribution.ts             Keyword → branch rule table, and the booker
+  reconcile.ts               Four outcomes + the four diagnostic criteria
+  scheduler.ts               Weekly draft: load, ceiling, chain breaks
+  dispatch.ts                Gap dispatch decision
+  role-model.ts              Capability → retestable metric, shape, cost
+  api/client.ts              guru-core client with a local fallback
+  mock/snapshot.ts           The demonstration dataset
+docs/API.md                  The backend contract, derived from lib/contracts.ts
+design/                      Specification and prototypes. Source of truth
+tests/                       Engine tests and a server-render smoke test
+```
+
+**Pages are presentation over the engines.** Every rule that could be argued
+about — how a trace is booked, when a branch counts as stalled, when a schedule
+breaks a chain — lives in `lib/` as a pure function with a test, not inside a
+component. That is why the pages carry no business logic and the tests need no
+DOM.
+
+### The data flow
+
+```
+traces ──▶ attribution.ts ──▶ reconcile.ts ──▶ diagnose() ──▶ station 3
+              (rule table)      (4 outcomes)     (4 criteria)
+```
+
+The attribution rules are exported as data and rendered on the page. A booking
+the user cannot see the reason for is a booking they cannot dispute.
+
+---
+
+## Design system
+
+The UI is [mist](design/ui-kit/ui/STYLE.md), vendored into `app/styles/`.
+
+- **`app/styles/mist.tokens.css` and `mist.components.css` are read-only.** They
+  are copied from the design system and get overwritten on update. Never edit
+  them; re-copy from `design/ui-kit/ui/` instead.
+- **Pages carry classes, never styles.** No `style={{ … }}`, no `<style>`, no
+  hard-coded colours or sizes. The four data channels
+  (`--mist-progress-value`, `--mist-stem`, `--mist-bar`, `--mist-arc`) are the
+  only inline custom properties allowed.
+- **`app/styles/mist.extensions.css` is tracked debt.** Mist ships no Table and
+  no segmented control, and station 3 is a report. The two live there, built from
+  mist tokens only. The repayment path is in the file header.
+
+Four constraints that get violated most often: colour is an accent only (nine
+tenths of the screen is grey/white/black); depth comes from the surface
+brightness ladder, never a shadow; type sizes jump levels inside a block rather
+than sitting adjacent; a chart mark's width comes from a token, never `flex: 1`.
+
+---
+
+## Tone
+
+Three rules every sentence on a page has to pass. They are product decisions,
+not copy preferences.
+
+1. **Take stock, don't judge.** A coach whose diagnosis is accurate and whose
+   tone is a verdict just gets switched off.
+2. **Doubt the goal by default.** Seeing a branch fall behind, the right
+   response is often "drop it", not "try harder".
+3. **Never promise what software cannot do.** No causal proof — only making
+   "done, but no effect" visible.
+
+Vocabulary follows accounting: reconcile, book, ledger, audit, assessment,
+prescription, anchor. That is the language of the judgement layer, and the
+judgement layer is the difference from a habit tracker. **The words
+check-in, habit and streak must not appear on a main-line page.**
+
+---
 
 ## Getting started
 
-Node.js 22.13 or newer is required.
+Node.js 22.13 or newer.
 
 ```bash
 npm install
@@ -12,32 +128,71 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Set the `guru-core` origin in `.env.local`. Do not include `/v1` or a trailing slash.
+`.env.local` may stay empty — the app then renders the built-in demonstration
+dataset with every interaction live. To talk to a real backend, set an absolute
+origin:
 
 ```dotenv
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
-NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-oauth-client-id
 ```
 
-In the web app, open the connection panel at the bottom left and enter the API origin. Use Google OAuth when a client ID is configured, or paste a JWT issued by `guru-core` during development. These values are stored only in the current browser. If no backend is configured, the app uses the 5K sample data from the product specification and keeps the main interactions available as a demo.
+Anything that is not an absolute `http(s)` origin is ignored and the fallback is
+used, because a relative path cannot be fetched during server rendering and a
+silent half-failure would look like the backend answered.
 
-The backend must allow the frontend origin through CORS and accept `Authorization: Bearer <JWT>`. The client uses these `/v1` endpoints:
+## Scripts
 
-- `GET /plans` and `PATCH /plans/{id}`
-- `PUT /profile`
-- `POST /plan-sessions` and the session polling/answer endpoints
-- `GET /role-models?kind=trait|persona`
-- Import presigning, upload completion, and Google authorization endpoints
-- Task update and daily check-in endpoints
-- Plan revision, archive, delete, and export endpoints
+| Command | What it does |
+|---|---|
+| `npm run dev` | Dev server on Cloudflare Workers runtime |
+| `npm run build` | Production build (`dist/`) |
+| `npm start` | Serve the production build |
+| `npm test` | Language check → typecheck → lint → build → tests |
+| `npm run test:unit` | Vitest only |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run check:language` | Enforces the English-only rule below |
 
-## Validation
+### Tests
 
-```bash
-npm test
-npm run check:language
-```
+`tests/engine.test.ts` covers the claims: the four booking outcomes, the anchor
+gap, the chain-break warning, the dispatch decision and the horizon scale.
+`tests/render.test.ts` boots the built Worker bundle and checks each station
+server-renders; it skips when `dist/` is absent, so `vitest` stays useful mid-edit.
 
-`check:language` rejects Han characters outside the explicitly approved frontend display files and their rendered-output test. This keeps source comments, documentation, configuration, and internal strings English-only while preserving the Traditional Chinese product interface.
+### Language rule
 
-The project uses React 19, Next 16, and vinext, producing Cloudflare Worker-compatible ESM output.
+The product interface is Traditional Chinese; the project is English. Han
+characters are allowed only in the display components under `app/` and the
+fixture modules that hold that copy — and never in a comment, even there.
+Everything else, including this README, is English. `npm run check:language`
+enforces it and the vendored design system is exempt.
+
+## Deployment
+
+React 19 + Next 16 through [vinext](https://www.npmjs.com/package/vinext), built
+to Cloudflare Worker-compatible ESM. The Worker entry is `worker/index.ts`;
+`.openai/hosting.json` carries the hosting bindings.
+
+---
+
+## Known limits
+
+Honest about what the shell does not do, because the specification is:
+
+- **Fake data, true story.** Import screens are static; nothing parses a PDF or
+  an `.ics`. The reconciliation engine's value is in the booking result.
+- **Attribution rules are hard-coded** — keyword plus branch table, cross-branch
+  traces booked to the primary and flagged. Say this out loud when demoing.
+- **Shape suggestions are pre-written.** They are the one thing station 1 cannot
+  compute with rules, and the highest-risk part of the backend contract.
+- **Vision and the five-year layer are empty.** Intake produces a one-year
+  hypothesis and cannot reach them. They render as "not covered this period".
+- **Money flow has no source.** Credit-card statements are out of scope, so the
+  dispatch cash axis is declared by the user, and the page says so.
+- **The constraint criterion is disabled.** It needs two to three quarters of
+  history. It is shown as unavailable rather than hidden.
+- **Nothing persists.** Sign-off and deletions change frontend state only.
+
+## Licence
+
+Proprietary. See [LICENSE](LICENSE).
