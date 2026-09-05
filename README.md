@@ -16,9 +16,10 @@ Set the `guru-core` origin in `.env.local`. Do not include `/v1` or a trailing s
 
 ```dotenv
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-oauth-client-id
 ```
 
-In the web app, open the connection panel at the bottom left and enter the API origin and a JWT issued by `guru-core`. These values are stored only in the current browser. If no backend is configured, the app uses the 5K sample data from the product specification and keeps the main interactions available as a demo.
+In the web app, open the connection panel at the bottom left and enter the API origin. Use Google OAuth when a client ID is configured, or paste a JWT issued by `guru-core` during development. These values are stored only in the current browser. If no backend is configured, the app uses the 5K sample data from the product specification and keeps the main interactions available as a demo.
 
 The backend must allow the frontend origin through CORS and accept `Authorization: Bearer <JWT>`. The client uses these `/v1` endpoints:
 
