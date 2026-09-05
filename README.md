@@ -15,13 +15,26 @@ npm run dev
 Set the `guru-core` origin in `.env.local`. Do not include `/v1` or a trailing slash.
 
 ```dotenv
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+GURU_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_API_BASE_URL=/api/guru
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your-google-oauth-client-id
 ```
 
 In the web app, open the connection panel at the bottom left and enter the API origin. Use Google OAuth when a client ID is configured, or paste a JWT issued by `guru-core` during development. These values are stored only in the current browser. If no backend is configured, the app uses the 5K sample data from the product specification and keeps the main interactions available as a demo.
 
-The backend must allow the frontend origin through CORS and accept `Authorization: Bearer <JWT>`. The client uses these `/v1` endpoints:
+The default `/api/guru` proxy forwards requests to the server-configured
+`GURU_API_BASE_URL`. This supports a backend without browser CORS and keeps browser
+requests same-origin. It forwards bearer authorization, not browser cookies, and
+rewrites backend-signed file URLs through the same proxy. The upstream origin is
+server configuration and cannot be selected by a request parameter.
+
+Google login returns to `/oauth/callback`; integration authorization returns to
+`/integrations/google/callback`. Register the exact origin and paths with Google
+and the backend. Local development uses `http://localhost:3000`. An HTTPS frontend
+can proxy an HTTP backend, but transport between the frontend server and backend
+still requires TLS for production confidentiality.
+
+The client uses these `/v1` endpoints:
 
 - `GET /plans` and `PATCH /plans/{id}`
 - `PUT /profile`

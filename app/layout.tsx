@@ -14,9 +14,9 @@ export const metadata: Metadata = {
     description: "一個目標，三種節奏。每天只看現在該做的事。",
     locale: "zh_TW",
     type: "website",
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "guru — 讓好計畫，真的發生" }],
+    images: [{ url: "/og-tech.png", alt: "guru — 把目標，排進生活。" }],
   },
-  twitter: { card: "summary_large_image", title: "guru — 讓好計畫，真的發生", images: ["/og.png"] },
+  twitter: { card: "summary_large_image", title: "guru — 把目標，排進生活。", images: ["/og-tech.png"] },
 };
 
 export default function RootLayout({

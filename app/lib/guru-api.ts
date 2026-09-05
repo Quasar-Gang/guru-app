@@ -319,6 +319,9 @@ export class GuruApiClient {
   requestExport(planId: string, target: "markdown" | "google_calendar", options: Record<string, unknown> = {}) {
     return this.request<ExportResult>(`/plans/${planId}/export`, { method: "POST", body: { target, options } });
   }
+  listExports(planId: string) {
+    return this.request<ExportStatus[]>(`/plans/${planId}/export`);
+  }
   createRevision(planId: string, strategy: "postpone" | "reduce", note?: string) {
     return this.request<{ revision_id: string; job_id: string }>(`/plans/${planId}/revisions`, { method: "POST", body: { strategy, ...(note ? { note } : {}) } });
   }

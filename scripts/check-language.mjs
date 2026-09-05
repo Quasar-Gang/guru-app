@@ -5,6 +5,7 @@ const root = resolve(import.meta.dirname, "..");
 const ignoredDirectories = new Set([".git", ".next", ".wrangler", "dist", "node_modules", "work"]);
 const textExtensions = new Set(["", ".css", ".env", ".example", ".html", ".js", ".json", ".md", ".mjs", ".svg", ".toml", ".ts", ".tsx", ".txt", ".yaml", ".yml"]);
 const frontendDisplayFiles = new Set(["app/page.tsx", "app/layout.tsx", "app/components/GuruApp.tsx"]);
+const suppliedReferences = new Set(["docs-guru-api-integration.md"]);
 const hanPattern = /\p{Script=Han}/u;
 const hanGlobalPattern = /\p{Script=Han}/gu;
 
@@ -27,6 +28,7 @@ function lineNumberAt(source, index) {
 const violations = [];
 for (const path of await collectFiles(root)) {
   const projectPath = relative(root, path);
+  if (suppliedReferences.has(projectPath)) continue;
   const source = await readFile(path, "utf8");
   if (frontendDisplayFiles.has(projectPath)) {
     const comments = source.matchAll(/(?:^|\s)\/\/[^\n]*|\/\*[\s\S]*?\*\//gm);
