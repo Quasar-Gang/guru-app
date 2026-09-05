@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>頁面標題</title>
+
+<!-- 字體。不要換成別的字體 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500&family=Noto+Sans+TC:wght@400;500&display=swap">
+
+<!-- 設計系統。順序不能換：先 token 再元件 -->
+<link rel="stylesheet" href="../ui/mist.tokens.css">
+<link rel="stylesheet" href="../ui/components.css">
+<link rel="stylesheet" href="../local-overrides.css">
+</head>
+
+<!-- body 一定要有 class="mist" -->
+<body class="mist">
+
+<!-- 表面分層：page（藍灰底）→ app（淺灰容器）→ card（白卡）
+     內容一定放在 .mist-card 裡面，不要直接放在 .mist-app 上 -->
+<div class="mist-page">
+  <div class="mist-shell">          <!-- 限寬 1200。窄版（問卷這種）用 mist-shell--narrow -->
+    <div class="mist-app">
+
+      <nav class="mist-nav mist-row--between">
+        <a class="mist-nav__brand" href="#"><span class="mist-nav__mark"></span>產品名</a>
+        <div class="mist-nav__links">
+          <a class="mist-nav__link is-active" href="#">目前頁</a>
+          <a class="mist-nav__link" href="#">其他頁</a>
+        </div>
+      </nav>
+
+      <!-- ── 從這裡開始寫你的內容 ── -->
+
+      <div class="mist-card mist-card--lg">
+        <div class="mist-stack--sm mist-stack">
+          <p class="mist-label mist-muted">小標</p>
+          <h1 class="mist-h2">頁面標題</h1>
+          <p class="mist-body mist-muted">說明文字。</p>
+        </div>
+      </div>
+
+      <!-- 兩欄版面（主 2 : 次 1）。不需要的話整段刪掉
+      <div class="mist-split">
+        <div class="mist-stack">
+          <div class="mist-card">主欄</div>
+        </div>
+        <div class="mist-stack">
+          <div class="mist-card">次欄</div>
+        </div>
+      </div>
+      -->
+
+      <!-- ── 內容結束 ── -->
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

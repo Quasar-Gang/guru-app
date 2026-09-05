@@ -1,0 +1,2910 @@
+<title>方向假設</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500&family=Noto+Sans+TC:wght@400;500&display=swap">
+
+<style>
+/* ── ui/mist.tokens.css ── */
+/*
+ * Mist Design System — CSS Custom Properties
+ * 由 tokens/mist.tokens-studio.json 產生，請勿手改。
+ * 重新產生：python3 scripts/to_css.py tokens/mist.tokens-studio.json --css css/mist.tokens.css --docs docs/tokens.md
+ *
+ * 三層繼承靠 var() 串接，不是攤平成字面值——改 ref 一處，sys 與 comp
+ * 在瀏覽器裡即時連動。元件樣式只引用 --mist-comp-*。
+ */
+
+:root {
+
+  /* ═══════════════════════════════════════════════════════════════
+     REFERENCE — 原始值。只有這層存實際數值，換膚時改這裡。
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* ref / border-width */
+  --mist-ref-border-width-focus: 2px;
+  --mist-ref-border-width-hairline: 1px;
+  --mist-ref-border-width-none: 0px;
+
+  /* ref / color / ember */
+  --mist-ref-color-ember-10: #FDEDE8;
+  --mist-ref-color-ember-20: #F9C9BA;
+  --mist-ref-color-ember-30: #F08F6D;
+  --mist-ref-color-ember-40: #E8542A;
+  --mist-ref-color-ember-50: #C4401C;
+  --mist-ref-color-ember-60: #8A2B12;
+
+  /* ref / color / neutral */
+  --mist-ref-color-neutral-0: #FFFFFF;
+  --mist-ref-color-neutral-3: #F7F7F9;
+  --mist-ref-color-neutral-5: #F1F2F4;
+  --mist-ref-color-neutral-10: #EAEBEE;
+  --mist-ref-color-neutral-15: #E1E3E8;
+  --mist-ref-color-neutral-20: #D5D8DF;
+  --mist-ref-color-neutral-30: #B9BDC8;
+  --mist-ref-color-neutral-40: #9BA0AE;
+  --mist-ref-color-neutral-50: #7B8090;
+  --mist-ref-color-neutral-60: #5B6072;
+  --mist-ref-color-neutral-70: #3D4253;
+  --mist-ref-color-neutral-80: #292E3D;
+  --mist-ref-color-neutral-90: #1B2436;
+  --mist-ref-color-neutral-100: #0E121B;
+
+  /* ref / color / sky */
+  --mist-ref-color-sky-10: #EDF3FA;
+  --mist-ref-color-sky-20: #CFE0F2;
+  --mist-ref-color-sky-30: #A5C4E4;
+  --mist-ref-color-sky-40: #7BA7D9;
+  --mist-ref-color-sky-50: #5583B5;
+  --mist-ref-color-sky-60: #3A5B80;
+
+  /* ref / color / slate */
+  --mist-ref-color-slate-30: #A8AEC2;
+  --mist-ref-color-slate-40: #8B92AB;
+  --mist-ref-color-slate-50: #737B96;
+
+  /* ref / font / family */
+  --mist-ref-font-family-brand: "Plus Jakarta Sans";
+  --mist-ref-font-family-cjk: "Noto Sans TC";
+
+  /* ref / font / line-height */
+  --mist-ref-font-line-height-100: 1;
+  --mist-ref-font-line-height-110: 1.1;
+  --mist-ref-font-line-height-130: 1.3;
+  --mist-ref-font-line-height-150: 1.5;
+
+  /* ref / font / size */
+  --mist-ref-font-size-12: 12px;
+  --mist-ref-font-size-14: 14px;
+  --mist-ref-font-size-20: 20px;
+  --mist-ref-font-size-28: 28px;
+  --mist-ref-font-size-40: 40px;
+  --mist-ref-font-size-56: 56px;
+
+  /* ref / font / weight */
+  --mist-ref-font-weight-medium: 500;
+  --mist-ref-font-weight-regular: 400;
+
+  /* ref / shape */
+  --mist-ref-shape-3xl: 40px;
+  --mist-ref-shape-full: 9999px;
+  --mist-ref-shape-none: 0px;
+  --mist-ref-shape-xl: 24px;
+
+  /* ref / size */
+  --mist-ref-size-2: 2px;
+  --mist-ref-size-8: 8px;
+  --mist-ref-size-12: 12px;
+  --mist-ref-size-16: 16px;
+  --mist-ref-size-20: 20px;
+  --mist-ref-size-24: 24px;
+  --mist-ref-size-32: 32px;
+  --mist-ref-size-40: 40px;
+  --mist-ref-size-44: 44px;
+  --mist-ref-size-48: 48px;
+  --mist-ref-size-56: 56px;
+  --mist-ref-size-64: 64px;
+  --mist-ref-size-72: 72px;
+  --mist-ref-size-96: 96px;
+  --mist-ref-size-160: 160px;
+  --mist-ref-size-176: 176px;
+  --mist-ref-size-240: 240px;
+  --mist-ref-size-280: 280px;
+  --mist-ref-size-720: 720px;
+  --mist-ref-size-900: 900px;
+  --mist-ref-size-1200: 1200px;
+  --mist-ref-size-1600: 1600px;
+
+  /* ref / spacing */
+  --mist-ref-spacing-0: 0px;
+  --mist-ref-spacing-0-5: 4px;
+  --mist-ref-spacing-0-25: 2px;
+  --mist-ref-spacing-1: 8px;
+  --mist-ref-spacing-1-5: 12px;
+  --mist-ref-spacing-2: 16px;
+  --mist-ref-spacing-3: 24px;
+  --mist-ref-spacing-4: 32px;
+  --mist-ref-spacing-5: 40px;
+  --mist-ref-spacing-6: 48px;
+  --mist-ref-spacing-8: 64px;
+
+  /* ═══════════════════════════════════════════════════════════════
+     SYSTEM — 語義角色。只引用 ref，賦予原始值職責。
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* sys / border-width */
+  --mist-sys-border-width-focus: var(--mist-ref-border-width-focus);
+  --mist-sys-border-width-hairline: var(--mist-ref-border-width-hairline);
+  --mist-sys-border-width-none: var(--mist-ref-border-width-none);
+  --mist-sys-border-width-strong: var(--mist-ref-border-width-focus);
+
+  /* sys / color */
+  --mist-sys-color-accent: var(--mist-ref-color-ember-40);
+  --mist-sys-color-accent-alt: var(--mist-ref-color-sky-40);
+  --mist-sys-color-accent-alt-bold: var(--mist-ref-color-sky-60);
+  --mist-sys-color-accent-alt-container: var(--mist-ref-color-sky-10);
+  --mist-sys-color-accent-bold: var(--mist-ref-color-ember-50);
+  --mist-sys-color-accent-container: var(--mist-ref-color-ember-10);
+  --mist-sys-color-chart-alt: var(--mist-ref-color-ember-40);
+  --mist-sys-color-chart-dot: var(--mist-ref-color-sky-40);
+  --mist-sys-color-chart-line: var(--mist-ref-color-neutral-20);
+  --mist-sys-color-chart-mark: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-hairline: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-on-accent: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-accent-alt: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-disabled: var(--mist-ref-color-neutral-40);
+  --mist-sys-color-on-status-active: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-status-attention: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-status-done: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-status-idle: var(--mist-ref-color-neutral-60);
+  --mist-sys-color-on-strong: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-on-strong-muted: var(--mist-ref-color-neutral-40);
+  --mist-sys-color-on-surface: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-on-surface-muted: var(--mist-ref-color-neutral-60);
+  --mist-sys-color-on-surface-subtle: var(--mist-ref-color-neutral-40);
+  --mist-sys-color-outline: var(--mist-ref-color-neutral-20);
+  --mist-sys-color-outline-focus: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-outline-strong: var(--mist-ref-color-neutral-30);
+  --mist-sys-color-status-active: var(--mist-ref-color-sky-40);
+  --mist-sys-color-status-attention: var(--mist-ref-color-ember-40);
+  --mist-sys-color-status-done: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-status-idle: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-surface-app: var(--mist-ref-color-neutral-10);
+  --mist-sys-color-surface-card: var(--mist-ref-color-neutral-0);
+  --mist-sys-color-surface-card-hover: var(--mist-ref-color-neutral-3);
+  --mist-sys-color-surface-disabled: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-surface-highlight: var(--mist-ref-color-neutral-3);
+  --mist-sys-color-surface-hover: var(--mist-ref-color-neutral-5);
+  --mist-sys-color-surface-inset: var(--mist-ref-color-neutral-10);
+  --mist-sys-color-surface-inset-hover: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-surface-inset-pressed: var(--mist-ref-color-neutral-20);
+  --mist-sys-color-surface-page: var(--mist-ref-color-slate-40);
+  --mist-sys-color-surface-pressed: var(--mist-ref-color-neutral-10);
+  --mist-sys-color-surface-strong: var(--mist-ref-color-neutral-90);
+  --mist-sys-color-surface-strong-hover: var(--mist-ref-color-neutral-80);
+  --mist-sys-color-surface-strong-pressed: var(--mist-ref-color-neutral-100);
+  --mist-sys-color-surface-sunken: var(--mist-ref-color-neutral-15);
+  --mist-sys-color-surface-track: var(--mist-ref-color-neutral-20);
+
+  /* sys / shape */
+  --mist-sys-shape-block: var(--mist-ref-shape-xl);
+  --mist-sys-shape-card: var(--mist-ref-shape-xl);
+  --mist-sys-shape-container: var(--mist-ref-shape-3xl);
+  --mist-sys-shape-none: var(--mist-ref-shape-none);
+  --mist-sys-shape-pill: var(--mist-ref-shape-full);
+
+  /* sys / size */
+  --mist-sys-size-bar: var(--mist-ref-size-8);
+  --mist-sys-size-bar-lg: var(--mist-ref-size-12);
+  --mist-sys-size-canvas-h: var(--mist-ref-size-900);
+  --mist-sys-size-canvas-w: var(--mist-ref-size-1600);
+  --mist-sys-size-card-min: var(--mist-ref-size-280);
+  --mist-sys-size-control-sm: var(--mist-ref-size-32);
+  --mist-sys-size-control-xs: var(--mist-ref-size-24);
+  --mist-sys-size-dot: var(--mist-ref-size-8);
+  --mist-sys-size-field-multiline: var(--mist-ref-size-96);
+  --mist-sys-size-hair: var(--mist-ref-size-2);
+  --mist-sys-size-icon-lg: var(--mist-ref-size-24);
+  --mist-sys-size-icon-md: var(--mist-ref-size-20);
+  --mist-sys-size-icon-sm: var(--mist-ref-size-16);
+  --mist-sys-size-icon-xl: var(--mist-ref-size-32);
+  --mist-sys-size-node-min: var(--mist-ref-size-176);
+  --mist-sys-size-plot-lg: var(--mist-ref-size-240);
+  --mist-sys-size-plot-md: var(--mist-ref-size-160);
+  --mist-sys-size-plot-sm: var(--mist-ref-size-72);
+  --mist-sys-size-shell: var(--mist-ref-size-1200);
+  --mist-sys-size-shell-narrow: var(--mist-ref-size-720);
+  --mist-sys-size-tile-min: var(--mist-ref-size-96);
+  --mist-sys-size-touch-lg: var(--mist-ref-size-56);
+  --mist-sys-size-touch-md: var(--mist-ref-size-48);
+  --mist-sys-size-touch-sm: var(--mist-ref-size-40);
+
+  /* sys / spacing */
+  --mist-sys-spacing-inset-2xl: var(--mist-ref-spacing-5);
+  --mist-sys-spacing-inset-2xs: var(--mist-ref-spacing-0-5);
+  --mist-sys-spacing-inset-3xs: var(--mist-ref-spacing-0-25);
+  --mist-sys-spacing-inset-lg: var(--mist-ref-spacing-3);
+  --mist-sys-spacing-inset-md: var(--mist-ref-spacing-2);
+  --mist-sys-spacing-inset-sm: var(--mist-ref-spacing-1-5);
+  --mist-sys-spacing-inset-xl: var(--mist-ref-spacing-4);
+  --mist-sys-spacing-inset-xs: var(--mist-ref-spacing-1);
+  --mist-sys-spacing-page-inset: var(--mist-ref-spacing-4);
+  --mist-sys-spacing-stack-2xl: var(--mist-ref-spacing-6);
+  --mist-sys-spacing-stack-lg: var(--mist-ref-spacing-3);
+  --mist-sys-spacing-stack-md: var(--mist-ref-spacing-2);
+  --mist-sys-spacing-stack-sm: var(--mist-ref-spacing-1-5);
+  --mist-sys-spacing-stack-xl: var(--mist-ref-spacing-4);
+  --mist-sys-spacing-stack-xs: var(--mist-ref-spacing-1);
+
+  /* sys / typescale */
+  --mist-sys-typescale-body: var(--mist-ref-font-weight-regular) var(--mist-ref-font-size-14)/var(--mist-ref-font-line-height-150) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-body-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-body-font-size: var(--mist-ref-font-size-14);
+  --mist-sys-typescale-body-font-weight: var(--mist-ref-font-weight-regular);
+  --mist-sys-typescale-body-line-height: var(--mist-ref-font-line-height-150);
+  --mist-sys-typescale-body-strong: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-14)/var(--mist-ref-font-line-height-150) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-body-strong-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-body-strong-font-size: var(--mist-ref-font-size-14);
+  --mist-sys-typescale-body-strong-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-body-strong-line-height: var(--mist-ref-font-line-height-150);
+  --mist-sys-typescale-caption: var(--mist-ref-font-weight-regular) var(--mist-ref-font-size-12)/var(--mist-ref-font-line-height-130) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-caption-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-caption-font-size: var(--mist-ref-font-size-12);
+  --mist-sys-typescale-caption-font-weight: var(--mist-ref-font-weight-regular);
+  --mist-sys-typescale-caption-line-height: var(--mist-ref-font-line-height-130);
+  --mist-sys-typescale-display: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-56)/var(--mist-ref-font-line-height-100) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-display-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-display-font-size: var(--mist-ref-font-size-56);
+  --mist-sys-typescale-display-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-display-line-height: var(--mist-ref-font-line-height-100);
+  --mist-sys-typescale-heading-1: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-40)/var(--mist-ref-font-line-height-110) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-heading-1-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-heading-1-font-size: var(--mist-ref-font-size-40);
+  --mist-sys-typescale-heading-1-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-heading-1-line-height: var(--mist-ref-font-line-height-110);
+  --mist-sys-typescale-heading-2: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-28)/var(--mist-ref-font-line-height-110) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-heading-2-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-heading-2-font-size: var(--mist-ref-font-size-28);
+  --mist-sys-typescale-heading-2-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-heading-2-line-height: var(--mist-ref-font-line-height-110);
+  --mist-sys-typescale-heading-3: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-20)/var(--mist-ref-font-line-height-130) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-heading-3-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-heading-3-font-size: var(--mist-ref-font-size-20);
+  --mist-sys-typescale-heading-3-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-heading-3-line-height: var(--mist-ref-font-line-height-130);
+  --mist-sys-typescale-label: var(--mist-ref-font-weight-medium) var(--mist-ref-font-size-12)/var(--mist-ref-font-line-height-130) var(--mist-ref-font-family-brand), var(--mist-ref-font-family-cjk), sans-serif;
+  --mist-sys-typescale-label-font-family: var(--mist-ref-font-family-brand);
+  --mist-sys-typescale-label-font-size: var(--mist-ref-font-size-12);
+  --mist-sys-typescale-label-font-weight: var(--mist-ref-font-weight-medium);
+  --mist-sys-typescale-label-line-height: var(--mist-ref-font-line-height-130);
+
+  /* ═══════════════════════════════════════════════════════════════
+     COMPONENT — 元件專用。只引用 sys，元件樣式只碰這層。
+     ═══════════════════════════════════════════════════════════════ */
+
+  /* comp / a11y / focus-ring */
+  --mist-comp-a11y-focus-ring-color: var(--mist-sys-color-outline-focus);
+  --mist-comp-a11y-focus-ring-offset: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-a11y-focus-ring-width: var(--mist-sys-border-width-focus);
+
+  /* comp / badge / container */
+  --mist-comp-badge-container-color-active: var(--mist-sys-color-status-active);
+  --mist-comp-badge-container-color-attention: var(--mist-sys-color-status-attention);
+  --mist-comp-badge-container-color-done: var(--mist-sys-color-status-done);
+  --mist-comp-badge-container-color-down: var(--mist-sys-color-status-attention);
+  --mist-comp-badge-container-color-idle: var(--mist-sys-color-status-idle);
+  --mist-comp-badge-container-color-up: var(--mist-sys-color-status-done);
+  --mist-comp-badge-container-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-badge-container-height: var(--mist-sys-size-control-xs);
+  --mist-comp-badge-container-padding-x: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-badge-container-shape: var(--mist-sys-shape-pill);
+
+  /* comp / badge */
+  --mist-comp-badge-icon-size: var(--mist-sys-size-icon-sm);
+
+  /* comp / badge / label */
+  --mist-comp-badge-label-color-active: var(--mist-sys-color-on-status-active);
+  --mist-comp-badge-label-color-attention: var(--mist-sys-color-on-status-attention);
+  --mist-comp-badge-label-color-done: var(--mist-sys-color-on-status-done);
+  --mist-comp-badge-label-color-down: var(--mist-sys-color-on-status-attention);
+  --mist-comp-badge-label-color-idle: var(--mist-sys-color-on-status-idle);
+  --mist-comp-badge-label-color-up: var(--mist-sys-color-on-status-done);
+  --mist-comp-badge-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-badge-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-badge-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-badge-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-badge-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / button-ghost / container */
+  --mist-comp-button-ghost-container-border-width: var(--mist-sys-border-width-none);
+  --mist-comp-button-ghost-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-ghost-container-color-enabled: var(--mist-sys-color-surface-inset);
+  --mist-comp-button-ghost-container-color-hover: var(--mist-sys-color-surface-inset-hover);
+  --mist-comp-button-ghost-container-color-pressed: var(--mist-sys-color-surface-inset-pressed);
+  --mist-comp-button-ghost-container-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-button-ghost-container-height: var(--mist-sys-size-touch-sm);
+  --mist-comp-button-ghost-container-padding-x: var(--mist-sys-spacing-inset-md);
+  --mist-comp-button-ghost-container-shape: var(--mist-sys-shape-pill);
+
+  /* comp / button-ghost / icon */
+  --mist-comp-button-ghost-icon-size: var(--mist-sys-size-icon-md);
+
+  /* comp / button-ghost / label */
+  --mist-comp-button-ghost-label-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-button-ghost-label-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-button-ghost-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-button-ghost-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-button-ghost-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-button-ghost-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-button-ghost-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / button-icon / border */
+  --mist-comp-button-icon-border-color-enabled: var(--mist-sys-color-outline);
+
+  /* comp / button-icon / container */
+  --mist-comp-button-icon-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-button-icon-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-icon-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-button-icon-container-color-hover: var(--mist-sys-color-surface-hover);
+  --mist-comp-button-icon-container-color-pressed: var(--mist-sys-color-surface-pressed);
+  --mist-comp-button-icon-container-shape: var(--mist-sys-shape-pill);
+  --mist-comp-button-icon-container-size: var(--mist-sys-size-touch-sm);
+
+  /* comp / button-icon / icon */
+  --mist-comp-button-icon-icon-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-button-icon-icon-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-button-icon-icon-size: var(--mist-sys-size-icon-md);
+
+  /* comp / button-primary / container */
+  --mist-comp-button-primary-container-border-width: var(--mist-sys-border-width-none);
+  --mist-comp-button-primary-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-primary-container-color-enabled: var(--mist-sys-color-surface-strong);
+  --mist-comp-button-primary-container-color-hover: var(--mist-sys-color-surface-strong-hover);
+  --mist-comp-button-primary-container-color-pressed: var(--mist-sys-color-surface-strong-pressed);
+  --mist-comp-button-primary-container-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-button-primary-container-height: var(--mist-sys-size-touch-md);
+  --mist-comp-button-primary-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-button-primary-container-shape: var(--mist-sys-shape-pill);
+
+  /* comp / button-primary / icon */
+  --mist-comp-button-primary-icon-size: var(--mist-sys-size-icon-md);
+
+  /* comp / button-primary / label */
+  --mist-comp-button-primary-label-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-button-primary-label-color-enabled: var(--mist-sys-color-on-strong);
+  --mist-comp-button-primary-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-button-primary-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-button-primary-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-button-primary-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-button-primary-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / button-secondary / border */
+  --mist-comp-button-secondary-border-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-secondary-border-color-enabled: var(--mist-sys-color-outline);
+  --mist-comp-button-secondary-border-color-hover: var(--mist-sys-color-outline);
+
+  /* comp / button-secondary / container */
+  --mist-comp-button-secondary-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-button-secondary-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-button-secondary-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-button-secondary-container-color-hover: var(--mist-sys-color-surface-hover);
+  --mist-comp-button-secondary-container-color-pressed: var(--mist-sys-color-surface-pressed);
+  --mist-comp-button-secondary-container-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-button-secondary-container-height: var(--mist-sys-size-touch-md);
+  --mist-comp-button-secondary-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-button-secondary-container-shape: var(--mist-sys-shape-pill);
+
+  /* comp / button-secondary / icon */
+  --mist-comp-button-secondary-icon-size: var(--mist-sys-size-icon-md);
+
+  /* comp / button-secondary / label */
+  --mist-comp-button-secondary-label-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-button-secondary-label-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-button-secondary-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-button-secondary-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-button-secondary-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-button-secondary-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-button-secondary-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / chart / axis */
+  --mist-comp-chart-axis-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-chart-axis-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-chart-axis-label-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-chart-axis-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-chart-axis-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-chart-axis-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-chart-axis-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-chart-axis-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-chart-axis-pill-color: var(--mist-sys-color-surface-inset);
+  --mist-comp-chart-axis-pill-padding-x: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-chart-axis-pill-shape: var(--mist-sys-shape-pill);
+
+  /* comp / chart / axis-label */
+  --mist-comp-chart-axis-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-chart-axis-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-chart-axis-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-chart-axis-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-chart-axis-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-chart-axis-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / chart / cursor */
+  --mist-comp-chart-cursor-dot-color-accent: var(--mist-sys-color-accent);
+  --mist-comp-chart-cursor-dot-color-primary: var(--mist-sys-color-chart-mark);
+  --mist-comp-chart-cursor-dot-color-secondary: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-cursor-dot-ring-color: var(--mist-sys-color-surface-card);
+  --mist-comp-chart-cursor-dot-ring-width: var(--mist-sys-border-width-focus);
+  --mist-comp-chart-cursor-dot-size: var(--mist-sys-size-dot);
+  --mist-comp-chart-cursor-line-color: var(--mist-sys-color-outline);
+  --mist-comp-chart-cursor-line-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / chart / grid */
+  --mist-comp-chart-grid-color: var(--mist-sys-color-hairline);
+  --mist-comp-chart-grid-dash: 4 4;
+  --mist-comp-chart-grid-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / chart / hairbar */
+  --mist-comp-chart-hairbar-color: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-hairbar-color-accent: var(--mist-sys-color-chart-alt);
+  --mist-comp-chart-hairbar-color-mark: var(--mist-sys-color-chart-mark);
+  --mist-comp-chart-hairbar-gap: var(--mist-sys-spacing-inset-3xs);
+  --mist-comp-chart-hairbar-height: var(--mist-sys-size-plot-sm);
+  --mist-comp-chart-hairbar-line-width: var(--mist-sys-size-hair);
+  --mist-comp-chart-hairbar-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / chart / highlight */
+  --mist-comp-chart-highlight-color: var(--mist-sys-color-surface-highlight);
+  --mist-comp-chart-highlight-shape: var(--mist-sys-shape-block);
+
+  /* comp / chart / line */
+  --mist-comp-chart-line-color: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-line-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / chart / node */
+  --mist-comp-chart-node-color-enabled: var(--mist-sys-color-surface-inset);
+  --mist-comp-chart-node-color-selected: var(--mist-sys-color-surface-strong);
+  --mist-comp-chart-node-label-color-enabled: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-chart-node-label-color-selected: var(--mist-sys-color-on-strong);
+  --mist-comp-chart-node-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-chart-node-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-chart-node-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-chart-node-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-chart-node-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+  --mist-comp-chart-node-shape: var(--mist-sys-shape-pill);
+  --mist-comp-chart-node-size: var(--mist-sys-size-touch-sm);
+
+  /* comp / chart / plot */
+  --mist-comp-chart-plot-col-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-chart-plot-col-padding-y: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-chart-plot-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-chart-plot-height: var(--mist-sys-size-plot-lg);
+  --mist-comp-chart-plot-height-md: var(--mist-sys-size-plot-md);
+
+  /* comp / chart / series */
+  --mist-comp-chart-series-color-primary: var(--mist-sys-color-chart-mark);
+  --mist-comp-chart-series-color-secondary: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-series-width: var(--mist-sys-size-hair);
+
+  /* comp / chart / stem */
+  --mist-comp-chart-stem-color: var(--mist-sys-color-chart-line);
+  --mist-comp-chart-stem-color-selected: var(--mist-sys-color-chart-mark);
+  --mist-comp-chart-stem-shape: var(--mist-sys-shape-pill);
+  --mist-comp-chart-stem-width: var(--mist-sys-size-bar-lg);
+
+  /* comp / chart / tooltip */
+  --mist-comp-chart-tooltip-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-chart-tooltip-height: var(--mist-sys-size-control-sm);
+  --mist-comp-chart-tooltip-label-color: var(--mist-sys-color-on-strong);
+  --mist-comp-chart-tooltip-padding-x: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-chart-tooltip-shape: var(--mist-sys-shape-pill);
+  --mist-comp-chart-tooltip-type: var(--mist-sys-typescale-label);
+  --mist-comp-chart-tooltip-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-chart-tooltip-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-chart-tooltip-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-chart-tooltip-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / chart / tooltip-card */
+  --mist-comp-chart-tooltip-card-border-color: var(--mist-sys-color-outline);
+  --mist-comp-chart-tooltip-card-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-chart-tooltip-card-color: var(--mist-sys-color-surface-card);
+  --mist-comp-chart-tooltip-card-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-chart-tooltip-card-padding: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-chart-tooltip-card-shape: var(--mist-sys-shape-card);
+  --mist-comp-chart-tooltip-card-title-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-chart-tooltip-card-title-type: var(--mist-sys-typescale-caption);
+  --mist-comp-chart-tooltip-card-title-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-chart-tooltip-card-title-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-chart-tooltip-card-title-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-chart-tooltip-card-title-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-chart-tooltip-card-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-chart-tooltip-card-value-type: var(--mist-sys-typescale-heading-3);
+  --mist-comp-chart-tooltip-card-value-type-font-family: var(--mist-sys-typescale-heading-3-font-family);
+  --mist-comp-chart-tooltip-card-value-type-font-size: var(--mist-sys-typescale-heading-3-font-size);
+  --mist-comp-chart-tooltip-card-value-type-font-weight: var(--mist-sys-typescale-heading-3-font-weight);
+  --mist-comp-chart-tooltip-card-value-type-line-height: var(--mist-sys-typescale-heading-3-line-height);
+
+  /* comp / diagram / band */
+  --mist-comp-diagram-band-dot-shape: var(--mist-sys-shape-pill);
+  --mist-comp-diagram-band-dot-size: var(--mist-sys-size-dot);
+  --mist-comp-diagram-band-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-diagram-band-label-color: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-diagram-band-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-diagram-band-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-diagram-band-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-diagram-band-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-diagram-band-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / diagram / canvas */
+  --mist-comp-diagram-canvas-color: var(--mist-sys-color-surface-sunken);
+  --mist-comp-diagram-canvas-height: var(--mist-sys-size-canvas-h);
+  --mist-comp-diagram-canvas-width: var(--mist-sys-size-canvas-w);
+
+  /* comp / diagram / caption */
+  --mist-comp-diagram-caption-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-caption-type: var(--mist-sys-typescale-body);
+  --mist-comp-diagram-caption-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-diagram-caption-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-diagram-caption-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-diagram-caption-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / diagram / edge */
+  --mist-comp-diagram-edge-arrow-size: var(--mist-sys-size-icon-sm);
+  --mist-comp-diagram-edge-color: var(--mist-sys-color-outline);
+  --mist-comp-diagram-edge-color-accent: var(--mist-sys-color-accent);
+  --mist-comp-diagram-edge-color-alt: var(--mist-sys-color-accent-alt);
+  --mist-comp-diagram-edge-color-mark: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-edge-dash: 6 6;
+  --mist-comp-diagram-edge-width: var(--mist-sys-border-width-focus);
+
+  /* comp / diagram / edge-label */
+  --mist-comp-diagram-edge-label-backdrop: var(--mist-sys-color-surface-sunken);
+  --mist-comp-diagram-edge-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-edge-label-padding-x: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-diagram-edge-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-diagram-edge-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-diagram-edge-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-diagram-edge-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-diagram-edge-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / diagram / heading */
+  --mist-comp-diagram-heading-color: var(--mist-sys-color-on-surface);
+  --mist-comp-diagram-heading-type: var(--mist-sys-typescale-heading-2);
+  --mist-comp-diagram-heading-type-font-family: var(--mist-sys-typescale-heading-2-font-family);
+  --mist-comp-diagram-heading-type-font-size: var(--mist-sys-typescale-heading-2-font-size);
+  --mist-comp-diagram-heading-type-font-weight: var(--mist-sys-typescale-heading-2-font-weight);
+  --mist-comp-diagram-heading-type-line-height: var(--mist-sys-typescale-heading-2-line-height);
+
+  /* comp / diagram / label */
+  --mist-comp-diagram-label-color: var(--mist-sys-color-on-surface);
+  --mist-comp-diagram-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-diagram-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-diagram-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-diagram-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-diagram-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / diagram / node */
+  --mist-comp-diagram-node-border-color: var(--mist-sys-color-outline-strong);
+  --mist-comp-diagram-node-border-width: var(--mist-sys-border-width-strong);
+  --mist-comp-diagram-node-color: var(--mist-sys-color-surface-card);
+  --mist-comp-diagram-node-gap: var(--mist-sys-spacing-inset-3xs);
+  --mist-comp-diagram-node-min-width: var(--mist-sys-size-node-min);
+  --mist-comp-diagram-node-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-diagram-node-padding-y: var(--mist-sys-spacing-inset-md);
+  --mist-comp-diagram-node-shape: var(--mist-sys-shape-card);
+
+  /* comp / diagram / node-strong */
+  --mist-comp-diagram-node-strong-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-diagram-node-strong-label-color: var(--mist-sys-color-on-strong);
+  --mist-comp-diagram-node-strong-sub-color: var(--mist-sys-color-on-strong-muted);
+
+  /* comp / diagram / note */
+  --mist-comp-diagram-note-color: var(--mist-sys-color-surface-card);
+  --mist-comp-diagram-note-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-diagram-note-padding: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-diagram-note-shape: var(--mist-sys-shape-card);
+  --mist-comp-diagram-note-text-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-note-title-color: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-diagram-note-title-type: var(--mist-sys-typescale-label);
+  --mist-comp-diagram-note-title-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-diagram-note-title-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-diagram-note-title-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-diagram-note-title-type-line-height: var(--mist-sys-typescale-label-line-height);
+  --mist-comp-diagram-note-type: var(--mist-sys-typescale-caption);
+  --mist-comp-diagram-note-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-diagram-note-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-diagram-note-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-diagram-note-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-diagram-note-width: var(--mist-sys-size-card-min);
+
+  /* comp / diagram / rule */
+  --mist-comp-diagram-rule-color-accent: var(--mist-sys-color-accent);
+  --mist-comp-diagram-rule-color-alt: var(--mist-sys-color-accent-alt);
+  --mist-comp-diagram-rule-color-mark: var(--mist-sys-color-chart-mark);
+  --mist-comp-diagram-rule-height: var(--mist-sys-size-hair);
+  --mist-comp-diagram-rule-shape: var(--mist-sys-shape-pill);
+  --mist-comp-diagram-rule-width: var(--mist-sys-size-touch-sm);
+
+  /* comp / diagram / stack */
+  --mist-comp-diagram-stack-border-color: var(--mist-sys-color-outline);
+  --mist-comp-diagram-stack-color: var(--mist-sys-color-surface-card);
+  --mist-comp-diagram-stack-color-accent: var(--mist-sys-color-accent-container);
+  --mist-comp-diagram-stack-color-alt: var(--mist-sys-color-accent-alt-container);
+  --mist-comp-diagram-stack-offset: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / diagram / step */
+  --mist-comp-diagram-step-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-diagram-step-color-accent: var(--mist-sys-color-accent-bold);
+  --mist-comp-diagram-step-color-alt: var(--mist-sys-color-accent-alt-bold);
+  --mist-comp-diagram-step-label-color: var(--mist-sys-color-on-strong);
+  --mist-comp-diagram-step-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-diagram-step-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-diagram-step-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-diagram-step-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-diagram-step-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+  --mist-comp-diagram-step-shape: var(--mist-sys-shape-pill);
+  --mist-comp-diagram-step-size: var(--mist-sys-size-icon-lg);
+
+  /* comp / diagram / sub */
+  --mist-comp-diagram-sub-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-diagram-sub-type: var(--mist-sys-typescale-caption);
+  --mist-comp-diagram-sub-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-diagram-sub-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-diagram-sub-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-diagram-sub-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / donut / center */
+  --mist-comp-donut-center-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-donut-center-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-donut-center-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-donut-center-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-donut-center-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-donut-center-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-donut-center-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-donut-center-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-donut-center-value-type: var(--mist-sys-typescale-heading-2);
+  --mist-comp-donut-center-value-type-font-family: var(--mist-sys-typescale-heading-2-font-family);
+  --mist-comp-donut-center-value-type-font-size: var(--mist-sys-typescale-heading-2-font-size);
+  --mist-comp-donut-center-value-type-font-weight: var(--mist-sys-typescale-heading-2-font-weight);
+  --mist-comp-donut-center-value-type-line-height: var(--mist-sys-typescale-heading-2-line-height);
+
+  /* comp / donut / container */
+  --mist-comp-donut-container-gap: var(--mist-sys-spacing-stack-md);
+  --mist-comp-donut-container-size: var(--mist-sys-size-plot-lg);
+
+  /* comp / donut / highlight */
+  --mist-comp-donut-highlight-color: var(--mist-sys-color-surface-highlight);
+  --mist-comp-donut-highlight-width: var(--mist-sys-size-icon-lg);
+
+  /* comp / donut / legend */
+  --mist-comp-donut-legend-dot-shape: var(--mist-sys-shape-pill);
+  --mist-comp-donut-legend-dot-size: var(--mist-sys-size-dot);
+  --mist-comp-donut-legend-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-donut-legend-item-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-donut-legend-label-color-enabled: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-donut-legend-label-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-donut-legend-label-type: var(--mist-sys-typescale-body);
+  --mist-comp-donut-legend-label-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-donut-legend-label-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-donut-legend-label-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-donut-legend-label-type-line-height: var(--mist-sys-typescale-body-line-height);
+  --mist-comp-donut-legend-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-donut-legend-value-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-donut-legend-value-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-donut-legend-value-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-donut-legend-value-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-donut-legend-value-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / donut / segment */
+  --mist-comp-donut-segment-color-accent: var(--mist-sys-color-chart-alt);
+  --mist-comp-donut-segment-color-alt: var(--mist-sys-color-chart-dot);
+  --mist-comp-donut-segment-color-mark: var(--mist-sys-color-chart-mark);
+  --mist-comp-donut-segment-color-muted: var(--mist-sys-color-chart-line);
+  --mist-comp-donut-segment-width: var(--mist-sys-size-bar);
+  --mist-comp-donut-segment-width-selected: var(--mist-sys-size-bar-lg);
+
+  /* comp / donut / track */
+  --mist-comp-donut-track-color: var(--mist-sys-color-surface-track);
+  --mist-comp-donut-track-width: var(--mist-sys-size-bar);
+
+  /* comp / field / border */
+  --mist-comp-field-border-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-field-border-color-enabled: var(--mist-sys-color-outline);
+  --mist-comp-field-border-color-focus: var(--mist-sys-color-outline-focus);
+
+  /* comp / field / container */
+  --mist-comp-field-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-field-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-field-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-field-container-min-height: var(--mist-sys-size-touch-md);
+  --mist-comp-field-container-min-height-multiline: var(--mist-sys-size-field-multiline);
+  --mist-comp-field-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-field-container-padding-y: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-field-container-padding-y-multiline: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-field-container-shape: var(--mist-sys-shape-block);
+
+  /* comp / field / group */
+  --mist-comp-field-group-gap: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / field / label */
+  --mist-comp-field-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-field-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-field-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-field-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-field-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-field-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / field / text */
+  --mist-comp-field-text-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-field-text-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-field-text-color-placeholder: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-field-text-type: var(--mist-sys-typescale-body);
+  --mist-comp-field-text-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-field-text-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-field-text-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-field-text-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / funnel / bar */
+  --mist-comp-funnel-bar-color: var(--mist-sys-color-chart-line);
+  --mist-comp-funnel-bar-color-marked: var(--mist-sys-color-chart-mark);
+  --mist-comp-funnel-bar-gap: var(--mist-sys-spacing-inset-3xs);
+  --mist-comp-funnel-bar-shape: var(--mist-sys-shape-pill);
+  --mist-comp-funnel-bar-width: var(--mist-sys-size-bar);
+
+  /* comp / funnel / container */
+  --mist-comp-funnel-container-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-funnel-container-height: var(--mist-sys-size-plot-md);
+
+  /* comp / funnel / stage */
+  --mist-comp-funnel-stage-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-funnel-stage-name-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-funnel-stage-name-type: var(--mist-sys-typescale-caption);
+  --mist-comp-funnel-stage-name-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-funnel-stage-name-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-funnel-stage-name-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-funnel-stage-name-type-line-height: var(--mist-sys-typescale-caption-line-height);
+  --mist-comp-funnel-stage-pct-color: var(--mist-sys-color-on-surface);
+  --mist-comp-funnel-stage-pct-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-funnel-stage-pct-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-funnel-stage-pct-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-funnel-stage-pct-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-funnel-stage-pct-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+  --mist-comp-funnel-stage-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-funnel-stage-value-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-funnel-stage-value-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-funnel-stage-value-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-funnel-stage-value-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-funnel-stage-value-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / generating-state / caret */
+  --mist-comp-generating-state-caret-color: var(--mist-sys-color-accent);
+  --mist-comp-generating-state-caret-gap: var(--mist-sys-spacing-inset-3xs);
+  --mist-comp-generating-state-caret-width: var(--mist-sys-border-width-focus);
+
+  /* comp / generating-state / container */
+  --mist-comp-generating-state-container-color: var(--mist-sys-color-surface-card);
+  --mist-comp-generating-state-container-gap: var(--mist-sys-spacing-stack-md);
+  --mist-comp-generating-state-container-padding: var(--mist-sys-spacing-inset-xl);
+  --mist-comp-generating-state-container-shape: var(--mist-sys-shape-card);
+
+  /* comp / generating-state / dot */
+  --mist-comp-generating-state-dot-color: var(--mist-sys-color-chart-dot);
+  --mist-comp-generating-state-dot-color-alt: var(--mist-sys-color-accent);
+  --mist-comp-generating-state-dot-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-generating-state-dot-shape: var(--mist-sys-shape-pill);
+  --mist-comp-generating-state-dot-size: var(--mist-sys-size-dot);
+
+  /* comp / generating-state / hint */
+  --mist-comp-generating-state-hint-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-generating-state-hint-type: var(--mist-sys-typescale-body);
+  --mist-comp-generating-state-hint-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-generating-state-hint-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-generating-state-hint-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-generating-state-hint-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / generating-state / label */
+  --mist-comp-generating-state-label-color: var(--mist-sys-color-on-surface);
+  --mist-comp-generating-state-label-type: var(--mist-sys-typescale-heading-3);
+  --mist-comp-generating-state-label-type-font-family: var(--mist-sys-typescale-heading-3-font-family);
+  --mist-comp-generating-state-label-type-font-size: var(--mist-sys-typescale-heading-3-font-size);
+  --mist-comp-generating-state-label-type-font-weight: var(--mist-sys-typescale-heading-3-font-weight);
+  --mist-comp-generating-state-label-type-line-height: var(--mist-sys-typescale-heading-3-line-height);
+
+  /* comp / generating-state / line */
+  --mist-comp-generating-state-line-color: var(--mist-sys-color-surface-inset);
+  --mist-comp-generating-state-line-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-generating-state-line-height: var(--mist-sys-size-bar-lg);
+  --mist-comp-generating-state-line-shape: var(--mist-sys-shape-pill);
+
+  /* comp / nav / brand */
+  --mist-comp-nav-brand-color: var(--mist-sys-color-on-surface);
+  --mist-comp-nav-brand-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-nav-brand-mark-color: var(--mist-sys-color-accent);
+  --mist-comp-nav-brand-mark-shape: var(--mist-sys-shape-pill);
+  --mist-comp-nav-brand-mark-size: var(--mist-sys-size-icon-xl);
+  --mist-comp-nav-brand-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-nav-brand-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-nav-brand-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-nav-brand-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-nav-brand-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / nav / container */
+  --mist-comp-nav-container-gap: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-nav-container-height: var(--mist-sys-size-touch-md);
+
+  /* comp / nav / item */
+  --mist-comp-nav-item-color-active: var(--mist-sys-color-on-surface);
+  --mist-comp-nav-item-color-enabled: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-nav-item-padding-y: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-nav-item-type: var(--mist-sys-typescale-body);
+  --mist-comp-nav-item-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-nav-item-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-nav-item-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-nav-item-type-line-height: var(--mist-sys-typescale-body-line-height);
+  --mist-comp-nav-item-underline-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-nav-item-underline-width: var(--mist-sys-border-width-focus);
+
+  /* comp / option-card / body */
+  --mist-comp-option-card-body-gap: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / option-card / border */
+  --mist-comp-option-card-border-color-enabled: var(--mist-sys-color-hairline);
+  --mist-comp-option-card-border-color-hover: var(--mist-sys-color-outline);
+  --mist-comp-option-card-border-color-selected: var(--mist-sys-color-surface-strong);
+
+  /* comp / option-card / container */
+  --mist-comp-option-card-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-option-card-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-option-card-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-option-card-container-color-hover: var(--mist-sys-color-surface-card-hover);
+  --mist-comp-option-card-container-color-selected: var(--mist-sys-color-surface-card);
+  --mist-comp-option-card-container-gap: var(--mist-sys-spacing-inset-md);
+  --mist-comp-option-card-container-min-height: var(--mist-sys-size-touch-lg);
+  --mist-comp-option-card-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-option-card-container-padding-y: var(--mist-sys-spacing-inset-md);
+  --mist-comp-option-card-container-shape: var(--mist-sys-shape-block);
+
+  /* comp / option-card / description */
+  --mist-comp-option-card-description-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-option-card-description-type: var(--mist-sys-typescale-caption);
+  --mist-comp-option-card-description-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-option-card-description-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-option-card-description-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-option-card-description-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / option-card / highlight */
+  --mist-comp-option-card-highlight-color: var(--mist-sys-color-surface-highlight);
+
+  /* comp / option-card / label */
+  --mist-comp-option-card-label-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-option-card-label-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-option-card-label-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-option-card-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-option-card-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-option-card-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-option-card-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-option-card-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / option-card / marker */
+  --mist-comp-option-card-marker-color-enabled: var(--mist-sys-color-surface-inset);
+  --mist-comp-option-card-marker-color-selected: var(--mist-sys-color-surface-strong);
+  --mist-comp-option-card-marker-icon-color: var(--mist-sys-color-on-strong);
+  --mist-comp-option-card-marker-icon-size: var(--mist-sys-size-icon-sm);
+  --mist-comp-option-card-marker-shape: var(--mist-sys-shape-pill);
+  --mist-comp-option-card-marker-size: var(--mist-sys-size-icon-lg);
+
+  /* comp / progress / indicator */
+  --mist-comp-progress-indicator-color: var(--mist-sys-color-surface-strong);
+  --mist-comp-progress-indicator-shape: var(--mist-sys-shape-pill);
+
+  /* comp / progress / label */
+  --mist-comp-progress-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-progress-label-type: var(--mist-sys-typescale-label);
+  --mist-comp-progress-label-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-progress-label-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-progress-label-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-progress-label-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / progress / step */
+  --mist-comp-progress-step-color-current: var(--mist-sys-color-surface-strong);
+  --mist-comp-progress-step-color-done: var(--mist-sys-color-surface-strong);
+  --mist-comp-progress-step-color-todo: var(--mist-sys-color-surface-track);
+  --mist-comp-progress-step-gap: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / progress / thin */
+  --mist-comp-progress-thin-height: var(--mist-sys-size-bar);
+
+  /* comp / progress / track */
+  --mist-comp-progress-track-color: var(--mist-sys-color-surface-track);
+  --mist-comp-progress-track-height: var(--mist-sys-size-bar-lg);
+  --mist-comp-progress-track-shape: var(--mist-sys-shape-pill);
+
+  /* comp / spec-card / border */
+  --mist-comp-spec-card-border-color-enabled: var(--mist-sys-color-hairline);
+  --mist-comp-spec-card-border-color-hover: var(--mist-sys-color-outline);
+  --mist-comp-spec-card-border-color-selected: var(--mist-sys-color-surface-strong);
+
+  /* comp / spec-card / container */
+  --mist-comp-spec-card-container-border-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-spec-card-container-color-disabled: var(--mist-sys-color-surface-disabled);
+  --mist-comp-spec-card-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-spec-card-container-color-hover: var(--mist-sys-color-surface-card-hover);
+  --mist-comp-spec-card-container-color-selected: var(--mist-sys-color-surface-card);
+  --mist-comp-spec-card-container-gap: var(--mist-sys-spacing-stack-sm);
+  --mist-comp-spec-card-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-spec-card-container-padding-y: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-spec-card-container-shape: var(--mist-sys-shape-block);
+
+  /* comp / spec-card / detail */
+  --mist-comp-spec-card-detail-color: var(--mist-sys-color-on-surface);
+  --mist-comp-spec-card-detail-type: var(--mist-sys-typescale-body);
+  --mist-comp-spec-card-detail-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-spec-card-detail-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-spec-card-detail-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-spec-card-detail-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / spec-card / foot */
+  --mist-comp-spec-card-foot-color-enabled: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-spec-card-foot-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-spec-card-foot-divider-color: var(--mist-sys-color-hairline);
+  --mist-comp-spec-card-foot-divider-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-spec-card-foot-gap: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-spec-card-foot-icon-size: var(--mist-sys-size-icon-sm);
+  --mist-comp-spec-card-foot-padding-y: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-spec-card-foot-type: var(--mist-sys-typescale-label);
+  --mist-comp-spec-card-foot-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-spec-card-foot-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-spec-card-foot-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-spec-card-foot-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / spec-card / grid */
+  --mist-comp-spec-card-grid-gap: var(--mist-sys-spacing-stack-lg);
+  --mist-comp-spec-card-grid-min-width: var(--mist-sys-size-card-min);
+
+  /* comp / spec-card / head */
+  --mist-comp-spec-card-head-gap: var(--mist-sys-spacing-inset-sm);
+
+  /* comp / spec-card / highlight */
+  --mist-comp-spec-card-highlight-color: var(--mist-sys-color-surface-highlight);
+
+  /* comp / spec-card / id */
+  --mist-comp-spec-card-id-color-enabled: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-spec-card-id-color-selected: var(--mist-sys-color-on-surface);
+  --mist-comp-spec-card-id-type: var(--mist-sys-typescale-label);
+  --mist-comp-spec-card-id-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-spec-card-id-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-spec-card-id-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-spec-card-id-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / spec-card / lede */
+  --mist-comp-spec-card-lede-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-spec-card-lede-type: var(--mist-sys-typescale-body);
+  --mist-comp-spec-card-lede-type-font-family: var(--mist-sys-typescale-body-font-family);
+  --mist-comp-spec-card-lede-type-font-size: var(--mist-sys-typescale-body-font-size);
+  --mist-comp-spec-card-lede-type-font-weight: var(--mist-sys-typescale-body-font-weight);
+  --mist-comp-spec-card-lede-type-line-height: var(--mist-sys-typescale-body-line-height);
+
+  /* comp / spec-card / row */
+  --mist-comp-spec-card-row-divider-color: var(--mist-sys-color-hairline);
+  --mist-comp-spec-card-row-divider-width: var(--mist-sys-border-width-hairline);
+  --mist-comp-spec-card-row-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-spec-card-row-padding-y: var(--mist-sys-spacing-inset-xs);
+  --mist-comp-spec-card-row-term-width: var(--mist-sys-size-plot-sm);
+
+  /* comp / spec-card / term */
+  --mist-comp-spec-card-term-color: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-spec-card-term-type: var(--mist-sys-typescale-label);
+  --mist-comp-spec-card-term-type-font-family: var(--mist-sys-typescale-label-font-family);
+  --mist-comp-spec-card-term-type-font-size: var(--mist-sys-typescale-label-font-size);
+  --mist-comp-spec-card-term-type-font-weight: var(--mist-sys-typescale-label-font-weight);
+  --mist-comp-spec-card-term-type-line-height: var(--mist-sys-typescale-label-line-height);
+
+  /* comp / spec-card / title */
+  --mist-comp-spec-card-title-color-disabled: var(--mist-sys-color-on-disabled);
+  --mist-comp-spec-card-title-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-spec-card-title-type: var(--mist-sys-typescale-heading-3);
+  --mist-comp-spec-card-title-type-font-family: var(--mist-sys-typescale-heading-3-font-family);
+  --mist-comp-spec-card-title-type-font-size: var(--mist-sys-typescale-heading-3-font-size);
+  --mist-comp-spec-card-title-type-font-weight: var(--mist-sys-typescale-heading-3-font-weight);
+  --mist-comp-spec-card-title-type-line-height: var(--mist-sys-typescale-heading-3-line-height);
+
+  /* comp / stat-tile / accent-rule */
+  --mist-comp-stat-tile-accent-rule-color: var(--mist-sys-color-accent);
+  --mist-comp-stat-tile-accent-rule-color-mark: var(--mist-sys-color-on-surface);
+  --mist-comp-stat-tile-accent-rule-gap: var(--mist-sys-spacing-inset-sm);
+  --mist-comp-stat-tile-accent-rule-width: var(--mist-sys-border-width-focus);
+
+  /* comp / stat-tile / container */
+  --mist-comp-stat-tile-container-gap: var(--mist-sys-spacing-inset-2xs);
+  --mist-comp-stat-tile-container-min-width: var(--mist-sys-size-tile-min);
+  --mist-comp-stat-tile-container-padding: var(--mist-sys-spacing-inset-md);
+
+  /* comp / stat-tile / divider */
+  --mist-comp-stat-tile-divider-color: var(--mist-sys-color-hairline);
+  --mist-comp-stat-tile-divider-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / stat-tile / label */
+  --mist-comp-stat-tile-label-color: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-stat-tile-label-type: var(--mist-sys-typescale-caption);
+  --mist-comp-stat-tile-label-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-stat-tile-label-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-stat-tile-label-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-stat-tile-label-type-line-height: var(--mist-sys-typescale-caption-line-height);
+
+  /* comp / stat-tile / value */
+  --mist-comp-stat-tile-value-color: var(--mist-sys-color-on-surface);
+  --mist-comp-stat-tile-value-type: var(--mist-sys-typescale-display);
+  --mist-comp-stat-tile-value-type-font-family: var(--mist-sys-typescale-display-font-family);
+  --mist-comp-stat-tile-value-type-font-size: var(--mist-sys-typescale-display-font-size);
+  --mist-comp-stat-tile-value-type-font-weight: var(--mist-sys-typescale-display-font-weight);
+  --mist-comp-stat-tile-value-type-line-height: var(--mist-sys-typescale-display-line-height);
+
+  /* comp / stat-tile / value-sm */
+  --mist-comp-stat-tile-value-sm-type: var(--mist-sys-typescale-heading-1);
+  --mist-comp-stat-tile-value-sm-type-font-family: var(--mist-sys-typescale-heading-1-font-family);
+  --mist-comp-stat-tile-value-sm-type-font-size: var(--mist-sys-typescale-heading-1-font-size);
+  --mist-comp-stat-tile-value-sm-type-font-weight: var(--mist-sys-typescale-heading-1-font-weight);
+  --mist-comp-stat-tile-value-sm-type-line-height: var(--mist-sys-typescale-heading-1-line-height);
+
+  /* comp / surface / app */
+  --mist-comp-surface-app-color: var(--mist-sys-color-surface-app);
+  --mist-comp-surface-app-gap: var(--mist-sys-spacing-stack-lg);
+  --mist-comp-surface-app-padding: var(--mist-sys-spacing-inset-2xl);
+  --mist-comp-surface-app-shape: var(--mist-sys-shape-container);
+
+  /* comp / surface / card */
+  --mist-comp-surface-card-color: var(--mist-sys-color-surface-card);
+  --mist-comp-surface-card-gap: var(--mist-sys-spacing-stack-md);
+  --mist-comp-surface-card-padding: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-surface-card-shape: var(--mist-sys-shape-card);
+
+  /* comp / surface / card-lg */
+  --mist-comp-surface-card-lg-gap: var(--mist-sys-spacing-stack-lg);
+  --mist-comp-surface-card-lg-padding: var(--mist-sys-spacing-inset-xl);
+
+  /* comp / surface / divider */
+  --mist-comp-surface-divider-color: var(--mist-sys-color-hairline);
+  --mist-comp-surface-divider-width: var(--mist-sys-border-width-hairline);
+
+  /* comp / surface / inset */
+  --mist-comp-surface-inset-color: var(--mist-sys-color-surface-inset);
+  --mist-comp-surface-inset-padding: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-surface-inset-shape: var(--mist-sys-shape-block);
+
+  /* comp / surface / page */
+  --mist-comp-surface-page-color: var(--mist-sys-color-surface-page);
+  --mist-comp-surface-page-padding: var(--mist-sys-spacing-page-inset);
+
+  /* comp / surface / shell */
+  --mist-comp-surface-shell-max-width: var(--mist-sys-size-shell);
+  --mist-comp-surface-shell-max-width-narrow: var(--mist-sys-size-shell-narrow);
+
+  /* comp / task-item / body */
+  --mist-comp-task-item-body-gap: var(--mist-sys-spacing-inset-2xs);
+
+  /* comp / task-item / checkbox */
+  --mist-comp-task-item-checkbox-border-color-done: var(--mist-sys-color-surface-strong);
+  --mist-comp-task-item-checkbox-border-color-enabled: var(--mist-sys-color-outline);
+  --mist-comp-task-item-checkbox-border-width: var(--mist-sys-border-width-focus);
+  --mist-comp-task-item-checkbox-color-done: var(--mist-sys-color-surface-strong);
+  --mist-comp-task-item-checkbox-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-task-item-checkbox-icon-color: var(--mist-sys-color-on-strong);
+  --mist-comp-task-item-checkbox-icon-size: var(--mist-sys-size-icon-sm);
+  --mist-comp-task-item-checkbox-shape: var(--mist-sys-shape-pill);
+  --mist-comp-task-item-checkbox-size: var(--mist-sys-size-icon-lg);
+
+  /* comp / task-item / container */
+  --mist-comp-task-item-container-color-done: var(--mist-sys-color-surface-highlight);
+  --mist-comp-task-item-container-color-enabled: var(--mist-sys-color-surface-card);
+  --mist-comp-task-item-container-color-hover: var(--mist-sys-color-surface-card-hover);
+  --mist-comp-task-item-container-gap: var(--mist-sys-spacing-inset-md);
+  --mist-comp-task-item-container-min-height: var(--mist-sys-size-touch-md);
+  --mist-comp-task-item-container-padding-x: var(--mist-sys-spacing-inset-lg);
+  --mist-comp-task-item-container-padding-y: var(--mist-sys-spacing-inset-md);
+  --mist-comp-task-item-container-shape: var(--mist-sys-shape-block);
+
+  /* comp / task-item / label */
+  --mist-comp-task-item-label-color-done: var(--mist-sys-color-on-surface-muted);
+  --mist-comp-task-item-label-color-enabled: var(--mist-sys-color-on-surface);
+  --mist-comp-task-item-label-type: var(--mist-sys-typescale-body-strong);
+  --mist-comp-task-item-label-type-font-family: var(--mist-sys-typescale-body-strong-font-family);
+  --mist-comp-task-item-label-type-font-size: var(--mist-sys-typescale-body-strong-font-size);
+  --mist-comp-task-item-label-type-font-weight: var(--mist-sys-typescale-body-strong-font-weight);
+  --mist-comp-task-item-label-type-line-height: var(--mist-sys-typescale-body-strong-line-height);
+
+  /* comp / task-item / meta */
+  --mist-comp-task-item-meta-color: var(--mist-sys-color-on-surface-subtle);
+  --mist-comp-task-item-meta-type: var(--mist-sys-typescale-caption);
+  --mist-comp-task-item-meta-type-font-family: var(--mist-sys-typescale-caption-font-family);
+  --mist-comp-task-item-meta-type-font-size: var(--mist-sys-typescale-caption-font-size);
+  --mist-comp-task-item-meta-type-font-weight: var(--mist-sys-typescale-caption-font-weight);
+  --mist-comp-task-item-meta-type-line-height: var(--mist-sys-typescale-caption-line-height);
+}
+
+/* ── ui/components.css ── */
+/*
+ * mist — 元件實作
+ *
+ * 依賴：mist.tokens.css（需先載入）
+ *
+ * 規則：本檔只引用 --mist-comp-*。需要的 comp token 不存在時，先去
+ * tokens/mist.tokens-studio.json 的 comp 層加一個指向 sys 的 token，
+ * 不要直接引用 sys、更不要寫死數值。
+ *
+ * pattern（沿用 Duo）：基底 class 只描述「這是什麼形狀的東西」，視覺屬性
+ * 全部讀 local variable（--btn-* 這類），由變體 class 填入 comp token。
+ * 狀態邏輯只寫一次在基底，新增變體不必碰任何選擇器，也不可能漏掉狀態。
+ *
+ * ★ 標記處＝招牌細節「貫穿高亮」的實作點。
+ *
+ * 資料介面：頁面要把「數值」傳進元件時，只能透過這三個 local custom property，
+ * 不准用 inline style 改視覺屬性。
+ *   --mist-progress-value  進度條填滿比例，例：style="--mist-progress-value: 62%"
+ *   --mist-stem            lollipop 的柱高比例
+ *   --mist-bar             密集細線圖的單根高度比例
+ *   --mist-arc             環形圖單一段佔整圈的百分比（0–100 純數字）
+ *   --mist-arc-start       環形圖單一段的起點百分比（0–100 純數字）
+ *   --x                    架構圖節點中心的 X（1600×900 空間裡的純數字）
+ *   --y                    架構圖節點中心的 Y（同上）
+ *   --mist-fit-scale       固定尺寸畫布的縮放比例（選配 script 設定）
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   0. 基底與 utility
+   @allow-sys — 頁面基底、排版與版面 utility 就是 sys 的公開介面，
+   再包一層無意義的 comp alias 只會增加維護面。元件本體仍然只碰 comp。
+   ═══════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* hidden 屬性必須贏過元件自己的 display。
+   .mist-generating { display: flex } 這種 class 選擇器優先度高於瀏覽器的
+   [hidden]{display:none}，不補這條的話 hidden 會失效。 */
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font: var(--mist-sys-typescale-body);
+  color: var(--mist-sys-color-on-surface);
+  background: var(--mist-comp-surface-page-color);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 排版 helper。頁面用這些 class，不要在頁面裡寫 font-size */
+.mist-display   { font: var(--mist-sys-typescale-display);   margin: 0; }
+.mist-h1        { font: var(--mist-sys-typescale-heading-1);  margin: 0; }
+.mist-h2        { font: var(--mist-sys-typescale-heading-2);  margin: 0; }
+.mist-h3        { font: var(--mist-sys-typescale-heading-3);  margin: 0; }
+.mist-body      { font: var(--mist-sys-typescale-body);       margin: 0; }
+.mist-body-strong { font: var(--mist-sys-typescale-body-strong); margin: 0; }
+.mist-label     { font: var(--mist-sys-typescale-label);      margin: 0; }
+.mist-caption   { font: var(--mist-sys-typescale-caption);    margin: 0; }
+
+.mist-muted  { color: var(--mist-sys-color-on-surface-muted); }
+.mist-subtle { color: var(--mist-sys-color-on-surface-subtle); }
+
+/* 版面：主 2 : 次 1 兩欄（骨架層，偷 Polaris 的比例） */
+.mist-split { display: grid; gap: var(--mist-sys-spacing-stack-lg); }
+@media (min-width: 900px) { .mist-split { grid-template-columns: 2fr 1fr; } }
+.mist-split--even { grid-template-columns: 1fr; }
+@media (min-width: 900px) { .mist-split--even { grid-template-columns: 1fr 1fr; } }
+
+.mist-row   { display: flex; align-items: center; gap: var(--mist-sys-spacing-inset-sm); }
+.mist-row--between { justify-content: space-between; }
+.mist-stack { display: flex; flex-direction: column; gap: var(--mist-sys-spacing-stack-md); }
+.mist-stack--sm { gap: var(--mist-sys-spacing-stack-sm); }
+.mist-grow  { flex: 1; min-inline-size: 0; }
+
+/* 限寬容器 */
+.mist-shell { max-inline-size: var(--mist-comp-surface-shell-max-width); margin-inline: auto; }
+
+/* 置中，給固定尺寸的畫布用 */
+.mist-center { display: grid; place-items: center; }
+/* 等比縮放容器。--mist-fit-scale 由頁面的選配 script 設定；
+   沒設定時是 1，畫布維持原尺寸、內容一樣正確。
+
+   用 zoom 不用 transform：transform 不改變版面尺寸，縮小後外層仍佔原始高度，
+   頁面會多出一條捲軸。zoom 會連版面一起縮。 */
+.mist-fit { zoom: var(--mist-fit-scale, 1); }
+.mist-shell--narrow { max-inline-size: var(--mist-comp-surface-shell-max-width-narrow); }
+
+
+/* 共用 focus ring */
+.mist-btn:focus-visible,
+.mist-option:focus-visible,
+.mist-spec:focus-visible,
+.mist-task:focus-visible,
+.mist-nav__link:focus-visible,
+.mist-field__input:focus-visible,
+.mist-chart__node:focus-visible {
+  outline: var(--mist-comp-a11y-focus-ring-width) solid var(--mist-comp-a11y-focus-ring-color);
+  outline-offset: var(--mist-comp-a11y-focus-ring-offset);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   1. surface — 三層亮度階梯。層次靠亮度差，不靠陰影
+   ═══════════════════════════════════════════════════════════ */
+.mist-page {
+  background: var(--mist-comp-surface-page-color);
+  padding: var(--mist-comp-surface-page-padding);
+  min-block-size: 100vh;
+}
+.mist-app {
+  background: var(--mist-comp-surface-app-color);
+  border-radius: var(--mist-comp-surface-app-shape);
+  padding: var(--mist-comp-surface-app-padding);
+  display: flex; flex-direction: column;
+  gap: var(--mist-comp-surface-app-gap);
+}
+.mist-card {
+  background: var(--mist-comp-surface-card-color);
+  border-radius: var(--mist-comp-surface-card-shape);
+  padding: var(--mist-comp-surface-card-padding);
+  display: flex; flex-direction: column;
+  gap: var(--mist-comp-surface-card-gap);
+}
+.mist-card--lg {
+  padding: var(--mist-comp-surface-card-lg-padding);
+  gap: var(--mist-comp-surface-card-lg-gap);
+}
+.mist-inset {
+  background: var(--mist-comp-surface-inset-color);
+  border-radius: var(--mist-comp-surface-inset-shape);
+  padding: var(--mist-comp-surface-inset-padding);
+}
+.mist-divider {
+  border: 0; margin: 0;
+  block-size: var(--mist-comp-surface-divider-width);
+  background: var(--mist-comp-surface-divider-color);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   2. nav
+   ═══════════════════════════════════════════════════════════ */
+.mist-nav {
+  display: flex; align-items: center;
+  gap: var(--mist-comp-nav-container-gap);
+  min-block-size: var(--mist-comp-nav-container-height);
+}
+.mist-nav__brand {
+  display: inline-flex; align-items: center; gap: var(--mist-comp-nav-brand-gap);
+  font: var(--mist-comp-nav-brand-type);
+  color: var(--mist-comp-nav-brand-color);
+  text-decoration: none;
+}
+.mist-nav__mark {
+  inline-size: var(--mist-comp-nav-brand-mark-size);
+  block-size: var(--mist-comp-nav-brand-mark-size);
+  border-radius: var(--mist-comp-nav-brand-mark-shape);
+  background: var(--mist-comp-nav-brand-mark-color);
+  flex: none;
+}
+.mist-nav__links { display: flex; align-items: center; gap: var(--mist-comp-nav-container-gap); }
+.mist-nav__link {
+  font: var(--mist-comp-nav-item-type);
+  color: var(--mist-comp-nav-item-color-enabled);
+  text-decoration: none;
+  padding-block: var(--mist-comp-nav-item-padding-y);
+  border-block-end: var(--mist-comp-nav-item-underline-width) solid transparent;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+.mist-nav__link:hover { color: var(--mist-comp-nav-item-color-active); }
+.mist-nav__link.is-active {
+  color: var(--mist-comp-nav-item-color-active);
+  border-block-end-color: var(--mist-comp-nav-item-underline-color);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   3. button
+   ═══════════════════════════════════════════════════════════ */
+.mist-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--btn-gap);
+  block-size: var(--btn-h);
+  padding-inline: var(--btn-px);
+  border: var(--btn-bw) solid var(--btn-bc);
+  border-radius: var(--btn-shape);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font: var(--btn-font);
+  cursor: pointer; user-select: none; text-decoration: none;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+.mist-btn:hover:not(:disabled)  { background: var(--btn-bg-h); border-color: var(--btn-bc-h); }
+.mist-btn:active:not(:disabled) { background: var(--btn-bg-p); }
+.mist-btn:disabled,
+.mist-btn[aria-disabled="true"] {
+  background: var(--btn-bg-d); color: var(--btn-fg-d);
+  border-color: var(--btn-bc-d); cursor: not-allowed;
+}
+.mist-btn__icon { inline-size: var(--btn-icon); block-size: var(--btn-icon); flex: none; }
+.mist-btn--block { display: flex; inline-size: 100%; }
+
+.mist-btn--primary {
+  --btn-bg:   var(--mist-comp-button-primary-container-color-enabled);
+  --btn-bg-h: var(--mist-comp-button-primary-container-color-hover);
+  --btn-bg-p: var(--mist-comp-button-primary-container-color-pressed);
+  --btn-bg-d: var(--mist-comp-button-primary-container-color-disabled);
+  --btn-fg:   var(--mist-comp-button-primary-label-color-enabled);
+  --btn-fg-d: var(--mist-comp-button-primary-label-color-disabled);
+  --btn-font: var(--mist-comp-button-primary-label-type);
+  --btn-h:    var(--mist-comp-button-primary-container-height);
+  --btn-px:   var(--mist-comp-button-primary-container-padding-x);
+  --btn-gap:  var(--mist-comp-button-primary-container-gap);
+  --btn-shape:var(--mist-comp-button-primary-container-shape);
+  --btn-bw:   var(--mist-comp-button-primary-container-border-width);
+  --btn-bc: transparent; --btn-bc-h: transparent; --btn-bc-d: transparent;
+  --btn-icon: var(--mist-comp-button-primary-icon-size);
+}
+.mist-btn--secondary {
+  --btn-bg:   var(--mist-comp-button-secondary-container-color-enabled);
+  --btn-bg-h: var(--mist-comp-button-secondary-container-color-hover);
+  --btn-bg-p: var(--mist-comp-button-secondary-container-color-pressed);
+  --btn-bg-d: var(--mist-comp-button-secondary-container-color-disabled);
+  --btn-fg:   var(--mist-comp-button-secondary-label-color-enabled);
+  --btn-fg-d: var(--mist-comp-button-secondary-label-color-disabled);
+  --btn-font: var(--mist-comp-button-secondary-label-type);
+  --btn-h:    var(--mist-comp-button-secondary-container-height);
+  --btn-px:   var(--mist-comp-button-secondary-container-padding-x);
+  --btn-gap:  var(--mist-comp-button-secondary-container-gap);
+  --btn-shape:var(--mist-comp-button-secondary-container-shape);
+  --btn-bw:   var(--mist-comp-button-secondary-container-border-width);
+  --btn-bc:   var(--mist-comp-button-secondary-border-color-enabled);
+  --btn-bc-h: var(--mist-comp-button-secondary-border-color-hover);
+  --btn-bc-d: var(--mist-comp-button-secondary-border-color-disabled);
+  --btn-icon: var(--mist-comp-button-secondary-icon-size);
+}
+.mist-btn--ghost {
+  --btn-bg:   var(--mist-comp-button-ghost-container-color-enabled);
+  --btn-bg-h: var(--mist-comp-button-ghost-container-color-hover);
+  --btn-bg-p: var(--mist-comp-button-ghost-container-color-pressed);
+  --btn-bg-d: var(--mist-comp-button-ghost-container-color-disabled);
+  --btn-fg:   var(--mist-comp-button-ghost-label-color-enabled);
+  --btn-fg-d: var(--mist-comp-button-ghost-label-color-disabled);
+  --btn-font: var(--mist-comp-button-ghost-label-type);
+  --btn-h:    var(--mist-comp-button-ghost-container-height);
+  --btn-px:   var(--mist-comp-button-ghost-container-padding-x);
+  --btn-gap:  var(--mist-comp-button-ghost-container-gap);
+  --btn-shape:var(--mist-comp-button-ghost-container-shape);
+  --btn-bw:   var(--mist-comp-button-ghost-container-border-width);
+  --btn-bc: transparent; --btn-bc-h: transparent; --btn-bc-d: transparent;
+  --btn-icon: var(--mist-comp-button-ghost-icon-size);
+}
+/* 圓形 icon button */
+.mist-btn--icon {
+  --btn-bg:   var(--mist-comp-button-icon-container-color-enabled);
+  --btn-bg-h: var(--mist-comp-button-icon-container-color-hover);
+  --btn-bg-p: var(--mist-comp-button-icon-container-color-pressed);
+  --btn-bg-d: var(--mist-comp-button-icon-container-color-disabled);
+  --btn-fg:   var(--mist-comp-button-icon-icon-color-enabled);
+  --btn-fg-d: var(--mist-comp-button-icon-icon-color-disabled);
+  --btn-font: var(--mist-comp-chart-node-label-type);
+  --btn-h:    var(--mist-comp-button-icon-container-size);
+  --btn-px:   0;
+  --btn-gap:  0;
+  --btn-shape:var(--mist-comp-button-icon-container-shape);
+  --btn-bw:   var(--mist-comp-button-icon-container-border-width);
+  --btn-bc:   var(--mist-comp-button-icon-border-color-enabled);
+  --btn-bc-h: var(--mist-comp-button-icon-border-color-enabled);
+  --btn-bc-d: var(--mist-comp-button-icon-container-color-disabled);
+  --btn-icon: var(--mist-comp-button-icon-icon-size);
+  inline-size: var(--mist-comp-button-icon-container-size);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. badge — filled pill。狀態靠顏色，刻意不用綠/黃/紅
+   ═══════════════════════════════════════════════════════════ */
+.mist-badge {
+  display: inline-flex; align-items: center;
+  gap: var(--mist-comp-badge-container-gap);
+  block-size: var(--mist-comp-badge-container-height);
+  padding-inline: var(--mist-comp-badge-container-padding-x);
+  border-radius: var(--mist-comp-badge-container-shape);
+  font: var(--mist-comp-badge-label-type);
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  white-space: nowrap;
+}
+.mist-badge--done      { --badge-bg: var(--mist-comp-badge-container-color-done);      --badge-fg: var(--mist-comp-badge-label-color-done); }
+.mist-badge--active    { --badge-bg: var(--mist-comp-badge-container-color-active);    --badge-fg: var(--mist-comp-badge-label-color-active); }
+.mist-badge--idle      { --badge-bg: var(--mist-comp-badge-container-color-idle);      --badge-fg: var(--mist-comp-badge-label-color-idle); }
+.mist-badge--attention { --badge-bg: var(--mist-comp-badge-container-color-attention); --badge-fg: var(--mist-comp-badge-label-color-attention); }
+/* 漲跌。刻意不用綠紅 —— 上漲＝深藍黑實心、下跌＝ember 橘，沿用狀態色的邏輯 */
+.mist-badge--up   { --badge-bg: var(--mist-comp-badge-container-color-up);   --badge-fg: var(--mist-comp-badge-label-color-up); }
+.mist-badge--down { --badge-bg: var(--mist-comp-badge-container-color-down); --badge-fg: var(--mist-comp-badge-label-color-down); }
+.mist-badge__icon { inline-size: var(--mist-comp-badge-icon-size); block-size: var(--mist-comp-badge-icon-size); flex: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   5. option-card — 選擇題大選項
+   ★ 招牌：選中時由邊到邊被高亮圈出（高亮鋪滿整張卡，不是內縮色塊）
+   ═══════════════════════════════════════════════════════════ */
+.mist-option {
+  position: relative;
+  /* marker 垂直置中。有說明文字（兩行）時 flex-start 會讓圓點偏上，
+     單行的情況置中與 flex-start 等效，所以直接當預設。 */
+  display: flex; align-items: center;
+  gap: var(--mist-comp-option-card-container-gap);
+  inline-size: 100%;
+  min-block-size: var(--mist-comp-option-card-container-min-height);
+  padding: var(--mist-comp-option-card-container-padding-y) var(--mist-comp-option-card-container-padding-x);
+  border: var(--mist-comp-option-card-container-border-width) solid var(--mist-comp-option-card-border-color-enabled);
+  border-radius: var(--mist-comp-option-card-container-shape);
+  background: var(--mist-comp-option-card-container-color-enabled);
+  text-align: start; cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+.mist-option:hover:not([aria-disabled="true"]) {
+  background: var(--mist-comp-option-card-container-color-hover);
+  border-color: var(--mist-comp-option-card-border-color-hover);
+}
+/* ★ 貫穿高亮層 */
+.mist-option::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: var(--mist-comp-option-card-highlight-color);
+  opacity: 0; transition: opacity 140ms ease; pointer-events: none;
+}
+.mist-option > * { position: relative; }     /* 內容浮在高亮之上 */
+.mist-option[aria-checked="true"]::before { opacity: 1; }
+.mist-option[aria-checked="true"] { border-color: var(--mist-comp-option-card-border-color-selected); }
+.mist-option[aria-disabled="true"] {
+  background: var(--mist-comp-option-card-container-color-disabled);
+  cursor: not-allowed;
+}
+.mist-option[aria-disabled="true"] .mist-option__label { color: var(--mist-comp-option-card-label-color-disabled); }
+
+.mist-option__marker {
+  flex: none;
+  inline-size: var(--mist-comp-option-card-marker-size);
+  block-size: var(--mist-comp-option-card-marker-size);
+  border-radius: var(--mist-comp-option-card-marker-shape);
+  background: var(--mist-comp-option-card-marker-color-enabled);
+  display: grid; place-items: center;
+  transition: background-color 140ms ease;
+}
+.mist-option[aria-checked="true"] .mist-option__marker {
+  background: var(--mist-comp-option-card-marker-color-selected);
+}
+.mist-option__marker svg {
+  inline-size: var(--mist-comp-option-card-marker-icon-size);
+  block-size: var(--mist-comp-option-card-marker-icon-size);
+  color: var(--mist-comp-option-card-marker-icon-color);
+  opacity: 0; transition: opacity 140ms ease;
+}
+.mist-option[aria-checked="true"] .mist-option__marker svg { opacity: 1; }
+
+.mist-option__body  { display: flex; flex-direction: column; gap: var(--mist-comp-option-card-body-gap); }
+.mist-option__label { font: var(--mist-comp-option-card-label-type); color: var(--mist-comp-option-card-label-color-enabled); }
+.mist-option__desc  { font: var(--mist-comp-option-card-description-type); color: var(--mist-comp-option-card-description-color); }
+
+/* ═══════════════════════════════════════════════════════════
+   6. spec-card — 並列比較用的可選規格卡
+   OptionCard 是「一句話的選項」；這個是「一張帶固定欄位的方案」。
+   選擇語義相同，所以共用招牌；身體不同，所以是另一個元件。
+   ★ 招牌：選中時高亮由邊到邊鋪滿整張卡
+   ═══════════════════════════════════════════════════════════ */
+.mist-specs {
+  display: grid;
+  gap: var(--mist-comp-spec-card-grid-gap);
+  /* min() 是必要的：容器比欄寬下限還窄時，minmax 的 min 不會縮，卡片會整片溢出 */
+  grid-template-columns: repeat(auto-fit, minmax(min(var(--mist-comp-spec-card-grid-min-width), 100%), 1fr));
+}
+
+.mist-spec {
+  position: relative;
+  display: flex; flex-direction: column;
+  gap: var(--mist-comp-spec-card-container-gap);
+  inline-size: 100%;
+  padding: var(--mist-comp-spec-card-container-padding-y) var(--mist-comp-spec-card-container-padding-x);
+  border: var(--mist-comp-spec-card-container-border-width) solid var(--mist-comp-spec-card-border-color-enabled);
+  border-radius: var(--mist-comp-spec-card-container-shape);
+  background: var(--mist-comp-spec-card-container-color-enabled);
+  text-align: start; cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+.mist-spec:hover:not([aria-disabled="true"]) {
+  background: var(--mist-comp-spec-card-container-color-hover);
+  border-color: var(--mist-comp-spec-card-border-color-hover);
+}
+/* ★ 貫穿高亮層 */
+.mist-spec::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: var(--mist-comp-spec-card-highlight-color);
+  opacity: 0; transition: opacity 140ms ease; pointer-events: none;
+}
+.mist-spec > * { position: relative; }     /* 內容浮在高亮之上 */
+.mist-spec[aria-checked="true"]::before { opacity: 1; }
+.mist-spec[aria-checked="true"] {
+  background: var(--mist-comp-spec-card-container-color-selected);
+  border-color: var(--mist-comp-spec-card-border-color-selected);
+}
+.mist-spec[aria-disabled="true"] {
+  background: var(--mist-comp-spec-card-container-color-disabled);
+  cursor: not-allowed;
+}
+.mist-spec[aria-disabled="true"] .mist-spec__title { color: var(--mist-comp-spec-card-title-color-disabled); }
+
+.mist-spec__head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--mist-comp-spec-card-head-gap);
+}
+.mist-spec__id {
+  font: var(--mist-comp-spec-card-id-type);
+  color: var(--mist-comp-spec-card-id-color-enabled);
+}
+.mist-spec[aria-checked="true"] .mist-spec__id { color: var(--mist-comp-spec-card-id-color-selected); }
+
+.mist-spec__title { font: var(--mist-comp-spec-card-title-type); color: var(--mist-comp-spec-card-title-color-enabled); }
+/* 願景吃掉剩餘高度，讓同一列卡片的規格區與底部對齊 */
+.mist-spec__lede  { font: var(--mist-comp-spec-card-lede-type);  color: var(--mist-comp-spec-card-lede-color); flex: 1; }
+
+.mist-spec__rows { display: grid; margin: 0; }
+/* 欄名在窄版疊在值上面：卡片窄的時候固定寬的欄名會把值擠成每行兩三個字 */
+.mist-spec__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--mist-comp-spec-card-row-gap);
+  padding-block: var(--mist-comp-spec-card-row-padding-y);
+  border-block-start: var(--mist-comp-spec-card-row-divider-width) solid var(--mist-comp-spec-card-row-divider-color);
+}
+@media (min-width: 900px) {
+  .mist-spec__row { grid-template-columns: var(--mist-comp-spec-card-row-term-width) minmax(0, 1fr); }
+}
+.mist-spec__term   { font: var(--mist-comp-spec-card-term-type);   color: var(--mist-comp-spec-card-term-color);   margin: 0; }
+.mist-spec__detail { font: var(--mist-comp-spec-card-detail-type); color: var(--mist-comp-spec-card-detail-color); margin: 0; }
+
+.mist-spec__foot {
+  display: flex; align-items: center;
+  gap: var(--mist-comp-spec-card-foot-gap);
+  padding-block-start: var(--mist-comp-spec-card-foot-padding-y);
+  border-block-start: var(--mist-comp-spec-card-foot-divider-width) solid var(--mist-comp-spec-card-foot-divider-color);
+  font: var(--mist-comp-spec-card-foot-type);
+  color: var(--mist-comp-spec-card-foot-color-enabled);
+}
+.mist-spec[aria-checked="true"] .mist-spec__foot { color: var(--mist-comp-spec-card-foot-color-selected); }
+.mist-spec__foot svg {
+  flex: none;
+  inline-size: var(--mist-comp-spec-card-foot-icon-size);
+  block-size: var(--mist-comp-spec-card-foot-icon-size);
+  color: currentColor;
+  opacity: 0; transition: opacity 140ms ease;
+}
+.mist-spec[aria-checked="true"] .mist-spec__foot svg { opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════════
+   7. progress
+   ═══════════════════════════════════════════════════════════ */
+.mist-progress {
+  block-size: var(--mist-comp-progress-track-height);
+  border-radius: var(--mist-comp-progress-track-shape);
+  background: var(--mist-comp-progress-track-color);
+  overflow: hidden;
+}
+.mist-progress--thin { block-size: var(--mist-comp-progress-thin-height); }
+.mist-progress__bar {
+  block-size: 100%;
+  inline-size: var(--mist-progress-value, 0%);
+  border-radius: var(--mist-comp-progress-indicator-shape);
+  background: var(--mist-comp-progress-indicator-color);
+  transition: inline-size 240ms ease;
+}
+/* 分段式（問卷進度） */
+.mist-steps { display: flex; gap: var(--mist-comp-progress-step-gap); }
+.mist-steps__step {
+  flex: 1;
+  block-size: var(--mist-comp-progress-thin-height);
+  border-radius: var(--mist-comp-progress-track-shape);
+  background: var(--mist-comp-progress-step-color-todo);
+  transition: background-color 200ms ease;
+}
+.mist-steps__step.is-done,
+.mist-steps__step.is-current { background: var(--mist-comp-progress-step-color-done); }
+.mist-progress__label { font: var(--mist-comp-progress-label-type); color: var(--mist-comp-progress-label-color); }
+
+/* ═══════════════════════════════════════════════════════════
+   8. task-item — dashboard 的可勾選任務列
+   ★ 招牌變體：完成時整列被高亮鋪滿
+   ═══════════════════════════════════════════════════════════ */
+.mist-task {
+  position: relative;
+  display: flex; align-items: center;
+  gap: var(--mist-comp-task-item-container-gap);
+  inline-size: 100%;
+  min-block-size: var(--mist-comp-task-item-container-min-height);
+  padding: var(--mist-comp-task-item-container-padding-y) var(--mist-comp-task-item-container-padding-x);
+  border: 0;
+  border-radius: var(--mist-comp-task-item-container-shape);
+  background: var(--mist-comp-task-item-container-color-enabled);
+  text-align: start; cursor: pointer;
+  transition: background-color 140ms ease;
+}
+.mist-task:hover:not(.is-done) { background: var(--mist-comp-task-item-container-color-hover); }
+.mist-task.is-done { background: var(--mist-comp-task-item-container-color-done); }
+
+.mist-task__check {
+  flex: none;
+  inline-size: var(--mist-comp-task-item-checkbox-size);
+  block-size: var(--mist-comp-task-item-checkbox-size);
+  border-radius: var(--mist-comp-task-item-checkbox-shape);
+  border: var(--mist-comp-task-item-checkbox-border-width) solid var(--mist-comp-task-item-checkbox-border-color-enabled);
+  background: var(--mist-comp-task-item-checkbox-color-enabled);
+  display: grid; place-items: center;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+.mist-task.is-done .mist-task__check {
+  background: var(--mist-comp-task-item-checkbox-color-done);
+  border-color: var(--mist-comp-task-item-checkbox-border-color-done);
+}
+.mist-task__check svg {
+  inline-size: var(--mist-comp-task-item-checkbox-icon-size);
+  block-size: var(--mist-comp-task-item-checkbox-icon-size);
+  color: var(--mist-comp-task-item-checkbox-icon-color);
+  opacity: 0; transition: opacity 140ms ease;
+}
+.mist-task.is-done .mist-task__check svg { opacity: 1; }
+
+.mist-task__body  { display: flex; flex-direction: column; gap: var(--mist-comp-task-item-body-gap); flex: 1; min-inline-size: 0; }
+.mist-task__label { font: var(--mist-comp-task-item-label-type); color: var(--mist-comp-task-item-label-color-enabled); }
+.mist-task.is-done .mist-task__label { color: var(--mist-comp-task-item-label-color-done); }
+.mist-task__meta  { font: var(--mist-comp-task-item-meta-type); color: var(--mist-comp-task-item-meta-color); }
+
+/* ═══════════════════════════════════════════════════════════
+   9. stat-tile — 字級兩極化的展示位
+   ═══════════════════════════════════════════════════════════ */
+.mist-stat {
+  display: flex; flex-direction: column;
+  gap: var(--mist-comp-stat-tile-container-gap);
+  min-inline-size: 0;
+}
+.mist-stat__value { font: var(--mist-comp-stat-tile-value-type); color: var(--mist-comp-stat-tile-value-color); }
+.mist-stat--sm .mist-stat__value { font: var(--mist-comp-stat-tile-value-sm-type); }
+.mist-stat__label { font: var(--mist-comp-stat-tile-label-type); color: var(--mist-comp-stat-tile-label-color); }
+
+/* 多欄統計，欄間 hairline。可加 accent 頂規
+ * 窄寬度換行是必要的，不是加分：欄寬低於下限時大字級會互相蓋住（手機寬度三欄就會）。
+ * 換行之後欄間的 hairline 與內距會變成莫名的縮排，所以那兩者只在寬版生效。
+ */
+.mist-stats {
+  display: flex; flex-wrap: wrap;
+  gap: var(--mist-comp-stat-tile-container-padding);
+}
+.mist-stats > .mist-stat { flex: 1 1 var(--mist-comp-stat-tile-container-min-width); }
+@media (min-width: 900px) {
+  .mist-stats { gap: 0; }
+  .mist-stats > .mist-stat { padding-inline: var(--mist-comp-stat-tile-container-padding); }
+  .mist-stats > .mist-stat:first-child { padding-inline-start: 0; }
+  .mist-stats > .mist-stat + .mist-stat {
+    border-inline-start: var(--mist-comp-stat-tile-divider-width) solid var(--mist-comp-stat-tile-divider-color);
+  }
+}
+.mist-stat--rule       { border-block-start: var(--mist-comp-stat-tile-accent-rule-width) solid var(--mist-comp-stat-tile-divider-color); padding-block-start: var(--mist-comp-stat-tile-accent-rule-gap); }
+.mist-stat--rule-accent{ border-block-start-color: var(--mist-comp-stat-tile-accent-rule-color); }
+.mist-stat--rule-mark  { border-block-start-color: var(--mist-comp-stat-tile-accent-rule-color-mark); }
+
+/* ═══════════════════════════════════════════════════════════
+   10. generating-state — AI 生成中
+   ═══════════════════════════════════════════════════════════ */
+.mist-generating {
+  background: var(--mist-comp-generating-state-container-color);
+  border-radius: var(--mist-comp-generating-state-container-shape);
+  padding: var(--mist-comp-generating-state-container-padding);
+  display: flex; flex-direction: column;
+  gap: var(--mist-comp-generating-state-container-gap);
+}
+.mist-generating__label { font: var(--mist-comp-generating-state-label-type); color: var(--mist-comp-generating-state-label-color); }
+.mist-generating__hint  { font: var(--mist-comp-generating-state-hint-type);  color: var(--mist-comp-generating-state-hint-color); }
+
+.mist-dots { display: flex; gap: var(--mist-comp-generating-state-dot-gap); align-items: center; }
+.mist-dots > i {
+  inline-size: var(--mist-comp-generating-state-dot-size);
+  block-size: var(--mist-comp-generating-state-dot-size);
+  border-radius: var(--mist-comp-generating-state-dot-shape);
+  background: var(--mist-comp-generating-state-dot-color);
+  animation: mist-pulse 1200ms ease-in-out infinite;
+}
+.mist-dots > i:nth-child(2) { animation-delay: 160ms; background: var(--mist-comp-generating-state-dot-color-alt); }
+.mist-dots > i:nth-child(3) { animation-delay: 320ms; }
+@keyframes mist-pulse { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+
+/* 骨架線 */
+.mist-skeleton { display: flex; flex-direction: column; gap: var(--mist-comp-generating-state-line-gap); }
+.mist-skeleton > i {
+  block-size: var(--mist-comp-generating-state-line-height);
+  border-radius: var(--mist-comp-generating-state-line-shape);
+  background: var(--mist-comp-generating-state-line-color);
+  animation: mist-breathe 1600ms ease-in-out infinite;
+}
+.mist-skeleton > i:nth-child(2) { inline-size: 92%; animation-delay: 120ms; }
+.mist-skeleton > i:nth-child(3) { inline-size: 78%; animation-delay: 240ms; }
+.mist-skeleton > i:nth-child(4) { inline-size: 86%; animation-delay: 360ms; }
+.mist-skeleton > i:nth-child(5) { inline-size: 54%; animation-delay: 480ms; }
+@keyframes mist-breathe { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+/* 逐字顯示的游標 */
+.mist-stream::after {
+  content: ""; display: inline-block; vertical-align: text-bottom;
+  inline-size: var(--mist-comp-generating-state-caret-width);
+  block-size: 1em;
+  margin-inline-start: var(--mist-comp-generating-state-caret-gap);
+  background: var(--mist-comp-generating-state-caret-color);
+  animation: mist-blink 1000ms step-end infinite;
+}
+@keyframes mist-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* ═══════════════════════════════════════════════════════════
+   11. chart — 標記寬度固定，不隨容器撐開
+   12px 條（要讀數值）／ 2px 細線（只讀趨勢）／ 8px 環（部分佔整體）
+   ★ 招牌的正宗實作：高亮柱從資料區貫穿到選擇器
+   ═══════════════════════════════════════════════════════════ */
+.mist-lollipop {
+  display: flex; align-items: stretch;
+  gap: var(--mist-comp-chart-plot-gap);
+  block-size: var(--mist-comp-chart-plot-height);
+  /* 欄數 × 節點寬度塞不進容器時橫向捲，不要把最後一欄切掉 */
+  overflow-x: auto;
+}
+.mist-lollipop__col {
+  /* grow 但不 shrink：有空間時平分，沒空間時保住節點寬度並讓容器捲動 */
+  position: relative; flex: 1 0 var(--mist-comp-chart-node-size);
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--mist-comp-chart-plot-col-gap);
+  padding-block: var(--mist-comp-chart-plot-col-padding-y);
+  cursor: pointer;
+}
+/* ★ 貫穿高亮柱：從欄頂一路蓋到最底的節點 */
+.mist-lollipop__col::before {
+  content: ""; position: absolute; inset-block: 0; inset-inline: 0;
+  border-radius: var(--mist-comp-chart-highlight-shape);
+  background: var(--mist-comp-chart-highlight-color);
+  opacity: 0; transition: opacity 160ms ease; pointer-events: none;
+}
+.mist-lollipop__col.is-selected::before { opacity: 1; }
+.mist-lollipop__col > * { position: relative; }
+
+.mist-lollipop__plot { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; inline-size: 100%; }
+/* 柱身：12px 的條，兩端圓頭。原本是 1px hairline + 一顆圓點（lollipop），
+   加粗之後那顆點變成浮在柱子上的贅生物，已移除 —— 圓頭本身就是收尾。 */
+.mist-lollipop__stem {
+  inline-size: var(--mist-comp-chart-stem-width);
+  border-radius: var(--mist-comp-chart-stem-shape);
+  background: var(--mist-comp-chart-stem-color);
+  block-size: var(--mist-stem, 50%);
+  flex: none;
+  transition: background-color 160ms ease;
+}
+.mist-lollipop__col.is-selected .mist-lollipop__stem {
+  background: var(--mist-comp-chart-stem-color-selected);
+}
+.mist-lollipop__node {
+  inline-size: var(--mist-comp-chart-node-size);
+  block-size: var(--mist-comp-chart-node-size);
+  border-radius: var(--mist-comp-chart-node-shape);
+  background: var(--mist-comp-chart-node-color-enabled);
+  color: var(--mist-comp-chart-node-label-color-enabled);
+  border: 0;
+  font: var(--mist-comp-chart-node-label-type);
+  display: grid; place-items: center; cursor: pointer; flex: none;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.mist-lollipop__col.is-selected .mist-lollipop__node {
+  background: var(--mist-comp-chart-node-color-selected);
+  color: var(--mist-comp-chart-node-label-color-selected);
+}
+/* 每欄都保留 tip 的位置，只有選中欄顯示 —— 這樣切換選中不會讓版面跳動 */
+.mist-lollipop__tip { visibility: hidden; }
+.mist-lollipop__col.is-selected .mist-lollipop__tip { visibility: visible; }
+.mist-lollipop__tip {
+  align-self: center;
+  display: inline-flex; align-items: center;
+  block-size: var(--mist-comp-chart-tooltip-height);
+  padding-inline: var(--mist-comp-chart-tooltip-padding-x);
+  border-radius: var(--mist-comp-chart-tooltip-shape);
+  background: var(--mist-comp-chart-tooltip-color);
+  color: var(--mist-comp-chart-tooltip-label-color);
+  font: var(--mist-comp-chart-tooltip-type);
+  white-space: nowrap;
+}
+.mist-lollipop__axis { font: var(--mist-comp-chart-axis-label-type); color: var(--mist-comp-chart-axis-label-color); }
+
+/* 密集細線圖（頻譜式）。**只表達趨勢形狀，不用來讀個別數值** ——
+   要讀數值請用 .mist-lollipop。線寬固定 2px，不用 flex:1 撐開。 */
+.mist-hairbars {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: var(--mist-comp-chart-hairbar-gap);
+  block-size: var(--mist-comp-chart-hairbar-height);
+}
+/* 固定線寬，不用 flex:1 —— 否則根數少時會脹成實心色塊，違反「用線不用面」 */
+.mist-hairbars > i {
+  flex: none;
+  inline-size: var(--mist-comp-chart-hairbar-line-width);
+  block-size: var(--mist-bar, 50%);
+  background: var(--mist-comp-chart-hairbar-color);
+}
+.mist-hairbars--accent > i { background: var(--mist-comp-chart-hairbar-color-accent); }
+.mist-hairbars--mark   > i { background: var(--mist-comp-chart-hairbar-color-mark); }
+
+/* ═══════════════════════════════════════════════════════════
+   11b. donut — 部分佔整體
+   用描邊畫環，不填色。線寬固定 8px，不隨容器縮放。
+   ★ 招牌：選中的環段後方有一圈更寬的淺色帶，沿弧線貫穿
+   ═══════════════════════════════════════════════════════════ */
+.mist-donut { display: flex; flex-direction: column; gap: var(--mist-comp-donut-container-gap); }
+.mist-donut__figure {
+  position: relative; align-self: center; max-inline-size: 100%;
+  inline-size: var(--mist-comp-donut-container-size);
+  block-size: var(--mist-comp-donut-container-size);
+}
+.mist-donut__svg { inline-size: 100%; block-size: 100%; display: block; }
+
+/* viewBox 必須是 0 0 240 240（＝ container size），circle 用 r=104 且帶 pathLength="100"。
+   pathLength 把弧長正規化成 0–100，所以 dasharray 可以直接寫百分比。
+
+   這裡**不能用 non-scaling-stroke** —— 它會讓 dasharray 改用螢幕單位計算，
+   圓周變成 600px 而 dash 還是 61，圖案就重複成一圈虛線。
+   viewBox 與實際尺寸 1:1，所以 stroke-width 的 px 值本來就準確。 */
+.mist-donut__track, .mist-donut__seg, .mist-donut__band {
+  fill: none;
+  transform: rotate(-90deg); transform-origin: center;
+}
+.mist-donut__track {
+  stroke: var(--mist-comp-donut-track-color);
+  stroke-width: var(--mist-comp-donut-track-width);
+}
+.mist-donut__band {
+  stroke: var(--mist-comp-donut-highlight-color);
+  stroke-width: var(--mist-comp-donut-highlight-width);
+  stroke-dasharray: var(--mist-arc, 0) 100;
+  stroke-dashoffset: calc(var(--mist-arc-start, 0) * -1);
+  opacity: 0; transition: opacity 160ms ease;
+}
+.mist-donut__band.is-selected { opacity: 1; }
+.mist-donut__seg {
+  stroke-width: var(--mist-comp-donut-segment-width);
+  stroke-dasharray: var(--mist-arc, 0) 100;
+  stroke-dashoffset: calc(var(--mist-arc-start, 0) * -1);
+  transition: stroke-width 160ms ease; cursor: pointer;
+}
+.mist-donut__seg.is-selected { stroke-width: var(--mist-comp-donut-segment-width-selected); }
+.mist-donut__seg--mark   { stroke: var(--mist-comp-donut-segment-color-mark); }
+.mist-donut__seg--accent { stroke: var(--mist-comp-donut-segment-color-accent); }
+.mist-donut__seg--alt    { stroke: var(--mist-comp-donut-segment-color-alt); }
+.mist-donut__seg--muted  { stroke: var(--mist-comp-donut-segment-color-muted); }
+
+.mist-donut__center {
+  position: absolute; inset: 0; pointer-events: none; text-align: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--mist-comp-donut-center-gap);
+}
+.mist-donut__value { font: var(--mist-comp-donut-center-value-type); color: var(--mist-comp-donut-center-value-color); }
+.mist-donut__label { font: var(--mist-comp-donut-center-label-type); color: var(--mist-comp-donut-center-label-color); }
+
+.mist-donut__legend { display: flex; flex-direction: column; gap: var(--mist-comp-donut-legend-gap); }
+.mist-donut__item {
+  display: flex; align-items: center; inline-size: 100%;
+  gap: var(--mist-comp-donut-legend-item-gap);
+  border: 0; background: none; padding: 0; cursor: pointer; text-align: start;
+}
+/* 純展示的圖例（不是按鈕）不該有 pointer 游標 */
+.mist-donut__item:not(button) { cursor: default; }
+.mist-donut__dot {
+  flex: none;
+  inline-size: var(--mist-comp-donut-legend-dot-size);
+  block-size: var(--mist-comp-donut-legend-dot-size);
+  border-radius: var(--mist-comp-donut-legend-dot-shape);
+}
+.mist-donut__item--mark   .mist-donut__dot { background: var(--mist-comp-donut-segment-color-mark); }
+.mist-donut__item--accent .mist-donut__dot { background: var(--mist-comp-donut-segment-color-accent); }
+.mist-donut__item--alt    .mist-donut__dot { background: var(--mist-comp-donut-segment-color-alt); }
+.mist-donut__item--muted  .mist-donut__dot { background: var(--mist-comp-donut-segment-color-muted); }
+.mist-donut__name {
+  flex: 1; min-inline-size: 0;
+  font: var(--mist-comp-donut-legend-label-type);
+  color: var(--mist-comp-donut-legend-label-color-enabled);
+  transition: color 140ms ease;
+}
+.mist-donut__item.is-selected .mist-donut__name { color: var(--mist-comp-donut-legend-label-color-selected); }
+.mist-donut__pct { font: var(--mist-comp-donut-legend-value-type); color: var(--mist-comp-donut-legend-value-color); }
+
+/* 半圓儀表：只畫上半圈。dasharray 的滿值變成 50，所以資料要傳「百分比的一半」。
+   容器高度砍半，中央數字往下靠齊弧線的開口。 */
+.mist-donut--half .mist-donut__figure { block-size: calc(var(--mist-comp-donut-container-size) / 2); overflow: hidden; }
+.mist-donut--half .mist-donut__svg { block-size: var(--mist-comp-donut-container-size); }
+/* 半圓的起點要在 9 點鐘方向（整圓是 12 點鐘），弧才會往上掃過可見的上半部。
+   50% 剛好等於 180°，也就是整個上半圓。 */
+.mist-donut--half .mist-donut__track,
+.mist-donut--half .mist-donut__seg,
+.mist-donut--half .mist-donut__band {
+  stroke-linecap: round;
+  transform: rotate(180deg);
+}
+.mist-donut--half .mist-donut__track { stroke-dasharray: 50 100; }
+.mist-donut--half .mist-donut__center { justify-content: flex-end; }
+
+/* ═══════════════════════════════════════════════════════════
+   11c. linechart — 時間序列
+   平滑曲線 + 虛線格線。hover 的垂直線、圓點、tooltip 由選配的
+   js/mist-charts.js 驅動；沒有那支 JS 時靜態外觀依然完全正確。
+   ★ 招牌：選中的 X 軸標籤有 pill 底，垂直線從資料區貫穿下來接到它
+   ═══════════════════════════════════════════════════════════ */
+.mist-linechart { display: flex; flex-direction: column; gap: var(--mist-comp-chart-axis-gap); }
+.mist-linechart__body { display: flex; gap: var(--mist-comp-chart-axis-gap); }
+
+/* Y 軸刻度。與繪圖區同高，標籤平均分佈 */
+.mist-linechart__yaxis {
+  display: flex; flex-direction: column; justify-content: space-between;
+  block-size: var(--mist-comp-chart-plot-height-md);
+  flex: none; text-align: end;
+}
+.mist-linechart__ytick { font: var(--mist-comp-chart-axis-label-type); color: var(--mist-comp-chart-axis-label-color); }
+
+.mist-linechart__plot {
+  position: relative; flex: 1; min-inline-size: 0;
+  block-size: var(--mist-comp-chart-plot-height-md);
+}
+.mist-linechart__svg { inline-size: 100%; block-size: 100%; display: block; overflow: visible; }
+
+/* 虛線水平格線 */
+.mist-linechart__grid line {
+  stroke: var(--mist-comp-chart-grid-color);
+  stroke-width: var(--mist-comp-chart-grid-width);
+  stroke-dasharray: var(--mist-comp-chart-grid-dash);
+  vector-effect: non-scaling-stroke;
+}
+/* 序列。線寬固定 px，不隨 viewBox 縮放 */
+.mist-linechart__line {
+  fill: none;
+  stroke-width: var(--mist-comp-chart-series-width);
+  stroke-linecap: round; stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.mist-linechart__line--primary   { stroke: var(--mist-comp-chart-series-color-primary); }
+.mist-linechart__line--secondary { stroke: var(--mist-comp-chart-series-color-secondary); }
+
+/* ★ hover 的垂直指示線 */
+.mist-linechart__cursor {
+  stroke: var(--mist-comp-chart-cursor-line-color);
+  stroke-width: var(--mist-comp-chart-cursor-line-width);
+  vector-effect: non-scaling-stroke;
+  opacity: 0; transition: opacity 120ms ease;
+}
+.mist-linechart.is-active .mist-linechart__cursor { opacity: 1; }
+.mist-linechart__marker {
+  r: calc(var(--mist-comp-chart-cursor-dot-size) / 2);
+  stroke: var(--mist-comp-chart-cursor-dot-ring-color);
+  stroke-width: var(--mist-comp-chart-cursor-dot-ring-width);
+  vector-effect: non-scaling-stroke;
+  opacity: 0; transition: opacity 120ms ease;
+}
+.mist-linechart.is-active .mist-linechart__marker { opacity: 1; }
+.mist-linechart__marker--primary   { fill: var(--mist-comp-chart-cursor-dot-color-primary); }
+.mist-linechart__marker--secondary { fill: var(--mist-comp-chart-cursor-dot-color-secondary); }
+.mist-linechart__marker--accent    { fill: var(--mist-comp-chart-cursor-dot-color-accent); }
+
+/* 白卡 tooltip。兩行以上的內容用這個；單一數值用 .mist-lollipop__tip 的深色 pill */
+.mist-linechart__tip {
+  position: absolute; top: 0; pointer-events: none;
+  display: flex; flex-direction: column;
+  gap: var(--mist-comp-chart-tooltip-card-gap);
+  padding: var(--mist-comp-chart-tooltip-card-padding);
+  background: var(--mist-comp-chart-tooltip-card-color);
+  border: var(--mist-comp-chart-tooltip-card-border-width) solid var(--mist-comp-chart-tooltip-card-border-color);
+  border-radius: var(--mist-comp-chart-tooltip-card-shape);
+  white-space: nowrap;
+  opacity: 0; transition: opacity 120ms ease;
+}
+.mist-linechart.is-active .mist-linechart__tip { opacity: 1; }
+.mist-linechart__tip-title { font: var(--mist-comp-chart-tooltip-card-title-type); color: var(--mist-comp-chart-tooltip-card-title-color); }
+.mist-linechart__tip-value { font: var(--mist-comp-chart-tooltip-card-value-type); color: var(--mist-comp-chart-tooltip-card-value-color); }
+
+/* X 軸。選中的標籤有 pill 底 */
+.mist-linechart__xaxis { display: flex; }
+.mist-linechart__xtick {
+  flex: 1; display: flex; justify-content: center;
+  font: var(--mist-comp-chart-axis-label-type);
+  color: var(--mist-comp-chart-axis-label-color);
+}
+.mist-linechart__xtick > span {
+  padding-inline: var(--mist-comp-chart-axis-pill-padding-x);
+  border-radius: var(--mist-comp-chart-axis-pill-shape);
+  background: transparent;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.mist-linechart__xtick.is-selected > span {
+  background: var(--mist-comp-chart-axis-pill-color);
+  color: var(--mist-comp-chart-axis-label-color-selected);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   11d. funnel — 階段轉換
+   多根細條遞減，每個階段一根深色標記條。條寬固定，不隨容器撐開。
+   ★ 招牌：階段標記條就是「被選出來」的那一根
+   ═══════════════════════════════════════════════════════════ */
+.mist-funnel { display: flex; flex-direction: column; gap: var(--mist-comp-funnel-container-gap); }
+.mist-funnel__track {
+  display: flex; align-items: flex-end;
+  gap: var(--mist-comp-funnel-bar-gap);
+  block-size: var(--mist-comp-funnel-container-height);
+}
+.mist-funnel__bar {
+  flex: none;
+  inline-size: var(--mist-comp-funnel-bar-width);
+  block-size: var(--mist-bar, 50%);
+  border-radius: var(--mist-comp-funnel-bar-shape);
+  background: var(--mist-comp-funnel-bar-color);
+}
+.mist-funnel__bar.is-marked { background: var(--mist-comp-funnel-bar-color-marked); }
+
+.mist-funnel__stages { display: flex; }
+.mist-funnel__stage {
+  flex: 1; display: flex; flex-direction: column;
+  gap: var(--mist-comp-funnel-stage-gap);
+}
+.mist-funnel__pct   { font: var(--mist-comp-funnel-stage-pct-type);   color: var(--mist-comp-funnel-stage-pct-color); }
+.mist-funnel__name  { font: var(--mist-comp-funnel-stage-name-type);  color: var(--mist-comp-funnel-stage-name-color); }
+.mist-funnel__count { font: var(--mist-comp-funnel-stage-value-type); color: var(--mist-comp-funnel-stage-value-color); }
+
+/* ═══════════════════════════════════════════════════════════
+   12. field — Input / Textarea
+   ═══════════════════════════════════════════════════════════ */
+.mist-field { display: flex; flex-direction: column; gap: var(--mist-comp-field-group-gap); }
+.mist-field__label { font: var(--mist-comp-field-label-type); color: var(--mist-comp-field-label-color); }
+.mist-field__input {
+  min-block-size: var(--mist-comp-field-container-min-height);
+  padding: var(--mist-comp-field-container-padding-y) var(--mist-comp-field-container-padding-x);
+  border: var(--mist-comp-field-container-border-width) solid var(--mist-comp-field-border-color-enabled);
+  border-radius: var(--mist-comp-field-container-shape);
+  background: var(--mist-comp-field-container-color-enabled);
+  color: var(--mist-comp-field-text-color-enabled);
+  font: var(--mist-comp-field-text-type);
+  inline-size: 100%;
+  transition: border-color 140ms ease;
+}
+.mist-field__input::placeholder { color: var(--mist-comp-field-text-color-placeholder); }
+.mist-field__input:focus { border-color: var(--mist-comp-field-border-color-focus); outline: none; }
+.mist-field__input:disabled {
+  background: var(--mist-comp-field-container-color-disabled);
+  border-color: var(--mist-comp-field-border-color-disabled);
+  color: var(--mist-comp-field-text-color-disabled);
+  cursor: not-allowed;
+}
+textarea.mist-field__input {
+  resize: vertical;
+  min-block-size: var(--mist-comp-field-container-min-height-multiline);
+  /* 多行用四邊等距（＝圓角），單行則是上下較窄。
+     單行輸入的文字是垂直置中的，多行是從頂端往下排，所以兩者不能共用同一組內距。 */
+  padding-block: var(--mist-comp-field-container-padding-y-multiline);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   13. diagram — 架構／流程圖
+   節點與線都在同一個 1600×900 的座標空間裡：節點用 --x / --y
+   定位（單位是那個空間裡的數字，不是 px），SVG 直接用同一組數字畫線。
+   這樣「線接不到框」這種事不可能發生。
+   ═══════════════════════════════════════════════════════════ */
+.mist-diagram {
+  position: relative;
+  /* 疊卡用負 z-index。脈絡要建在畫布這一層 —— 建在節點上的話，
+     負 z-index 只會退到「節點自己的背景之上」，疊卡就蓋在卡面上了。 */
+  isolation: isolate;
+  inline-size: var(--mist-comp-diagram-canvas-width);
+  block-size: var(--mist-comp-diagram-canvas-height);
+  flex: none;
+}
+/* 整張圖自己就是那層畫布（16:9）。
+   畫布比一般 app 表面再深一階 —— 圖上有十幾張白卡，亮度差不夠的話
+   它們會糊成一片。這裡拉大差距，卡片才各自分得開。 */
+.mist-diagram--frame {
+  background: var(--mist-comp-diagram-canvas-color);
+  border-radius: var(--mist-comp-surface-app-shape);
+}
+
+/* 線在下、節點在上 */
+.mist-diagram__edges { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; }
+.mist-diagram__edge {
+  fill: none;
+  stroke: var(--mist-comp-diagram-edge-color);
+  stroke-width: var(--mist-comp-diagram-edge-width);
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.mist-diagram__edge--dashed { stroke-dasharray: var(--mist-comp-diagram-edge-dash); }
+/* 依階段上色。跨階段的線維持中性灰 —— 顏色的意義就是「同一個階段」 */
+.mist-diagram__edge--mark   { stroke: var(--mist-comp-diagram-edge-color-mark); }
+.mist-diagram__edge--accent { stroke: var(--mist-comp-diagram-edge-color-accent); }
+.mist-diagram__edge--alt    { stroke: var(--mist-comp-diagram-edge-color-alt); }
+.mist-diagram__edge--mark   > .mist-diagram__arrowhead { fill: var(--mist-comp-diagram-edge-color-mark); }
+.mist-diagram__arrowhead { fill: var(--mist-comp-diagram-edge-color); }
+
+/* 所有絕對定位的東西共用同一組座標換算。--x / --y 是節點中心。 */
+.mist-diagram__node,
+.mist-diagram__step,
+.mist-diagram__edge-label,
+.mist-diagram__note,
+.mist-diagram__band,
+.mist-diagram__heading,
+.mist-diagram__caption {
+  position: absolute;
+  left: calc(var(--x, 0) * 100% / 1600);
+  top:  calc(var(--y, 0) * 100% / 900);
+  transform: translate(-50%, -50%);
+}
+
+.mist-diagram__node {
+  min-inline-size: var(--mist-comp-diagram-node-min-width);
+  padding: var(--mist-comp-diagram-node-padding-y) var(--mist-comp-diagram-node-padding-x);
+  border: var(--mist-comp-diagram-node-border-width) solid var(--mist-comp-diagram-node-border-color);
+  border-radius: var(--mist-comp-diagram-node-shape);
+  background: var(--mist-comp-diagram-node-color);
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--mist-comp-diagram-node-gap);
+  text-align: center;
+}
+.mist-diagram__label { font: var(--mist-comp-diagram-label-type); color: var(--mist-comp-diagram-label-color); }
+.mist-diagram__sub   { font: var(--mist-comp-diagram-sub-type);   color: var(--mist-comp-diagram-sub-color); }
+
+/* 節點頂端的小色條，標示它屬於哪個階段。跨在上緣邊框上。 */
+.mist-diagram__rule {
+  position: absolute; top: 0; left: 50%;
+  transform: translate(-50%, -50%);
+  inline-size: var(--mist-comp-diagram-rule-width);
+  block-size: var(--mist-comp-diagram-rule-height);
+  border-radius: var(--mist-comp-diagram-rule-shape);
+}
+.mist-diagram__rule--mark   { background: var(--mist-comp-diagram-rule-color-mark); }
+.mist-diagram__rule--accent { background: var(--mist-comp-diagram-rule-color-accent); }
+.mist-diagram__rule--alt    { background: var(--mist-comp-diagram-rule-color-alt); }
+
+/* 深色實心：流程的入口與出口 */
+.mist-diagram__node--strong {
+  background: var(--mist-comp-diagram-node-strong-color);
+  border-color: var(--mist-comp-diagram-node-strong-color);
+}
+.mist-diagram__node--strong .mist-diagram__label { color: var(--mist-comp-diagram-node-strong-label-color); }
+.mist-diagram__node--strong .mist-diagram__sub   { color: var(--mist-comp-diagram-node-strong-sub-color); }
+
+/* 疊卡：表示「同一種東西有很多份」。用兩層 pseudo-element，不用多寫 DOM。 */
+.mist-diagram__node--stack::before,
+.mist-diagram__node--stack::after {
+  content: ""; position: absolute; inset: 0;
+  border: var(--mist-comp-diagram-node-border-width) solid var(--mist-comp-diagram-stack-border-color);
+  border-radius: inherit;
+  background: var(--mist-comp-diagram-stack-color);
+  z-index: -1;
+}
+.mist-diagram__node--accent.mist-diagram__node--stack::before,
+.mist-diagram__node--accent.mist-diagram__node--stack::after { background: var(--mist-comp-diagram-stack-color-accent); }
+.mist-diagram__node--alt.mist-diagram__node--stack::before,
+.mist-diagram__node--alt.mist-diagram__node--stack::after { background: var(--mist-comp-diagram-stack-color-alt); }
+
+.mist-diagram__node--stack::before {
+  translate: calc(var(--mist-comp-diagram-stack-offset) * -1) calc(var(--mist-comp-diagram-stack-offset) * -1);
+  z-index: -1;
+}
+.mist-diagram__node--stack::after {
+  translate: calc(var(--mist-comp-diagram-stack-offset) * -2) calc(var(--mist-comp-diagram-stack-offset) * -2);
+  z-index: -2;
+}
+
+/* 流程編號 */
+.mist-diagram__step {
+  inline-size: var(--mist-comp-diagram-step-size);
+  block-size: var(--mist-comp-diagram-step-size);
+  border-radius: var(--mist-comp-diagram-step-shape);
+  background: var(--mist-comp-diagram-step-color);
+  color: var(--mist-comp-diagram-step-label-color);
+  font: var(--mist-comp-diagram-step-label-type);
+  display: grid; place-items: center;
+}
+/* 用深一階的強調色，白字才有足夠對比（ember.40 對白只有 3.6:1） */
+.mist-diagram__step--accent { background: var(--mist-comp-diagram-step-color-accent); }
+.mist-diagram__step--alt    { background: var(--mist-comp-diagram-step-color-alt); }
+
+/* 線上的說明文字。要有底色才不會跟線疊在一起看不清 */
+.mist-diagram__edge-label {
+  font: var(--mist-comp-diagram-edge-label-type);
+  color: var(--mist-comp-diagram-edge-label-color);
+  background: var(--mist-comp-diagram-edge-label-backdrop);
+  padding-inline: var(--mist-comp-diagram-edge-label-padding-x);
+  white-space: nowrap;
+}
+.mist-diagram__edge-label--wrap { white-space: normal; inline-size: var(--mist-comp-diagram-node-min-width); text-align: center; }
+
+/* 標題與區段標籤是靠左對齊的，不置中 */
+.mist-diagram__heading,
+.mist-diagram__caption,
+.mist-diagram__band { transform: translate(0, -50%); }
+.mist-diagram__heading { font: var(--mist-comp-diagram-heading-type); color: var(--mist-comp-diagram-heading-color); }
+.mist-diagram__caption { font: var(--mist-comp-diagram-caption-type); color: var(--mist-comp-diagram-caption-color); }
+
+/* 側邊註解 */
+.mist-diagram__note {
+  inline-size: var(--mist-comp-diagram-note-width);
+  max-inline-size: var(--mist-comp-diagram-note-width);
+  padding: var(--mist-comp-diagram-note-padding);
+  border-radius: var(--mist-comp-diagram-note-shape);
+  background: var(--mist-comp-diagram-note-color);
+  display: flex; flex-direction: column;
+  gap: var(--mist-comp-diagram-note-gap);
+}
+/* 底部一排註解時用這個：--y 變成「上緣」而不是中心，高度不同也能對齊 */
+.mist-diagram__note--top { transform: translate(-50%, 0); }
+.mist-diagram__note-title { font: var(--mist-comp-diagram-note-title-type); color: var(--mist-comp-diagram-note-title-color); }
+.mist-diagram__note-text  { font: var(--mist-comp-diagram-note-type);       color: var(--mist-comp-diagram-note-text-color); }
+
+/* 區段標題（蒐集／分析／規劃） */
+.mist-diagram__band {
+  font: var(--mist-comp-diagram-band-label-type);
+  color: var(--mist-comp-diagram-band-label-color);
+  white-space: nowrap;
+  display: flex; align-items: center;
+  gap: var(--mist-comp-diagram-band-gap);
+}
+.mist-diagram__band::before {
+  content: ""; flex: none;
+  inline-size: var(--mist-comp-diagram-band-dot-size);
+  block-size: var(--mist-comp-diagram-band-dot-size);
+  border-radius: var(--mist-comp-diagram-band-dot-shape);
+  background: var(--mist-comp-diagram-rule-color-mark);
+}
+.mist-diagram__band--accent::before { background: var(--mist-comp-diagram-rule-color-accent); }
+.mist-diagram__band--alt::before    { background: var(--mist-comp-diagram-rule-color-alt); }
+
+/* ═══════════════════════════════════════════════════════════
+   14. 動效偏好
+   ═══════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── local-overrides.css ── */
+/* 洩壓閥 —— 只有這個檔案可以在專案裡寫樣式。
+ *
+ * 什麼時候用：真的來不及回設計系統補元件，但畫面今天就要交。
+ *
+ * 代價：`./check.sh` 會把這裡的每一條規則列為「還沒回庫的債務」。
+ * 這是刻意的 —— 債務要看得見，不要散落在各個頁面裡沒人知道。
+ *
+ * 正確的清償方式：把樣式搬回設計系統的 components.css，
+ * 重新複製 ui/ 覆蓋過來，然後把這裡刪掉。
+ */
+
+</style>
+
+<div class="mist-page">
+  <div class="mist-shell">
+    <div class="mist-app">
+
+      <nav class="mist-nav mist-row--between" aria-label="流程">
+        <a class="mist-nav__brand" href="#"><span class="mist-nav__mark"></span>個人教練</a>
+        <div class="mist-nav__links">
+          <a class="mist-nav__link is-active" href="#">站 1 · 上傳與方向</a>
+          <a class="mist-nav__link" href="https://claude.ai/code/artifact/04cea755-9563-4896-9f4c-4796edcbf34d">站 2 · 目標樹草案</a>
+          <a class="mist-nav__link" href="https://claude.ai/code/artifact/d9c6f5b0-b21a-4598-b3d7-55ff1a7abbb9">站 3 · 季度對帳</a>
+        </div>
+      </nav>
+
+      <!-- ══════════ masthead ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">第一次使用 · 尚無任何目標</p>
+        <h1 class="mist-h1">你想要的人生是什麼形狀</h1>
+        <p class="mist-body mist-muted">大部分人回答不出「你的願景是什麼」——那是一道要你無中生有的題。所以這裡不問你要什麼，只做三件事：<span class="mist-body-strong">讀你已經留下的痕跡</span>、<span class="mist-body-strong">讓你挑一個形狀</span>、然後<span class="mist-body-strong">拿資料回頭跟那個形狀對一次</span>。最後產出的不是願景，是一個這一季就能測完的假設。</p>
+      </div>
+
+      <!-- ══════════ 01 來源 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">01 · 來源 INTAKE</p>
+        <h2 class="mist-h2">先看你已經有的痕跡</h2>
+        <p class="mist-body mist-muted">不要求你回想，也不要求你開始記錄。這一步只讀既有資料——你的時間怎麼花的、你的經歷長什麼樣。</p>
+
+        <div class="mist-inset">
+          <div class="mist-stack">
+            <div class="mist-row mist-row--between">
+              <div class="mist-stack--sm mist-stack mist-grow">
+                <p class="mist-body-strong">Google 行事曆</p>
+                <p class="mist-caption mist-muted">近 26 週 · 448 個行程 · 提供時間流向</p>
+              </div>
+              <span class="mist-badge mist-badge--done">已連接 07:12</span>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between">
+              <div class="mist-stack--sm mist-stack mist-grow">
+                <p class="mist-body-strong">履歷 PDF</p>
+                <p class="mist-caption mist-muted">resume-2026.pdf · 2 頁 · 提供軌跡與技能重複度</p>
+              </div>
+              <span class="mist-badge mist-badge--done">已解析 07:14</span>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between">
+              <div class="mist-stack--sm mist-stack mist-grow">
+                <p class="mist-body-strong">信用卡帳單</p>
+                <p class="mist-caption mist-muted">選填 · 提供金錢流向，跨面向覆蓋最廣</p>
+              </div>
+              <span class="mist-badge mist-badge--idle">未連接 · 可稍後補</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="mist-body mist-muted">時間與金錢合起來是最誠實的優先順序證明。<span class="mist-body-strong">一個人聲稱重視什麼，和他把資源放在哪，落差本身就是診斷。</span>只給行事曆與履歷已經夠開始，帳單可以稍後再補。</p>
+      </div>
+
+      <!-- ══════════ 02 歸戶 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <div class="mist-row mist-row--between">
+          <p class="mist-label mist-subtle">02 · 歸戶 LEDGER</p>
+          <span class="mist-badge mist-badge--done">已確認 2026-09-05</span>
+        </div>
+        <h2 class="mist-h2">歸戶對完了，這是你確認過的現況</h2>
+        <p class="mist-body mist-muted">近 26 週、448 個行程已經歸戶，模糊的部分問過你、你也確認過——所以下面這些不是系統的猜測，是<span class="mist-body-strong">你簽過名的帳</span>。這裡沒有評價，只是把帳攤開。</p>
+
+        <div class="mist-stats">
+          <div class="mist-stat mist-stat--sm mist-stat--rule mist-stat--rule-mark"><span class="mist-stat__value">26</span><span class="mist-stat__label">週的行為被讀進來</span></div>
+          <div class="mist-stat mist-stat--sm mist-stat--rule"><span class="mist-stat__value">448</span><span class="mist-stat__label">個行程已歸戶</span></div>
+          <div class="mist-stat mist-stat--sm mist-stat--rule mist-stat--rule-accent"><span class="mist-stat__value">16%</span><span class="mist-stat__label">確認歸不進任何類別</span></div>
+        </div>
+
+        <div class="mist-donut" id="mix">
+          <div class="mist-donut__figure">
+            <svg class="mist-donut__svg" viewBox="0 0 240 240" aria-hidden="true">
+              <circle class="mist-donut__track" cx="120" cy="120" r="104" pathLength="100"></circle>
+              <circle class="mist-donut__band is-selected" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 16; --mist-arc-start: 62"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--mark" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 61; --mist-arc-start: 0"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--accent is-selected" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 15; --mist-arc-start: 62"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--alt" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 13; --mist-arc-start: 78"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--muted" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 4; --mist-arc-start: 92"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--muted" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 2; --mist-arc-start: 97"></circle>
+            </svg>
+            <div class="mist-donut__center">
+              <span class="mist-donut__value">16%</span>
+              <span class="mist-donut__label">未分類</span>
+            </div>
+          </div>
+          <div class="mist-donut__legend">
+            <button class="mist-donut__item mist-donut__item--mark" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">工作與會議</span><span class="mist-donut__pct">62%</span></button>
+            <button class="mist-donut__item mist-donut__item--accent is-selected" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">未分類</span><span class="mist-donut__pct">16%</span></button>
+            <button class="mist-donut__item mist-donut__item--alt" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">社交與一對一</span><span class="mist-donut__pct">14%</span></button>
+            <button class="mist-donut__item mist-donut__item--muted" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">學習</span><span class="mist-donut__pct">5%</span></button>
+            <button class="mist-donut__item mist-donut__item--muted" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">運動</span><span class="mist-donut__pct">3%</span></button>
+          </div>
+        </div>
+        <p class="mist-caption mist-muted">點圖例任一列看它的佔比。預設選中的是未分類，因為那一塊是後面對帳最有價值的地方。</p>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <p class="mist-label mist-subtle">確認的邊界</p>
+            <p class="mist-body">確認過的是<span class="mist-body-strong">歸戶結果與下面四塊的方向</span>。<span class="mist-body-strong">那 16% 沒有被強行歸戶</span>——你確認的是「它確實歸不進去」，不是「它已經有歸屬」。那 118 小時會原樣帶進季度對帳。</p>
+          </div>
+        </div>
+
+        <div class="mist-inset">
+          <div class="mist-stack">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">軌跡</p>
+              <p class="mist-body">5 年 3 份工作，全部在同一領域。<span class="mist-body-strong">最長任期是最近這一份（2 年 4 個月）</span>——留得越來越久，不是越來越短。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">技能</p>
+              <p class="mist-body">履歷裡重複出現最多的三項：<span class="mist-body-strong">Figma、使用者訪談、design system</span>。三份工作都有，深度在累積。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">持續性</p>
+              <p class="mist-body">行事曆上有一件事連續出現 <span class="mist-body-strong">11 週沒斷</span>——週四晚上的讀書會。這是你目前唯一的長連續行為。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">空白</p>
+              <p class="mist-body">週末幾乎沒有安排；<span class="mist-body-strong">零筆 side project 痕跡</span>；運動 3% 集中在前 6 週，之後歸零。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">訊號</p>
+              <p class="mist-body"><span class="mist-body-strong">近 3 個月有 3 次獵頭面談</span>，分散在 3 家公司。行為在累積深度，但同時在探路——追問時你確認這兩件事是同時成立的，不是其中一個記錯。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">未分類</p>
+              <p class="mist-body">16% 的時間（約 118 小時）歸不進任何類別。追問時你逐項看過，<span class="mist-body-strong">確認它不是漏記，是真的沒有歸屬</span>。</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="mist-divider">
+
+        <p class="mist-label mist-subtle">綜合 · 四塊帳</p>
+        <h3 class="mist-h3">同一批行程，換一個切法</h3>
+        <p class="mist-body mist-muted">上面是時間落在哪個類別，這裡是那些時間餵給了生活的哪一塊。四塊的方向都經過追問、由你確認過。<span class="mist-body-strong">每一格的分數旁邊就是那一塊拿到多少時間</span>——落差自己會說話，不需要誰下評語。</p>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between">
+              <h3 class="mist-h3">身體 HEALTH</h3>
+              <span class="mist-badge mist-badge--idle">時間投入 3%</span>
+            </div>
+            <div class="mist-row">
+              <p class="mist-h1">2</p>
+              <p class="mist-caption mist-subtle">/ 10</p>
+            </div>
+            <div class="mist-progress mist-progress--thin"><div class="mist-progress__bar" style="--mist-progress-value: 20%"></div></div>
+            <p class="mist-caption mist-subtle">範疇：睡眠、飲食、運動量、長期的身體不適</p>
+            <p class="mist-body">運動全部落在前 6 週，<span class="mist-body-strong">第 7 週起連續 20 週歸零</span>。追問時你確認那 20 週沒有未記錄的運動——這一格分數低不是資料太少，是資料很清楚。</p>
+          </div>
+        </div>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between">
+              <h3 class="mist-h3">產出 WORK</h3>
+              <span class="mist-badge mist-badge--idle">時間投入 62%</span>
+            </div>
+            <div class="mist-row">
+              <p class="mist-h1">6</p>
+              <p class="mist-caption mist-subtle">/ 10</p>
+            </div>
+            <div class="mist-progress mist-progress--thin"><div class="mist-progress__bar" style="--mist-progress-value: 60%"></div></div>
+            <p class="mist-caption mist-subtle">範疇：不只是有薪水的職位，是你正在產出的價值——副業、家務、社團的義務服務都算</p>
+            <p class="mist-body">投入與累積都成立：任期越來越長、履歷技能重複度高。但那 62% 大半是會議，而作品的公開痕跡是零。追問時你確認「產出」對你指的是<span class="mist-body-strong">對外可見的東西</span>，所以這一格停在 6。</p>
+          </div>
+        </div>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between">
+              <h3 class="mist-h3">娛樂 JOY</h3>
+              <span class="mist-badge mist-badge--attention">時間投入 未歸戶</span>
+            </div>
+            <div class="mist-row">
+              <p class="mist-h1">3</p>
+              <p class="mist-caption mist-subtle">/ 10</p>
+            </div>
+            <div class="mist-progress mist-progress--thin"><div class="mist-progress__bar" style="--mist-progress-value: 30%"></div></div>
+            <p class="mist-caption mist-subtle">範疇：純粹為了快樂而做的事。為了變強或賺錢而做的，不算在這一格</p>
+            <p class="mist-body">週末幾乎沒有安排，行事曆上找不到這一類。追問時你逐項看過那 118 小時，<span class="mist-body-strong">確認其中只有約 12 小時是純娛樂</span>，其餘是工作的延伸——平均每週不到半小時。</p>
+          </div>
+        </div>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between">
+              <h3 class="mist-h3">關係 LOVE</h3>
+              <span class="mist-badge mist-badge--idle">時間投入 14%</span>
+            </div>
+            <div class="mist-row">
+              <p class="mist-h1">4</p>
+              <p class="mist-caption mist-subtle">/ 10</p>
+            </div>
+            <div class="mist-progress mist-progress--thin"><div class="mist-progress__bar" style="--mist-progress-value: 40%"></div></div>
+            <p class="mist-caption mist-subtle">範疇：伴侶、家人、朋友、寵物，以及與自己的連結</p>
+            <p class="mist-body">社交與一對一佔 14%，比例不低；週四讀書會 11 週未斷，而且它有固定的一群人。但追問時你確認<span class="mist-body-strong">那 14% 裡約一半是工作協作</span>，真正歸到關係的接近 7%。</p>
+          </div>
+        </div>
+
+        <p class="mist-body mist-muted">62% 的時間換到產出 6 分；身體拿到 3%，換到 2 分。<span class="mist-body-strong">分數低的那幾格，時間也確實沒去那裡。</span>這是分配的結果，不是能力的結果。</p>
+
+        <p class="mist-body mist-muted"><span class="mist-body-strong">分數低不等於要補。</span>有人就是這個形狀，而且過得很好。要不要補、先補哪一塊，等你選完對照基準才有判準；這一段只負責把帳攤開。</p>
+      </div>
+
+      <!-- ══════════ 03 形狀 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">03 · 形狀 SHAPE</p>
+        <h2 class="mist-h2">挑一個你想要的人生形狀</h2>
+        <p class="mist-body mist-muted">這些不是職業，是<span class="mist-body-strong">生活的形狀</span>——同一個職稱可以長成不同形狀，不同職稱也可能是同一個形狀。每一個都附上代價，因為沒有代價的樣板只會讓人選最亮的那個。<span class="mist-body-strong">選了不等於承諾，這只是給後面的對帳一個對照基準。</span></p>
+
+        <div class="mist-specs" id="shapes" role="radiogroup" aria-label="人生形狀樣板"></div>
+
+        <p class="mist-body mist-muted">找不到接近的？可以自己寫一個，或選最接近的再改。樣板存在的理由不是限制選擇，是<span class="mist-body-strong">讓「我不知道」變成一個可以往下走的答案</span>。</p>
+      </div>
+
+      <!-- ══════════ 04 對照 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">04 · 對照 CROSS-CHECK</p>
+        <h2 class="mist-h2">你選的形狀，跟你的資料對得上嗎</h2>
+        <p class="mist-body mist-muted">這一步不是要否決你的選擇。<span class="mist-body-strong">對不上不代表選錯</span>——它可能代表你正要改變，也可能代表你選的是想像中的自己。差別只有你自己知道，但落差必須先被看見。</p>
+
+        <div class="mist-row mist-row--between">
+          <p class="mist-label mist-subtle">你選的形狀 vs 近 26 週的行為</p>
+          <span id="xc-badge"></span>
+        </div>
+        <h3 class="mist-h3" id="xc-verdict"></h3>
+        <p class="mist-body mist-muted" id="xc-say"></p>
+
+        <div class="mist-stack--sm mist-stack" id="xc-list"></div>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <p class="mist-label mist-subtle">這一季唯一要驗證的事</p>
+            <p class="mist-body" id="xc-test"></p>
+            <p class="mist-caption mist-muted" id="xc-cost"></p>
+          </div>
+        </div>
+
+        <p class="mist-body mist-muted">沒方向的人不需要五年計畫，需要一個便宜的測試。<span class="mist-body-strong">一季做完、結果明確、失敗不痛</span>——測完你對自己的了解會比現在多，那時候再談五年目標才有依據。</p>
+      </div>
+
+      <!-- ══════════ 05 約束 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">05 · 約束 CONSTRAINTS</p>
+        <h2 class="mist-h2">三個不用有方向也答得出來的問題</h2>
+        <p class="mist-body mist-muted">「你想要什麼」對沒方向的人是很難的題。但<span class="mist-body-strong">「你確定不要什麼」很好答</span>——排除法從來比選擇法容易。這三題問的都是約束與代價，不是志向。</p>
+        <p class="mist-body mist-muted">跟前面的追問不是同一批。<span class="mist-body-strong">02 段確認的是帳怎麼歸、四塊各在哪裡；這三題決定的是名額怎麼分、容量不夠時先砍誰。</span>前者是現況，後者是取捨。</p>
+
+        <div class="mist-steps" id="qsteps" aria-hidden="true">
+          <span class="mist-steps__step"></span><span class="mist-steps__step"></span><span class="mist-steps__step"></span>
+        </div>
+
+        <div class="mist-stack" id="qs">
+
+          <div class="mist-inset" data-q>
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">Q-1</p>
+              <p class="mist-body-strong">有什麼是你確定不要的？</p>
+              <p class="mist-body mist-muted">不用完整，想到一個就講一個。「不要再帶團隊」、「不要搬離這個城市」、「不要收入不穩」——這些會直接砍掉一半的路徑，比選出一條路有效率得多。</p>
+              <p class="mist-caption mist-subtle">用途：反向約束五年路徑的候選集合</p>
+              <div class="mist-row">
+                <button class="mist-btn mist-btn--secondary" type="button" data-open>回答</button>
+                <button class="mist-btn mist-btn--ghost" type="button" data-skip>先跳過</button>
+              </div>
+              <div class="mist-field" data-box hidden>
+                <label class="mist-field__label" for="q1">你確定不要的是</label>
+                <textarea class="mist-field__input" id="q1" placeholder="想到一個就講一個，不用完整。"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="mist-inset" data-q>
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">Q-2</p>
+              <p class="mist-body-strong">過去兩年你放棄過什麼？當時是遇到阻力，還是失去興趣？</p>
+              <p class="mist-body mist-muted">你的行事曆顯示運動在第 6 週之後歸零，還有兩段各持續 3–4 週後消失的行程。這一題問的不是為什麼放棄，是<span class="mist-body-strong">你放棄的模式長什麼樣</span>。</p>
+              <p class="mist-caption mist-subtle">用途：建立「成長式修正 vs 逃避式修改」的個人基準線</p>
+              <div class="mist-row">
+                <button class="mist-btn mist-btn--secondary" type="button" data-open>回答</button>
+                <button class="mist-btn mist-btn--ghost" type="button" data-skip>先跳過</button>
+              </div>
+              <div class="mist-field" data-box hidden>
+                <label class="mist-field__label" for="q2">當時發生的是</label>
+                <textarea class="mist-field__input" id="q2" placeholder="遇到阻力、失去興趣，還是本來就不是真的想要？"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="mist-inset" data-q3>
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">Q-3</p>
+              <p class="mist-body-strong">如果這一季只能保住兩樣，你先放掉哪一個？</p>
+              <p class="mist-body mist-muted">不是問你重視什麼——每個人都會說三個都重要。強迫排序才問得出真的優先順序，而且這個答案直接決定名額怎麼分。</p>
+              <p class="mist-caption mist-subtle">用途：決定累積型常設名額，以及容量不足時先砍誰</p>
+              <div class="mist-stack--sm mist-stack" id="q3-act" role="radiogroup" aria-label="先放掉哪一個">
+                <button class="mist-option" type="button" role="radio" aria-checked="false" data-drop="工作成就">
+                  <span class="mist-option__marker" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="mist-option__body"><span class="mist-option__label">先放掉 工作成就</span></span>
+                </button>
+                <button class="mist-option" type="button" role="radio" aria-checked="false" data-drop="關係">
+                  <span class="mist-option__marker" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="mist-option__body"><span class="mist-option__label">先放掉 關係</span></span>
+                </button>
+                <button class="mist-option" type="button" role="radio" aria-checked="false" data-drop="健康">
+                  <span class="mist-option__marker" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="mist-option__body"><span class="mist-option__label">先放掉 健康</span></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══════════ 06 方向假設 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <div class="mist-row mist-row--between">
+          <p class="mist-label mist-subtle">06 · 產出 HYPOTHESIS</p>
+          <span class="mist-badge mist-badge--attention">假設 v0 · 不是願景</span>
+        </div>
+        <h2 class="mist-h2">這是你這一季的對照基準</h2>
+
+        <h3 class="mist-h3" id="hyp-quote"></h3>
+        <p class="mist-caption mist-muted" id="hyp-src"></p>
+
+        <p class="mist-body mist-muted"><span class="mist-body-strong">這不是你的願景，是一個借來的形狀。</span>願景要自己長出來，長出來之前你需要的是一個能對照的東西——沒有基準就沒有診斷，沒有診斷就永遠停在「還可以吧」。三個月後拿真實行為回頭比一次，那時候的你會比現在更清楚。</p>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">來源</span><span class="mist-body" id="g-src">樣板 + 你的資料</span></div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">先放掉</span><span class="mist-body" id="g-drop">未回答</span></div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">約束已收集</span><span class="mist-body" id="g-ans">0 / 2</span></div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">首次複審</span><span class="mist-body">2026-12-31</span></div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">版本</span><span class="mist-body">v0 · 永不覆寫</span></div>
+          </div>
+        </div>
+
+        <div class="mist-row">
+          <a class="mist-btn mist-btn--primary" href="https://claude.ai/code/artifact/04cea755-9563-4896-9f4c-4796edcbf34d">用這個假設產生目標樹草案</a>
+          <button class="mist-btn mist-btn--ghost" type="button" id="btn-other">換一個形狀看看</button>
+        </div>
+        <p class="mist-caption mist-muted">假設會標記為 v0 並記錄今天的時間與來源。三個月後若行為與它持續不符，教練會主動拿出來問——不是催你執行，是問這個形狀還算不算數。</p>
+      </div>
+
+      <!-- ══════════ 附註 ══════════ -->
+      <div class="mist-card">
+        <p class="mist-label mist-subtle">附註 NOTES</p>
+        <p class="mist-caption mist-muted">本頁為黑客松原型，資料為示範用途。這是三站流程的第一站：上傳與方向 → 目標樹草案 → 季度對帳。上方導覽可直接跳到後兩站。</p>
+        <p class="mist-caption mist-muted">設計取捨：樣板會壓縮選擇空間，這是已知的代價。換來的是「我不知道我要什麼」有一個可以往下走的出口，而不是卡在第一個畫面。代價的緩解方式是每一個樣板都標出它的成本，並且把輸出明確標記成假設 v0、而非願景。</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CHECK = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var S = function (t) { return '<span class="mist-body-strong">' + t + '</span>'; };
+
+  /* ---------- role model 樣板 ---------- */
+  var SHAPES = [
+    {
+      id: "S-1", name: "深耕的專家",
+      vision: "在一件事上做到很深，被同行認得。",
+      path: "五年內成為某個具體題目的可被指名者",
+      need: "專業深度、作品的公開痕跡",
+      cost: "換軌成本高。深度越厚，橫向機會越難拿",
+      fit: "高度一致", badgeClass: "mist-badge--done", badgeText: "資料支持",
+      verdict: "你的資料本來就長這個形狀。",
+      say: "這是六個樣板裡跟你行為最一致的一個。這件事有好有壞——一致代表阻力小，也代表這可能是慣性而不是選擇。近三個月的三次獵頭面談是唯一的反向訊號。",
+      items: [
+        ["ok", "同一領域 5 年 3 份工作，" + S("任期越來越長") + "而非越來越短"],
+        ["ok", "履歷技能重複度高，" + S("深度確實在累積")],
+        ["ok", "週四讀書會連續 11 週未斷，是你唯一的長連續行為"],
+        ["no", "但作品的" + S("公開痕跡為零") + "——深度無人可見，「被同行認得」這半句沒有對應行為"],
+        ["no", "3 次獵頭面談指向探路，跟深耕相反。" + S("兩件事同時在發生")]
+      ],
+      test: "把手上已經做完的一個專案整理成可對外的案例，投一個公開場合（社群分享、內部大會、投稿）。",
+      cost2: "一季一次 · 約 3 個晚上 · 失敗只是沒被接受，不影響工作"
+    },
+    {
+      id: "S-2", name: "從零到一的建造者",
+      vision: "一直在把不存在的東西做出來。",
+      path: "五年內主導 3 個從零開始的專案",
+      need: "跨職能的溝通、快速做出東西的能力",
+      cost: "很少東西做到成熟。履歷會看起來跳",
+      fit: "落差大", badgeClass: "mist-badge--attention", badgeText: "缺少關鍵痕跡",
+      verdict: "你的資料裡完全找不到這個形狀。",
+      say: "這不代表不能選，但它代表你選的是一個你還沒開始的方向。這種選擇要用測試驗證，不能直接排進五年計畫——先確認你喜歡的是「做新東西」本身，還是「做新東西」聽起來的樣子。",
+      items: [
+        ["no", S("零筆 side project 痕跡") + "。這個形狀最基本的行為證據不存在"],
+        ["no", "週末幾乎空白——建造需要連續的大塊時間，你目前沒有在保留"],
+        ["ok", "履歷有 design system 經驗，那是從零建立的東西，可以算半個"],
+        ["ok", "3 次獵頭面談說明你在探路，這跟想換形狀是相容的"],
+        ["no", "62% 時間在工作會議。" + S("這個形狀要的是產出時間，不是協調時間")]
+      ],
+      test: "用兩週做完一個很小但完整的東西，做到能給別人用。不求好，只求做完。",
+      cost2: "兩週 · 每晚 1 小時 · 測的是你享不享受這個過程，不是成品"
+    },
+    {
+      id: "S-3", name: "獨立經營者",
+      vision: "時間自己安排，收入自己撐得起來。",
+      path: "五年內月營收覆蓋生活成本，不依賴單一雇主",
+      need: "可販賣的技能、報價與談判、客戶關係",
+      cost: "收入不穩，沒有組織槓桿，行政雜事全歸自己",
+      fit: "落差最大", badgeClass: "mist-badge--attention", badgeText: "三項證據皆缺",
+      verdict: "這是六個形狀裡跟你目前資料距離最遠的一個。",
+      say: "距離遠不是理由不選，但它意味著風險最高、也最需要先測。這個形狀的失敗代價是實際的金錢，所以驗證動作必須比其他形狀更前面——在辭職之前，而不是之後。",
+      items: [
+        ["no", S("零筆接案、報價、客戶往來痕跡")],
+        ["no", "收入來源單一。金錢流沒有第二條腿"],
+        ["no", "履歷全是組織內的角色，沒有對外承接的經驗"],
+        ["ok", "履歷技能（Figma、訪談、design system）本身是可販賣的"],
+        ["ok", "近 3 個月 3 次獵頭面談，說明你對現狀不完全滿意"]
+      ],
+      test: "接一個真實的付費小案，金額不重要，走完報價到交付到收款的完整一輪。",
+      cost2: "一季一件 · 約 20 小時 · 測的是流程與感受，不是收入"
+    },
+    {
+      id: "S-4", name: "帶人的人",
+      vision: "透過別人把事情放大，而不是自己做完。",
+      path: "五年內帶起一個能自己運轉的團隊",
+      need: "判斷力、把話說清楚、忍住自己動手",
+      cost: "自己動手的技藝會退化，成果變得間接",
+      fit: "部分一致", badgeClass: "mist-badge--active", badgeText: "有行為，無紀錄",
+      verdict: "你已經在做這個形狀的一部分，但它沒有進入你的履歷。",
+      say: "行事曆上 14% 的一對一是真實訊號，這個比例不低。但履歷完全沒有帶人的紀錄——這可能是你在做卻沒被承認的事，也可能只是同儕之間的協作被誤讀成帶人。這一格值得先弄清楚。",
+      items: [
+        ["ok", "行事曆" + S("一對一與社交佔 14%") + "，比例明顯高於純執行角色"],
+        ["ok", "design system 經驗天生需要說服與協調"],
+        ["no", S("履歷零帶人紀錄") + "。三份工作都是個人貢獻者頭銜"],
+        ["no", "那 14% 是不是真的在帶人，資料分不出來——可能只是協作"],
+        ["ok", "62% 的會議時間至少說明你不排斥人多的環境"]
+      ],
+      test: "主動帶一個人做完一件事——實習生、新同事、跨組的人都算。做完之後寫下你享受的部分與痛苦的部分。",
+      cost2: "一季一人 · 每週 30 分鐘 · 測的是你要不要，不是你能不能"
+    },
+    {
+      id: "S-5", name: "穩定的支柱",
+      vision: "工作可預測，重心放在關係與身體。",
+      path: "五年內工作維持在可勝任的水準，把餘裕放回生活",
+      need: "守住邊界的能力、一段可持續的關係、一個持續的身體練習",
+      cost: "職涯天花板會來得比較早，收入成長趨緩",
+      fit: "落差反向", badgeClass: "mist-badge--attention", badgeText: "時間分配正好相反",
+      verdict: "這個形狀要的分配，跟你現在的分配幾乎是反過來的。",
+      say: "六個形狀裡只有這一個不以職涯為中心，而它是最常被選、也最常被自己的行為推翻的一個。你的資料顯示你目前把絕大多數時間投在工作上——想要這個形狀，要改的不是目標，是分配。",
+      items: [
+        ["no", S("工作與會議佔 62%") + "。這個形狀通常落在 40% 上下"],
+        ["no", "運動 3%，且第 6 週之後歸零。「持續的身體練習」目前不存在"],
+        ["no", "週末幾乎沒有安排——餘裕沒有被用掉，也沒有被保護"],
+        ["ok", "一對一與社交 14%，關係這一塊有真實基礎"],
+        ["ok", "任期越來越長，說明你並不追求高速換軌"]
+      ],
+      test: "連續 12 週每週保住兩件事：一次運動、一次不談工作的長聚會。只記有沒有發生，不記品質。",
+      cost2: "12 週 · 每週約 3 小時 · 測的是你守不守得住邊界"
+    },
+    {
+      id: "S-6", name: "跨界的連結者",
+      vision: "站在兩三個領域之間，做別人做不到的翻譯。",
+      path: "五年內在兩個領域都有可信度，並靠交界處的問題吃飯",
+      need: "第二個領域的真實基礎、寫作或表達",
+      cost: "每個領域都不會是最深的那個，需要一直解釋自己在做什麼",
+      fit: "落差中等", badgeClass: "mist-badge--active", badgeText: "只有一個領域",
+      verdict: "你目前只有一個領域，這個形狀至少需要兩個。",
+      say: "連續 11 週的讀書會是唯一指向「第二個領域」的訊號，這是你資料裡最有意思的一塊——它是你唯一沒斷過的長連續行為，卻完全不在你的履歷上。先弄清楚那個讀書會在讀什麼，這一格才有得談。",
+      items: [
+        ["ok", S("讀書會連續 11 週未斷") + "——你唯一的長連續行為，可能就是第二個領域的種子"],
+        ["ok", "使用者訪談經驗天生跨在設計與研究之間"],
+        ["no", "履歷" + S("只有一個領域") + "。五年 3 份工作全部同類"],
+        ["no", "零公開寫作或表達痕跡。這個形狀靠說得清楚吃飯"],
+        ["no", "那 16% 未分類的時間可能藏著第二領域，也可能只是雜事"]
+      ],
+      test: "把讀書會裡學到的東西寫成一篇給本行同事看的文章，公開發表。",
+      cost2: "一季一篇 · 約 8 小時 · 測的是兩邊接不接得起來"
+    }
+  ];
+
+  /* ---------- 樣板陣列 ---------- */
+  var gal = document.getElementById("shapes"), selected = 0;
+
+  SHAPES.forEach(function (s, i) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "mist-spec";
+    b.setAttribute("role", "radio");
+    b.setAttribute("aria-checked", i === 0 ? "true" : "false");
+    b.dataset.i = i;
+    b.innerHTML =
+      '<span class="mist-spec__head">' +
+        '<span class="mist-spec__id">' + s.id + '</span>' +
+        '<span class="mist-badge ' + s.badgeClass + '">' + s.fit + '</span>' +
+      '</span>' +
+      '<span class="mist-spec__title">' + s.name + '</span>' +
+      '<span class="mist-spec__lede">「' + s.vision + '」</span>' +
+      '<dl class="mist-spec__rows">' +
+        '<div class="mist-spec__row"><dt class="mist-spec__term">五年</dt><dd class="mist-spec__detail">' + s.path + '</dd></div>' +
+        '<div class="mist-spec__row"><dt class="mist-spec__term">需累積</dt><dd class="mist-spec__detail">' + s.need + '</dd></div>' +
+        '<div class="mist-spec__row"><dt class="mist-spec__term">代價</dt><dd class="mist-spec__detail">' + s.cost + '</dd></div>' +
+      '</dl>' +
+      '<span class="mist-spec__foot">' + CHECK + (i === 0 ? "已選為對照基準" : "選為對照基準") + '</span>';
+    gal.appendChild(b);
+  });
+
+  gal.addEventListener("click", function (e) {
+    var b = e.target.closest(".mist-spec"); if (!b) return;
+    selected = parseInt(b.dataset.i, 10);
+    gal.querySelectorAll(".mist-spec").forEach(function (x, i) {
+      var on = i === selected;
+      x.setAttribute("aria-checked", on ? "true" : "false");
+      x.querySelector(".mist-spec__foot").innerHTML = CHECK + (on ? "已選為對照基準" : "選為對照基準");
+    });
+    renderXC();
+  });
+
+  /* ---------- 反差比對 + 產出 ---------- */
+  var vEl = document.getElementById("xc-verdict"),
+      sEl = document.getElementById("xc-say"),
+      lEl = document.getElementById("xc-list"),
+      tEl = document.getElementById("xc-test"),
+      cEl = document.getElementById("xc-cost"),
+      bEl = document.getElementById("xc-badge"),
+      qEl = document.getElementById("hyp-quote"),
+      rEl = document.getElementById("hyp-src");
+
+  function renderXC() {
+    var s = SHAPES[selected];
+    vEl.textContent = s.verdict;
+    sEl.textContent = s.say;
+    bEl.innerHTML = '<span class="mist-badge ' + s.badgeClass + '">' + s.badgeText + '</span>';
+    lEl.innerHTML = "";
+    s.items.forEach(function (it) {
+      var row = document.createElement("div");
+      row.className = "mist-row";
+      row.innerHTML =
+        '<span class="mist-badge ' + (it[0] === "ok" ? "mist-badge--done" : "mist-badge--attention") + '">' +
+        (it[0] === "ok" ? "支持" : "缺") + '</span>' +
+        '<span class="mist-body mist-grow">' + it[1] + '</span>';
+      lEl.appendChild(row);
+    });
+    tEl.textContent = s.test;
+    cEl.textContent = s.cost2;
+    qEl.textContent = "「" + s.vision + "」";
+    rEl.textContent = "樣板 " + s.id + " " + s.name + " · 借用於 2026-09-04 · 尚未由使用者自己寫出";
+  }
+
+  /* ---------- 三個問題 ---------- */
+  var qs = document.getElementById("qs"),
+      steps = document.getElementById("qsteps").children,
+      gAns = document.getElementById("g-ans"),
+      gDrop = document.getElementById("g-drop");
+
+  function refresh() {
+    var boxes = qs.querySelectorAll("[data-q] textarea"), done = 0;
+    boxes.forEach(function (t) { if (t.value.trim().length > 0) done++; });
+    gAns.textContent = done + " / 2";
+    steps[0].classList.toggle("is-done", boxes[0].value.trim().length > 0);
+    steps[1].classList.toggle("is-done", boxes[1].value.trim().length > 0);
+    steps[2].classList.toggle("is-done", gDrop.textContent !== "未回答");
+  }
+
+  qs.addEventListener("click", function (e) {
+    var drop = e.target.closest("[data-drop]");
+    if (drop) {
+      document.querySelectorAll("#q3-act .mist-option").forEach(function (x) { x.setAttribute("aria-checked", "false"); });
+      drop.setAttribute("aria-checked", "true");
+      gDrop.textContent = drop.dataset.drop;
+      refresh();
+      return;
+    }
+    var q = e.target.closest("[data-q]"); if (!q) return;
+    var box = q.querySelector("[data-box]"), ta = q.querySelector("textarea");
+    if (e.target.closest("[data-open]")) {
+      box.hidden = false;
+      ta.focus();
+    } else if (e.target.closest("[data-skip]")) {
+      ta.value = "";
+      box.hidden = true;
+      refresh();
+    }
+  });
+
+  qs.addEventListener("input", function (e) {
+    if (e.target.tagName === "TEXTAREA") refresh();
+  });
+
+  /* ---------- 時間分配圓餅圖 ---------- */
+  var MIX = [
+    { name: "工作與會議", pct: "62%", arc: 62, start: 0 },
+    { name: "未分類",     pct: "16%", arc: 16, start: 62 },
+    { name: "社交與一對一", pct: "14%", arc: 14, start: 78 },
+    { name: "學習",       pct: "5%",  arc: 5,  start: 92 },
+    { name: "運動",       pct: "3%",  arc: 3,  start: 97 }
+  ];
+
+  var mix   = document.getElementById("mix"),
+      band  = mix.querySelector(".mist-donut__band"),
+      segs  = [].slice.call(mix.querySelectorAll(".mist-donut__seg")),
+      items = [].slice.call(mix.querySelectorAll(".mist-donut__item")),
+      cVal  = mix.querySelector(".mist-donut__value"),
+      cLab  = mix.querySelector(".mist-donut__label");
+
+  function selectMix(i) {
+    var d = MIX[i];
+    /* band 用足額弧長；段本身少 1 做出段與段的間隙（同 reference 的做法） */
+    band.style.setProperty("--mist-arc", d.arc);
+    band.style.setProperty("--mist-arc-start", d.start);
+    segs.forEach(function (x, n) { x.classList.toggle("is-selected", n === i); });
+    items.forEach(function (x, n) { x.classList.toggle("is-selected", n === i); });
+    cVal.textContent = d.pct;
+    cLab.textContent = d.name;
+  }
+
+  mix.addEventListener("click", function (e) {
+    var it = e.target.closest(".mist-donut__item"); if (!it) return;
+    selectMix(items.indexOf(it));
+  });
+
+  document.getElementById("btn-other").addEventListener("click", function () {
+    gal.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  renderXC();
+  refresh();
+})();
+</script>

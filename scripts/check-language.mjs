@@ -2,7 +2,7 @@ import { readdir, readFile } from "node:fs/promises";
 import { extname, relative, resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
-const ignoredDirectories = new Set([".git", ".next", ".wrangler", "dist", "node_modules", "work"]);
+const ignoredDirectories = new Set([".git", ".next", ".wrangler", "design", "dist", "node_modules", "work"]);
 const textExtensions = new Set(["", ".css", ".env", ".example", ".html", ".js", ".json", ".md", ".mjs", ".svg", ".toml", ".ts", ".tsx", ".txt", ".yaml", ".yml"]);
 const frontendDisplayFiles = new Set(["app/page.tsx", "app/layout.tsx", "app/components/GuruApp.tsx"]);
 const hanPattern = /\p{Script=Han}/u;

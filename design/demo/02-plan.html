@@ -1,0 +1,701 @@
+<title>目標樹草案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap">
+
+<style>
+:root{
+  --paper:#f6f7f4; --card:#fffffe; --sunk:#eef1ec;
+  --ink:#191e26; --ink-2:#4b5560; --ink-3:#7f8a84;
+  --rule:#dadfd8; --rule-2:#b8bfb6;
+  --accent:#1c5b58; --accent-soft:#e2ebe9;
+  --good:#3f6b3a; --good-soft:#e7eee4;
+  --warn:#96631a; --warn-soft:#f4ecda;
+  --crit:#993024; --crit-soft:#f5e5e2;
+  --shadow:0 1px 2px rgba(25,30,38,.05);
+  --serif:"Noto Serif TC",Georgia,"Songti TC",serif;
+  --sans:"Noto Sans TC",-apple-system,"Helvetica Neue",sans-serif;
+  --mono:"IBM Plex Mono","Noto Sans TC",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#12161c; --card:#191f27; --sunk:#151b22;
+    --ink:#e9ece7; --ink-2:#a4aea7; --ink-3:#78827c;
+    --rule:#2a323b; --rule-2:#3e4750;
+    --accent:#63aca6; --accent-soft:#1a2e2d;
+    --good:#82ab79; --good-soft:#1d2a1d;
+    --warn:#c99e51; --warn-soft:#2d2617;
+    --crit:#d17f70; --crit-soft:#2e1e1b;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12161c; --card:#191f27; --sunk:#151b22;
+  --ink:#e9ece7; --ink-2:#a4aea7; --ink-3:#78827c;
+  --rule:#2a323b; --rule-2:#3e4750;
+  --accent:#63aca6; --accent-soft:#1a2e2d;
+  --good:#82ab79; --good-soft:#1d2a1d;
+  --warn:#c99e51; --warn-soft:#2d2617;
+  --crit:#d17f70; --crit-soft:#2e1e1b;
+  --shadow:0 1px 2px rgba(0,0,0,.3);
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:44px 28px 96px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;font-weight:500;padding:2px 7px;border-radius:2px;white-space:nowrap}
+.p-good{color:var(--good);background:var(--good-soft)}
+.p-warn{color:var(--warn);background:var(--warn-soft)}
+.p-crit{color:var(--crit);background:var(--crit-soft)}
+.p-acc{color:var(--accent);background:var(--accent-soft)}
+.p-none{color:var(--ink-3);background:var(--sunk)}
+
+/* ---------- masthead: a draft awaiting sign-off ---------- */
+.masthead{border-top:2px solid var(--ink);padding-top:18px}
+.mast-row{display:flex;flex-wrap:wrap;gap:14px;align-items:baseline;justify-content:space-between}
+.mast-eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0}
+.draft-stamp{
+  font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.14em;
+  color:var(--warn);border:1px dashed var(--warn);padding:4px 10px;text-transform:uppercase;
+}
+.mast-title{font-family:var(--serif);font-weight:700;font-size:clamp(30px,5vw,44px);line-height:1.15;margin:8px 0 4px;letter-spacing:-.01em;text-wrap:balance}
+.mast-sub{color:var(--ink-2);max-width:64ch;margin:0 0 22px}
+.intake{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.intake div{background:var(--card);padding:10px 13px}
+.intake dt{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin:0 0 3px}
+.intake dd{margin:0;font-family:var(--mono);font-size:14px;font-weight:500;font-variant-numeric:tabular-nums}
+.intake dd small{font-family:var(--sans);font-size:12px;color:var(--ink-3);font-weight:400}
+
+/* ---------- section scaffold (shared with the reconciliation page) ---------- */
+section{display:grid;grid-template-columns:96px minmax(0,1fr);gap:26px;border-top:1px solid var(--rule-2);padding-top:20px;margin-top:44px}
+.code{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-3);line-height:1.5;padding-top:4px}
+.code b{display:block;color:var(--accent);font-weight:600;font-size:12px}
+.sec-body{min-width:0}
+h2{font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 6px;letter-spacing:-.005em}
+.lede{color:var(--ink-2);margin:0 0 20px;max-width:64ch;font-size:14px}
+@media (max-width:720px){
+  section{grid-template-columns:1fr;gap:8px}
+  .code{padding-top:0}
+  .code b{display:inline;margin-right:8px}
+}
+
+/* ---------- layer 1: vision ---------- */
+.vision{border-left:3px solid var(--accent);padding:2px 0 2px 20px}
+.vision blockquote{
+  font-family:var(--serif);font-size:clamp(19px,2.6vw,24px);line-height:1.55;font-weight:500;
+  margin:0;text-wrap:pretty;
+}
+.vision .src{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin:12px 0 0;letter-spacing:.03em}
+.vparts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:18px}
+.vpart{background:var(--card);padding:12px 14px}
+.vpart b{display:block;font-size:14px;font-weight:600;margin-bottom:3px}
+.vpart span{font-family:var(--mono);font-size:11px;color:var(--ink-3);display:block;line-height:1.6}
+.vpart.orphan{border-top:2px solid var(--crit)}
+.vpart.mapped{border-top:2px solid var(--good)}
+
+/* ---------- layer 2: five-year paths, side by side ---------- */
+.paths{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.path{border:1px solid var(--rule);background:var(--card);padding:0 0 14px;display:flex;flex-direction:column}
+.path.live{border-color:var(--rule-2);border-top:3px solid var(--accent);box-shadow:var(--shadow)}
+.path:not(.live){border-top:3px solid var(--rule-2)}
+.path-head{padding:12px 14px 0;display:flex;gap:8px;align-items:baseline;justify-content:space-between}
+.path-id{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-3);letter-spacing:.08em}
+.path h3{font-size:15.5px;margin:6px 14px 6px;font-weight:600;line-height:1.4}
+.path p{margin:0 14px;font-size:13px;color:var(--ink-2);flex:1}
+.attract{margin:14px 14px 0;padding-top:12px;border-top:1px dashed var(--rule-2)}
+.attract label{font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:600;display:flex;justify-content:space-between;align-items:baseline}
+.attract label b{font-family:var(--mono);font-size:15px;color:var(--accent);font-variant-numeric:tabular-nums}
+.attract input[type=range]{width:100%;margin:7px 0 0;accent-color:var(--accent)}
+.attract input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ---------- layer 3-4: slot allocation ---------- */
+.slots{border:1px solid var(--rule-2);background:var(--card);box-shadow:var(--shadow)}
+.slots-head{padding:12px 15px;border-bottom:1px solid var(--rule);background:var(--sunk);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.slots-head span{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.slots-head b{font-family:var(--mono);font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:0;text-transform:none}
+
+.branch{border-bottom:1px solid var(--rule)}
+.branch:last-child{border-bottom:0}
+.br-head{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:12px;align-items:center;
+  padding:12px 15px;width:100%;background:transparent;border:0;text-align:left;cursor:pointer;
+  font-family:inherit;color:inherit;border-left:3px solid transparent;
+}
+.br-head:hover{background:var(--sunk)}
+.br-head:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.branch.cum .br-head{border-left-color:var(--accent)}
+.branch.proj .br-head{border-left-color:var(--rule-2)}
+.branch.gap .br-head{border-left-color:var(--crit)}
+.chev{font-family:var(--mono);font-size:11px;color:var(--ink-3);width:12px}
+.br-title{min-width:0}
+.br-title b{display:block;font-size:15px;font-weight:500}
+.br-title small{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:2px}
+.br-meta{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+
+.br-body{padding:0 15px 16px 18px;display:none}
+.branch.open .br-body{display:block}
+.four{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.four div{background:var(--card);padding:9px 11px}
+.four dt{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin:0 0 3px}
+.four dd{margin:0;font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.four div.missing{background:var(--crit-soft)}
+.four div.missing dd{color:var(--crit);font-weight:600}
+
+.spec{display:grid;gap:10px;margin-top:13px}
+.spec > div{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;align-items:baseline}
+.spec dt{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.03em;margin:0}
+.spec dd{margin:0;font-size:13.5px;color:var(--ink)}
+.spec dd.miss{color:var(--crit)}
+@media (max-width:560px){.spec > div{grid-template-columns:1fr;gap:2px}}
+
+.hypo{margin-top:13px;border:1px solid var(--rule);border-left:3px solid var(--warn);padding:12px 14px}
+.hypo h4{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--warn);margin:0 0 8px;font-weight:600}
+.hypo p{margin:0 0 8px;font-size:13.5px}
+.hypo p:last-of-type{margin-bottom:0}
+.hypo em{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--ink-3);display:block;letter-spacing:.03em}
+.confirm-row{display:flex;gap:7px;margin-top:11px;padding-top:11px;border-top:1px dashed var(--rule-2)}
+.mini{font:500 12px/1 var(--mono);padding:6px 11px;border:1px solid var(--rule-2);background:var(--card);color:var(--ink-2);cursor:pointer}
+.mini[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.mini:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+.parked{border-top:1px solid var(--rule-2);background:var(--sunk);padding:13px 15px}
+.parked h4{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 9px;font-weight:600}
+.parked ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.parked li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:baseline;font-size:13.5px}
+.parked li span{font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
+
+/* ---------- layer 5 note ---------- */
+.weekly{border:1px solid var(--rule);background:var(--card);padding:15px 17px;display:grid;gap:9px}
+.weekly p{margin:0;font-size:14px;color:var(--ink-2);max-width:62ch}
+.weekly .kv{font-family:var(--mono);font-size:12px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:16px;padding-top:11px;border-top:1px dashed var(--rule-2)}
+.weekly .kv b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+
+/* ---------- challenges: the coach pushes back ---------- */
+.chal{display:grid;gap:12px}
+.chalq{border:1px solid var(--rule-2);background:var(--card);box-shadow:var(--shadow)}
+.chalq.answered{border-color:var(--rule);box-shadow:none}
+.chalq-head{padding:14px 16px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:13px;align-items:start}
+.qno{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--crit);letter-spacing:.06em;padding-top:3px}
+.chalq.answered .qno{color:var(--good)}
+.chalq h3{font-size:15.5px;margin:0 0 6px;font-weight:600;line-height:1.5;text-wrap:pretty}
+.chalq p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:62ch}
+.chalq .basis{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:9px;letter-spacing:.02em}
+.qact{padding:0 16px 14px 41px;display:flex;gap:7px;flex-wrap:wrap}
+.qbox{margin:0 16px 14px 41px;display:none}
+.chalq.open .qbox{display:block}
+.qbox textarea{
+  width:100%;min-height:74px;resize:vertical;font:400 13.5px/1.6 var(--sans);
+  padding:10px 12px;border:1px solid var(--rule-2);background:var(--paper);color:var(--ink);
+}
+.qbox textarea:focus-visible{outline:2px solid var(--accent);outline-offset:-1px}
+.qbox .hintline{font-family:var(--mono);font-size:11px;color:var(--ink-3);margin:7px 0 0}
+@media (max-width:560px){
+  .chalq-head{grid-template-columns:1fr;gap:4px}
+  .qact,.qbox{padding-left:16px;margin-left:16px}
+  .qbox{margin-left:0;padding-left:16px;padding-right:16px}
+}
+
+/* ---------- sign-off ---------- */
+.signoff{border:1px solid var(--rule-2);background:var(--card);box-shadow:var(--shadow);margin-top:44px}
+.so-top{border-top:3px solid var(--accent);padding:20px 22px}
+.so-top h2{margin-bottom:8px}
+.so-top p{margin:0 0 16px;font-size:14px;color:var(--ink-2);max-width:64ch}
+.so-list{margin:0 0 18px;padding:0;list-style:none;display:grid;gap:7px}
+.so-list li{display:grid;grid-template-columns:16px minmax(0,1fr);gap:9px;font-size:13.5px;color:var(--ink-2);align-items:baseline}
+.so-list li b{color:var(--ink);font-weight:600}
+.so-list .mk{font-family:var(--mono);color:var(--accent);font-size:12px}
+.so-actions{display:flex;flex-wrap:wrap;gap:11px;align-items:center}
+.btn-primary{
+  font:600 14px/1 var(--sans);padding:12px 20px;border:1px solid var(--accent);
+  background:var(--accent);color:var(--paper);cursor:pointer;letter-spacing:.02em;
+}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-primary:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.btn-primary[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+.btn-ghost{font:500 13px/1 var(--sans);padding:12px 16px;border:1px solid var(--rule-2);background:transparent;color:var(--ink-2);cursor:pointer}
+.btn-ghost:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.so-warn{font-family:var(--mono);font-size:11.5px;color:var(--warn);letter-spacing:.02em;max-width:34ch;line-height:1.6}
+.so-locked{
+  display:none;border-top:1px solid var(--rule-2);background:var(--sunk);padding:16px 22px;
+}
+.signoff.locked .so-locked{display:grid;gap:7px}
+.signoff.locked .so-actions{display:none}
+.so-locked b{font-family:var(--mono);font-size:13px;color:var(--accent);letter-spacing:.03em}
+.so-locked p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:62ch}
+
+.colophon{margin-top:48px;border-top:2px solid var(--ink);padding-top:16px;display:grid;grid-template-columns:96px minmax(0,1fr);gap:26px}
+.colophon p{margin:0;font-size:13px;color:var(--ink-3);max-width:66ch}
+.colophon p + p{margin-top:8px}
+@media (max-width:720px){.colophon{grid-template-columns:1fr;gap:8px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="mast-row">
+      <p class="mast-eyebrow">教練起草 · 待使用者確認</p>
+      <span class="draft-stamp">草案 · 尚未生效</span>
+    </div>
+    <h1 class="mast-title">目標樹草案</h1>
+    <p class="mast-sub">讀完 8 個月的痕跡與一次 22 分鐘的問答之後，教練把它拆成可判斷、可排程的五層。目標由你宣告，拆解由教練起草——你只需要確認、刪減，或回答三個它答不出來的問題。</p>
+
+    <dl class="intake">
+      <div><dt>痕跡覆蓋</dt><dd>01/01–06/27</dd></div>
+      <div><dt>已讀來源</dt><dd>5<small> 類</small></dd></div>
+      <div><dt>問答時長</dt><dd>22<small> 分</small></dd></div>
+      <div><dt>教練追問</dt><dd>3<small> 項待答</small></dd></div>
+      <div><dt>推進名額</dt><dd>3 / 3</dd></div>
+      <div><dt>樂觀係數</dt><dd>—<small> 冷啟動</small></dd></div>
+    </dl>
+  </header>
+
+  <!-- ========== L1 願景 ========== -->
+  <section>
+    <div class="code"><b>L1</b>願景<br>VISION</div>
+    <div class="sec-body">
+      <h2>我想成為什麼樣的人</h2>
+      <p class="lede">整棵樹唯一不可從痕跡推導的一層——它是所有診斷的對照基準。你宣告，教練只負責追問。</p>
+
+      <div class="vision">
+        <blockquote>成為能把產品從零帶到一的設計者；同時維持幾段真正深的關係；並且身體撐得住我想做的事。</blockquote>
+        <p class="src">使用者宣告 2026-06-28 · 版本 v1 · 永不覆寫，只增加版本</p>
+      </div>
+
+      <div class="vparts">
+        <div class="vpart mapped">
+          <b>職涯</b>
+          <span>對應下層 3 條路徑<br>對應 2 個年度分支</span>
+        </div>
+        <div class="vpart orphan">
+          <b>關係</b>
+          <span>下層無任何對應<br>已列入追問 Q-1</span>
+        </div>
+        <div class="vpart orphan">
+          <b>身體</b>
+          <span>有分支但無單位動作<br>已列入追問 Q-2</span>
+        </div>
+      </div>
+      <p class="lede" style="margin:14px 0 0">願景切成三塊之後，只有一塊在下層有對應。這不是錯誤，但必須被看見——這是教練唯一會挑戰你的地方。</p>
+    </div>
+  </section>
+
+  <!-- ========== L2 五年 ========== -->
+  <section>
+    <div class="code"><b>L2</b>五年<br>PATHS</div>
+    <div class="sec-body">
+      <h2>通往願景的路，不只一條</h2>
+      <p class="lede">多數規劃練習只做一次：寫下幾條路，然後照第一條過日子。這裡把其餘幾條留成<b>常設對照組</b>，每季重新評分——正在走的越走越掙扎、某條備選持續上升，就是有資料支撐的換軌訊號。</p>
+
+      <div class="paths" id="paths">
+        <div class="path live">
+          <div class="path-head"><span class="path-id">路徑 A</span><span class="pill p-acc">正在走</span></div>
+          <h3>在現職累積 0-to-1 主導經驗</h3>
+          <p>五年內主導 3 個 0-to-1 專案，其中至少 1 個對外發表。</p>
+          <div class="attract">
+            <label for="a-a">現時吸引力 <b id="v-a">8</b></label>
+            <input type="range" id="a-a" min="0" max="10" value="8" aria-label="路徑 A 吸引力">
+          </div>
+        </div>
+
+        <div class="path">
+          <div class="path-head"><span class="path-id">路徑 B</span><span class="pill p-none">對照組</span></div>
+          <h3>轉向 HCI 研究與產品策略</h3>
+          <p>五年內完成 2 個可對外的研究型專案，進入以研究驅動的組織。</p>
+          <div class="attract">
+            <label for="a-b">現時吸引力 <b id="v-b">6</b></label>
+            <input type="range" id="a-b" min="0" max="10" value="6" aria-label="路徑 B 吸引力">
+          </div>
+        </div>
+
+        <div class="path">
+          <div class="path-head"><span class="path-id">路徑 C</span><span class="pill p-none">對照組</span></div>
+          <h3>獨立接案加上自有產品</h3>
+          <p>五年內月營收可覆蓋生活成本，工作時間自主。</p>
+          <div class="attract">
+            <label for="a-c">現時吸引力 <b id="v-c">4</b></label>
+            <input type="range" id="a-c" min="0" max="10" value="4" aria-label="路徑 C 吸引力">
+          </div>
+        </div>
+      </div>
+
+      <p class="lede" id="path-note" style="margin:16px 0 0">冷啟動：本次評分只建立基準線，沒有趨勢可看。趨勢要到第二次季度對帳才有意義。</p>
+    </div>
+  </section>
+
+  <!-- ========== L3/L4 分支與名額 ========== -->
+  <section>
+    <div class="code"><b>L3–L4</b>分支<br>BRANCHES</div>
+    <div class="sec-body">
+      <h2>這一季推哪幾格</h2>
+      <p class="lede">顧此失彼的主因是名額超載——每季都碰所有分支，等於全部沒進展。累積型常設不輪替，專案型每季重選，總數硬上限 3。<b>平衡不是每季平衡，是輪流深耕、跨季看起來平衡。</b></p>
+
+      <div class="slots" id="slots">
+        <div class="slots-head">
+          <span>第 3 季推進名額</span>
+          <b><span id="slot-used">3</span> / 3 · 累積型 <span id="slot-cum">2</span> 常設 · 專案型 <span id="slot-proj">1</span> 輪替</b>
+        </div>
+
+        <!-- 英文口說 -->
+        <div class="branch cum open" data-slot="1">
+          <button type="button" class="br-head" aria-expanded="true">
+            <span class="chev">▾</span>
+            <span class="br-title"><b>英文口說</b><small>年度分支：語言 · 常設名額 1 / 2</small></span>
+            <span class="br-meta"><span class="pill p-acc">累積型</span><span class="pill p-none">弱錨</span></span>
+            <span class="pill p-good">已備重測</span>
+          </button>
+          <div class="br-body">
+            <dl class="four">
+              <div><dt>單位動作</dt><dd>shadowing 一次</dd></div>
+              <div><dt>單次耗時</dt><dd>15 分</dd></div>
+              <div><dt>能量需求</dt><dd>低</dd></div>
+              <div><dt>最低週量</dt><dd>2 次 + 1 堂課</dd></div>
+            </dl>
+            <dl class="spec">
+              <div><dt>12 週指標</dt><dd>能在英語會議完整說明一個設計決策，錄音可辨。</dd></div>
+              <div><dt>重測方式</dt><dd>每季錄一段 3 分鐘同題口說，與上季並排比較。</dd></div>
+              <div><dt>基準線</dt><dd>2026-06-28 錄音已存檔 · 本次建立</dd></div>
+              <div><dt>既有錨點</dt><dd>每週三一堂口說課（強時間錨，非承諾錨）</dd></div>
+            </dl>
+            <div class="hypo">
+              <h4>效果假設 · 教練起草，待你確認</h4>
+              <p><em>假設</em>每週一堂口說課加每週兩次 shadowing，一年內能在英語會議主持討論。</p>
+              <p><em>反證條件</em>連續兩季重測錄音無可辨差異，即視為此行動組合無效，該季強制重新設計行動。</p>
+              <div class="confirm-row">
+                <button type="button" class="mini" aria-pressed="true">接受</button>
+                <button type="button" class="mini">我要改寫</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 體能 -->
+        <div class="branch cum" data-slot="1">
+          <button type="button" class="br-head" aria-expanded="false">
+            <span class="chev">▸</span>
+            <span class="br-title"><b>體能</b><small>年度分支：身體 · 常設名額 2 / 2 · 名額歸屬未收斂</small></span>
+            <span class="br-meta"><span class="pill p-acc">累積型</span><span class="pill p-none">教練約定</span></span>
+            <span class="pill p-good">已備重測</span>
+          </button>
+          <div class="br-body">
+            <dl class="four">
+              <div><dt>單位動作</dt><dd>健身房一次</dd></div>
+              <div><dt>單次耗時</dt><dd>60 分</dd></div>
+              <div><dt>能量需求</dt><dd>中</dd></div>
+              <div><dt>最低週量</dt><dd>2 次</dd></div>
+            </dl>
+            <dl class="spec">
+              <div><dt>12 週指標</dt><dd>深蹲 1RM 由 55kg 提升至 62kg。</dd></div>
+              <div><dt>重測方式</dt><dd>季末測 1RM，同一動作、同一器材。</dd></div>
+              <div><dt>基準線</dt><dd>55 kg（2026-06-20 帳單與課表交叉確認）</dd></div>
+              <div><dt>既有錨點</dt><dd>無外部對象 · 退回教練約定</dd></div>
+            </dl>
+            <div class="hypo">
+              <h4>效果假設 · 教練起草，待你確認</h4>
+              <p><em>假設</em>每週兩次阻力訓練，12 週內 1RM 可提升 10–15%。</p>
+              <p><em>反證條件</em>連續兩季 1RM 零成長且週量達標，即視為方法問題而非投入問題。</p>
+              <div class="confirm-row">
+                <button type="button" class="mini" aria-pressed="true">接受</button>
+                <button type="button" class="mini">我要改寫</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HCI 作品集 -->
+        <div class="branch proj" data-slot="1">
+          <button type="button" class="br-head" aria-expanded="false">
+            <span class="chev">▸</span>
+            <span class="br-title"><b>HCI 作品集</b><small>年度分支：作品集 · 輪替名額 1 / 2</small></span>
+            <span class="br-meta"><span class="pill p-none">專案型</span><span class="pill p-crit">錨點缺口</span></span>
+            <span class="pill p-good">行動即效果</span>
+          </button>
+          <div class="br-body">
+            <dl class="four">
+              <div><dt>單位動作</dt><dd>一夜一案</dd></div>
+              <div><dt>單次耗時</dt><dd>180 分</dd></div>
+              <div><dt>能量需求</dt><dd>高</dd></div>
+              <div><dt>最低週量</dt><dd>1 次</dd></div>
+            </dl>
+            <dl class="spec">
+              <div><dt>12 週指標</dt><dd>完成 2 個完整案例，含研究過程與決策依據，可對外。</dd></div>
+              <div><dt>進展怎麼測</dt><dd>完成度。專案型的行動就是效果，做完就是做完，不需要效果假設。</dd></div>
+              <div><dt>本季選它的理由</dt><dd>上半年零動作，且有外部對象可綁錨——輪替名額優先給這種分支。</dd></div>
+              <div><dt>既有錨點</dt><dd class="miss">無。依錨點缺口判準，這是本季最可能被拖的一格。</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- 健康 -->
+        <div class="branch gap" data-slot="0">
+          <button type="button" class="br-head" aria-expanded="false">
+            <span class="chev">▸</span>
+            <span class="br-title"><b>健康</b><small>年度分支：身體 · 未取得名額</small></span>
+            <span class="br-meta"><span class="pill p-none">未分型</span><span class="pill p-crit">缺四要素</span></span>
+            <span class="pill p-crit">無法排程</span>
+          </button>
+          <div class="br-body">
+            <dl class="four">
+              <div class="missing"><dt>單位動作</dt><dd>未定義</dd></div>
+              <div class="missing"><dt>單次耗時</dt><dd>—</dd></div>
+              <div class="missing"><dt>能量需求</dt><dd>—</dd></div>
+              <div class="missing"><dt>最低週量</dt><dd>—</dd></div>
+            </dl>
+            <dl class="spec">
+              <div><dt>為什麼卡住</dt><dd>沒有這四項，排程器排不進去，對帳也判斷不了——它只會永遠停在「效果未知」。</dd></div>
+              <div><dt>基準線</dt><dd class="miss">無。沒有重測方式的累積型目標，等於沒有可測性。</dd></div>
+              <div><dt>教練的判斷</dt><dd>本季不排任何量，先產出四要素草稿由你刪減。已列入追問 Q-2。</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <!-- 職涯 -->
+        <div class="branch proj" data-slot="0">
+          <button type="button" class="br-head" aria-expanded="false">
+            <span class="chev">▸</span>
+            <span class="br-title"><b>職涯｜0-to-1 主導</b><small>年度分支：職涯 · 不佔名額</small></span>
+            <span class="br-meta"><span class="pill p-none">專案型</span><span class="pill p-good">真實 deadline</span></span>
+            <span class="pill p-good">自帶錨點</span>
+          </button>
+          <div class="br-body">
+            <dl class="spec">
+              <div><dt>不佔名額</dt><dd>工作已有 deadline 與等你交東西的人，錨點強度是全樹最高。名額是稀缺資源，要留給沒有外部承諾的分支。</dd></div>
+              <div><dt>仍然對帳</dt><dd>列入每季對帳，因為它是最大的能量消耗源——限制因素判準要靠它才算得出來。</dd></div>
+              <div><dt>12 週指標</dt><dd>現行專案通過內部評審並進入實作。</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="parked">
+          <h4>本季未取得名額 · 刻意不推</h4>
+          <ul>
+            <li>接案作品集 <span>金錢流健康，不需要短期現金 · 下季優先考慮</span></li>
+            <li>關係 <span>願景有，目標樹沒有 · 待 Q-1 回答後決定要不要建分支</span></li>
+            <li>健康 <span>缺四要素，本季只補定義不排量</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="lede" style="margin:16px 0 0">每季只需要決定一到兩格，不是重新規劃整棵樹。決定順序固定：先確認累積型名額要不要動（通常不動），剩下的給專案型，能量預測低的季度直接減一個名額。</p>
+    </div>
+  </section>
+
+  <!-- ========== L5 每週 ========== -->
+  <section>
+    <div class="code"><b>L5</b>每週<br>WEEKLY</div>
+    <div class="sec-body">
+      <h2>這一層你不用規劃</h2>
+      <p class="lede">每週的量不固定，由排程器依下週實際可用容量重新分配——固定量在忙的那週必定爆掉，在閒的那週又浪費空檔。</p>
+
+      <div class="weekly">
+        <p>排程器每週一次讀你的行事曆，算出可用時段，把上面各分支的單位動作排進去。你只做兩件事：<b>刪掉排不下的</b>，以及回答兩分鐘的週檢查。<b>這一層沒有新增按鈕。</b></p>
+        <div class="kv">
+          <span>排程上限 <b>可用時段 70%</b></span>
+          <span>冷啟動折扣 <b>× 0.6</b></span>
+          <span>能量規則 <b>高耗能不排在耗能事件隔天</b></span>
+          <span>容量不足時 <b>累積型保底，專案型讓位</b></span>
+        </div>
+      </div>
+
+      <p class="lede" style="margin:16px 0 0">冷啟動沒有樂觀係數，所以第一季刻意排少——少到你很確定做得完。這個決定與產出無關：你對「計畫」已經沒有信心，因為過去經驗是排了就爆。要先經歷幾次「排的都做完了」，之後的量才有意義。季末會記錄預計與實際的落差，長出你自己的高估倍率。</p>
+    </div>
+  </section>
+
+  <!-- ========== 追問 ========== -->
+  <section>
+    <div class="code"><b>Q</b>追問<br>CHALLENGE</div>
+    <div class="sec-body">
+      <h2>三個教練答不出來的問題</h2>
+      <p class="lede">拆解可以代勞，這三個不行——它們的答案只能來自你。教練的工作不是否決，是讓你聽見自己說的話。</p>
+
+      <div class="chal" id="chal">
+
+        <div class="chalq">
+          <div class="chalq-head">
+            <span class="qno">Q-1</span>
+            <div>
+              <h3>願景有三塊，五年目標只回應了一塊。</h3>
+              <p>職涯、關係、身體——三條五年路徑全部只回應職涯，關係在整棵樹裡沒有任何節點。要讓它進入目標樹，還是承認它不是一個「目標」而是別的東西？</p>
+              <p class="basis">依據：願景 v1 語意切分 · 下層對應率 1 / 3</p>
+            </div>
+          </div>
+          <div class="qact">
+            <button type="button" class="mini js-open">回答</button>
+            <button type="button" class="mini js-skip">先跳過</button>
+          </div>
+          <div class="qbox">
+            <textarea placeholder="說出來就好，教練負責結構化。"></textarea>
+            <p class="hintline">答案會連同時間與當時能量狀態存成願景 v2 的變更理由。</p>
+          </div>
+        </div>
+
+        <div class="chalq">
+          <div class="chalq-head">
+            <span class="qno">Q-2</span>
+            <div>
+              <h3>「健康」有分支，但沒有任何可以做的動作。</h3>
+              <p>八個月的痕跡裡找不到它——沒有相關支出、沒有相關行程。它是你真的想要的目標，還是你覺得應該要有的目標？兩者都可以，但答案決定它要不要留在樹上。</p>
+              <p class="basis">依據：01/01–06/27 期間該分支歸戶行動 0 筆 · 相關支出 0 元</p>
+            </div>
+          </div>
+          <div class="qact">
+            <button type="button" class="mini js-open">回答</button>
+            <button type="button" class="mini js-skip">先跳過</button>
+          </div>
+          <div class="qbox">
+            <textarea placeholder="說出來就好，教練負責結構化。"></textarea>
+            <p class="hintline">答案會連同時間與當時能量狀態存成願景 v2 的變更理由。</p>
+          </div>
+        </div>
+
+        <div class="chalq">
+          <div class="chalq-head">
+            <span class="qno">Q-3</span>
+            <div>
+              <h3>有一筆投入不屬於任何一條路徑。</h3>
+              <p>上半年你有 18.5 小時、12 件行程花在跟 A 公司的往來，這歸不進 A、B、C 任何一條。它可能是尚未承認的第四條路，也可能是純粹的浪費——但它不該是隱形的。要開第四條路徑嗎？</p>
+              <p class="basis">依據：行事曆 12 件 · 18.5 小時 · 歸戶失敗 · 純規劃式系統看不到這一項</p>
+            </div>
+          </div>
+          <div class="qact">
+            <button type="button" class="mini js-open">回答</button>
+            <button type="button" class="mini js-skip">先跳過</button>
+          </div>
+          <div class="qbox">
+            <textarea placeholder="說出來就好，教練負責結構化。"></textarea>
+            <p class="hintline">答案會連同時間與當時能量狀態存成願景 v2 的變更理由。</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 簽核 ========== -->
+  <div class="signoff" id="signoff">
+    <div class="so-top">
+      <h2>接受這份計畫</h2>
+      <p>接受之後，12 週指標在季內鎖住——不是不能改，是只能在季界改。每週接觸系統就是每週有機會重新談判，所以這條界線寫在機制裡，不靠自制。</p>
+
+      <ul class="so-list">
+        <li><span class="mk">■</span><div>3 個推進分支的四要素與 12 週指標<b> 生效</b></div></li>
+        <li><span class="mk">■</span><div>2 個效果假設與反證條件<b> 存檔，季末自動比對</b></div></li>
+        <li><span class="mk">■</span><div>路徑 A / B / C 吸引力<b> 記為基準線</b></div></li>
+        <li><span class="mk">■</span><div>12 週指標<b> 鎖定至 2026-09-30</b>，季內不接受變更</div></li>
+        <li><span class="mk">■</span><div>退場條件：12 週內有 4 週未回應週檢查，<b>自動降頻到月</b>——視為設計不合，不是你的失敗</div></li>
+      </ul>
+
+      <div class="so-actions">
+        <button type="button" class="btn-primary" id="btn-accept">接受並鎖定本季</button>
+        <button type="button" class="btn-ghost" id="btn-defer">留著草案，我先回答追問</button>
+        <p class="so-warn" id="warn">尚有 3 項追問未回答。可以直接接受，未答項會記入下次對帳議程。</p>
+      </div>
+    </div>
+
+    <div class="so-locked">
+      <b id="lock-line">已接受 · 2026-06-28 · 12 週指標鎖定至 2026-09-30</b>
+      <p>下一次教練主動找你是本週的週檢查，約兩分鐘。下一次可以改目標是 9 月 30 日。目標永不覆寫，只增加版本——這份 v1 會一直留著，日後可以回頭問「那次改動事後看是對的嗎」。</p>
+    </div>
+  </div>
+
+  <footer class="colophon">
+    <div class="code">附註<br>NOTES</div>
+    <div>
+      <p>本頁為黑客松原型，資料為示範用途。這是 demo 的第一站：匯入資料與問答之後，AI 產生計畫供確認；第二站是季末的季度對帳。</p>
+      <p>未收斂項：年度層要幾個分支與怎麼切、累積型第二個常設名額放什麼、歸戶規則對模糊與跨分支行動的處理、冷啟動折扣的預設值。這些在頁面上以「未定」標記，不假裝已經解決。</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  /* ---- path attractiveness sliders (cold start = baseline) ---- */
+  var ids = [["a-a","v-a"],["a-b","v-b"],["a-c","v-c"]], touched = false;
+  var note = document.getElementById("path-note");
+  ids.forEach(function(pair){
+    var inp = document.getElementById(pair[0]), out = document.getElementById(pair[1]);
+    inp.addEventListener("input", function(){
+      out.textContent = inp.value;
+      if(!touched){
+        touched = true;
+        note.innerHTML = "評分已更新，將存為本季基準線。<b>趨勢要到第二次季度對帳才有意義</b>——屆時看的不是絕對分數，是正在走的那條有沒有持續下滑、備選有沒有持續上升。";
+      }
+    });
+  });
+
+  /* ---- branch accordions ---- */
+  document.getElementById("slots").addEventListener("click", function(e){
+    var head = e.target.closest(".br-head");
+    if(head){
+      var br = head.closest(".branch"), open = br.classList.toggle("open");
+      head.setAttribute("aria-expanded", open ? "true" : "false");
+      head.querySelector(".chev").textContent = open ? "▾" : "▸";
+      return;
+    }
+    var mini = e.target.closest(".confirm-row .mini");
+    if(mini){
+      mini.parentNode.querySelectorAll(".mini").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+      mini.setAttribute("aria-pressed","true");
+    }
+  });
+
+  /* ---- challenge questions ---- */
+  var chal = document.getElementById("chal"), warn = document.getElementById("warn");
+
+  function refreshWarn(){
+    var total = chal.querySelectorAll(".chalq").length,
+        done  = chal.querySelectorAll(".chalq.answered").length,
+        left  = total - done;
+    warn.textContent = left === 0
+      ? "三項追問都已回答。這份草案的推導基礎完整。"
+      : "尚有 " + left + " 項追問未回答。可以直接接受，未答項會記入下次對帳議程。";
+    warn.style.color = left === 0 ? "var(--good)" : "var(--warn)";
+  }
+
+  chal.addEventListener("click", function(e){
+    var q = e.target.closest(".chalq"); if(!q) return;
+
+    if(e.target.closest(".js-open")){
+      q.classList.add("open");
+      var ta = q.querySelector("textarea");
+      if(ta) ta.focus();
+      return;
+    }
+    if(e.target.closest(".js-skip")){
+      q.classList.remove("open","answered");
+      refreshWarn();
+    }
+  });
+
+  chal.addEventListener("input", function(e){
+    if(e.target.tagName !== "TEXTAREA") return;
+    var q = e.target.closest(".chalq");
+    q.classList.toggle("answered", e.target.value.trim().length > 0);
+    refreshWarn();
+  });
+  refreshWarn();
+
+  /* ---- sign-off ---- */
+  var so = document.getElementById("signoff");
+  document.getElementById("btn-accept").addEventListener("click", function(){
+    so.classList.add("locked");
+    var stamp = document.querySelector(".draft-stamp");
+    stamp.textContent = "已生效 · v1";
+    stamp.style.color = "var(--good)";
+    stamp.style.borderColor = "var(--good)";
+    stamp.style.borderStyle = "solid";
+    var left = chal.querySelectorAll(".chalq:not(.answered)").length;
+    document.getElementById("lock-line").textContent =
+      "已接受 · 2026-06-28 · 12 週指標鎖定至 2026-09-30" +
+      (left ? " · " + left + " 項追問記入下次對帳議程" : "");
+    so.scrollIntoView({behavior:"smooth", block:"center"});
+  });
+  document.getElementById("btn-defer").addEventListener("click", function(){
+    var first = chal.querySelector(".chalq:not(.answered)");
+    if(!first) return;
+    first.classList.add("open");
+    first.scrollIntoView({behavior:"smooth", block:"center"});
+    var ta = first.querySelector("textarea"); if(ta) ta.focus();
+  });
+})();
+</script>

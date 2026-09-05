@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>方向假設</title>
+
+<!-- 字體。不要換成別的字體 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500&family=Noto+Sans+TC:wght@400;500&display=swap">
+
+<!-- 設計系統。順序不能換：先 token 再元件 -->
+<link rel="stylesheet" href="../ui/mist.tokens.css">
+<link rel="stylesheet" href="../ui/components.css">
+<link rel="stylesheet" href="../local-overrides.css">
+</head>
+
+<body class="mist">
+<div class="mist-page">
+  <div class="mist-shell">
+    <div class="mist-app">
+
+      <nav class="mist-nav mist-row--between" aria-label="流程">
+        <a class="mist-nav__brand" href="#"><span class="mist-nav__mark"></span>個人教練</a>
+        <div class="mist-nav__links">
+          <a class="mist-nav__link is-active" href="#">站 1 · 上傳與方向</a>
+          <a class="mist-nav__link" href="https://claude.ai/code/artifact/04cea755-9563-4896-9f4c-4796edcbf34d">站 2 · 目標樹草案</a>
+          <a class="mist-nav__link" href="https://claude.ai/code/artifact/d9c6f5b0-b21a-4598-b3d7-55ff1a7abbb9">站 3 · 季度對帳</a>
+        </div>
+      </nav>
+
+      <!-- ══════════ masthead ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">第一次使用 · 尚無任何目標</p>
+        <h1 class="mist-h1">你想要的人生是什麼形狀</h1>
+        <p class="mist-body mist-muted">大部分人回答不出「你的願景是什麼」——那是一道要你無中生有的題。所以這裡不問你要什麼，只做三件事：<span class="mist-body-strong">讀你已經留下的痕跡</span>、<span class="mist-body-strong">讓你挑一個形狀</span>、然後<span class="mist-body-strong">拿資料回頭跟那個形狀對一次</span>。最後產出的不是願景，是一個這一季就能測完的假設。</p>
+      </div>
+
+      <!-- ══════════ 01 來源 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">01 · 來源 INTAKE</p>
+        <h2 class="mist-h2">先看你已經有的痕跡</h2>
+        <p class="mist-body mist-muted">不要求你回想，也不要求你開始記錄。這一步只讀既有資料——你的時間怎麼花的、你的經歷長什麼樣。</p>
+
+        <div class="mist-inset">
+          <div class="mist-stack">
+            <div class="mist-row mist-row--between">
+              <div class="mist-stack--sm mist-stack mist-grow">
+                <p class="mist-body-strong">Google 行事曆</p>
+                <p class="mist-caption mist-muted">近 26 週 · 448 個行程 · 提供時間流向</p>
+              </div>
+              <span class="mist-badge mist-badge--done">已連接 07:12</span>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between">
+              <div class="mist-stack--sm mist-stack mist-grow">
+                <p class="mist-body-strong">履歷 PDF</p>
+                <p class="mist-caption mist-muted">resume-2026.pdf · 2 頁 · 提供軌跡與技能重複度</p>
+              </div>
+              <span class="mist-badge mist-badge--done">已解析 07:14</span>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between">
+              <div class="mist-stack--sm mist-stack mist-grow">
+                <p class="mist-body-strong">信用卡帳單</p>
+                <p class="mist-caption mist-muted">選填 · 提供金錢流向，跨面向覆蓋最廣</p>
+              </div>
+              <span class="mist-badge mist-badge--idle">未連接 · 可稍後補</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="mist-body mist-muted">時間與金錢合起來是最誠實的優先順序證明。<span class="mist-body-strong">一個人聲稱重視什麼，和他把資源放在哪，落差本身就是診斷。</span>只給行事曆與履歷已經夠開始，帳單可以稍後再補。</p>
+      </div>
+
+      <!-- ══════════ 02 歸戶 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <div class="mist-row mist-row--between">
+          <p class="mist-label mist-subtle">02 · 歸戶 LEDGER</p>
+          <span class="mist-badge mist-badge--done">已確認 2026-09-05</span>
+        </div>
+        <h2 class="mist-h2">歸戶對完了，這是你確認過的現況</h2>
+        <p class="mist-body mist-muted">近 26 週、448 個行程已經歸戶，模糊的部分問過你、你也確認過——所以下面這些不是系統的猜測，是<span class="mist-body-strong">你簽過名的帳</span>。這裡沒有評價，只是把帳攤開。</p>
+
+        <div class="mist-stats">
+          <div class="mist-stat mist-stat--sm mist-stat--rule mist-stat--rule-mark"><span class="mist-stat__value">26</span><span class="mist-stat__label">週的行為被讀進來</span></div>
+          <div class="mist-stat mist-stat--sm mist-stat--rule"><span class="mist-stat__value">448</span><span class="mist-stat__label">個行程已歸戶</span></div>
+          <div class="mist-stat mist-stat--sm mist-stat--rule mist-stat--rule-accent"><span class="mist-stat__value">16%</span><span class="mist-stat__label">確認歸不進任何類別</span></div>
+        </div>
+
+        <div class="mist-donut" id="mix">
+          <div class="mist-donut__figure">
+            <svg class="mist-donut__svg" viewBox="0 0 240 240" aria-hidden="true">
+              <circle class="mist-donut__track" cx="120" cy="120" r="104" pathLength="100"></circle>
+              <circle class="mist-donut__band is-selected" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 16; --mist-arc-start: 62"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--mark" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 61; --mist-arc-start: 0"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--accent is-selected" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 15; --mist-arc-start: 62"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--alt" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 13; --mist-arc-start: 78"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--muted" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 4; --mist-arc-start: 92"></circle>
+              <circle class="mist-donut__seg mist-donut__seg--muted" cx="120" cy="120" r="104" pathLength="100" style="--mist-arc: 2; --mist-arc-start: 97"></circle>
+            </svg>
+            <div class="mist-donut__center">
+              <span class="mist-donut__value">16%</span>
+              <span class="mist-donut__label">未分類</span>
+            </div>
+          </div>
+          <div class="mist-donut__legend">
+            <button class="mist-donut__item mist-donut__item--mark" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">工作與會議</span><span class="mist-donut__pct">62%</span></button>
+            <button class="mist-donut__item mist-donut__item--accent is-selected" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">未分類</span><span class="mist-donut__pct">16%</span></button>
+            <button class="mist-donut__item mist-donut__item--alt" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">社交與一對一</span><span class="mist-donut__pct">14%</span></button>
+            <button class="mist-donut__item mist-donut__item--muted" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">學習</span><span class="mist-donut__pct">5%</span></button>
+            <button class="mist-donut__item mist-donut__item--muted" type="button"><span class="mist-donut__dot"></span><span class="mist-donut__name">運動</span><span class="mist-donut__pct">3%</span></button>
+          </div>
+        </div>
+        <p class="mist-caption mist-muted">點圖例任一列看它的佔比。預設選中的是未分類，因為那一塊是後面對帳最有價值的地方。</p>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <p class="mist-label mist-subtle">確認的邊界</p>
+            <p class="mist-body">確認過的是<span class="mist-body-strong">歸戶結果與下面四塊的方向</span>。<span class="mist-body-strong">那 16% 沒有被強行歸戶</span>——你確認的是「它確實歸不進去」，不是「它已經有歸屬」。那 118 小時會原樣帶進季度對帳。</p>
+          </div>
+        </div>
+
+        <div class="mist-inset">
+          <div class="mist-stack">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">軌跡</p>
+              <p class="mist-body">5 年 3 份工作，全部在同一領域。<span class="mist-body-strong">最長任期是最近這一份（2 年 4 個月）</span>——留得越來越久，不是越來越短。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">技能</p>
+              <p class="mist-body">履歷裡重複出現最多的三項：<span class="mist-body-strong">Figma、使用者訪談、design system</span>。三份工作都有，深度在累積。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">持續性</p>
+              <p class="mist-body">行事曆上有一件事連續出現 <span class="mist-body-strong">11 週沒斷</span>——週四晚上的讀書會。這是你目前唯一的長連續行為。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">空白</p>
+              <p class="mist-body">週末幾乎沒有安排；<span class="mist-body-strong">零筆 side project 痕跡</span>；運動 3% 集中在前 6 週，之後歸零。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">訊號</p>
+              <p class="mist-body"><span class="mist-body-strong">近 3 個月有 3 次獵頭面談</span>，分散在 3 家公司。行為在累積深度，但同時在探路——追問時你確認這兩件事是同時成立的，不是其中一個記錯。</p>
+            </div>
+            <hr class="mist-divider">
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">未分類</p>
+              <p class="mist-body">16% 的時間（約 118 小時）歸不進任何類別。追問時你逐項看過，<span class="mist-body-strong">確認它不是漏記，是真的沒有歸屬</span>。</p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="mist-divider">
+
+        <p class="mist-label mist-subtle">綜合 · 四塊帳</p>
+        <h3 class="mist-h3">同一批行程，換一個切法</h3>
+        <p class="mist-body mist-muted">上面是時間落在哪個類別，這裡是那些時間餵給了生活的哪一塊。四塊的方向都經過追問、由你確認過。<span class="mist-body-strong">每一格的分數旁邊就是那一塊拿到多少時間</span>——落差自己會說話，不需要誰下評語。</p>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between">
+              <h3 class="mist-h3">身體 HEALTH</h3>
+              <span class="mist-badge mist-badge--idle">時間投入 3%</span>
+            </div>
+            <div class="mist-row">
+              <p class="mist-h1">2</p>
+              <p class="mist-caption mist-subtle">/ 10</p>
+            </div>
+            <div class="mist-progress mist-progress--thin"><div class="mist-progress__bar" style="--mist-progress-value: 20%"></div></div>
+            <p class="mist-caption mist-subtle">範疇：睡眠、飲食、運動量、長期的身體不適</p>
+            <p class="mist-body">運動全部落在前 6 週，<span class="mist-body-strong">第 7 週起連續 20 週歸零</span>。追問時你確認那 20 週沒有未記錄的運動——這一格分數低不是資料太少，是資料很清楚。</p>
+          </div>
+        </div>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between">
+              <h3 class="mist-h3">產出 WORK</h3>
+              <span class="mist-badge mist-badge--idle">時間投入 62%</span>
+            </div>
+            <div class="mist-row">
+              <p class="mist-h1">6</p>
+              <p class="mist-caption mist-subtle">/ 10</p>
+            </div>
+            <div class="mist-progress mist-progress--thin"><div class="mist-progress__bar" style="--mist-progress-value: 60%"></div></div>
+            <p class="mist-caption mist-subtle">範疇：不只是有薪水的職位，是你正在產出的價值——副業、家務、社團的義務服務都算</p>
+            <p class="mist-body">投入與累積都成立：任期越來越長、履歷技能重複度高。但那 62% 大半是會議，而作品的公開痕跡是零。追問時你確認「產出」對你指的是<span class="mist-body-strong">對外可見的東西</span>，所以這一格停在 6。</p>
+          </div>
+        </div>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between">
+              <h3 class="mist-h3">娛樂 JOY</h3>
+              <span class="mist-badge mist-badge--attention">時間投入 未歸戶</span>
+            </div>
+            <div class="mist-row">
+              <p class="mist-h1">3</p>
+              <p class="mist-caption mist-subtle">/ 10</p>
+            </div>
+            <div class="mist-progress mist-progress--thin"><div class="mist-progress__bar" style="--mist-progress-value: 30%"></div></div>
+            <p class="mist-caption mist-subtle">範疇：純粹為了快樂而做的事。為了變強或賺錢而做的，不算在這一格</p>
+            <p class="mist-body">週末幾乎沒有安排，行事曆上找不到這一類。追問時你逐項看過那 118 小時，<span class="mist-body-strong">確認其中只有約 12 小時是純娛樂</span>，其餘是工作的延伸——平均每週不到半小時。</p>
+          </div>
+        </div>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between">
+              <h3 class="mist-h3">關係 LOVE</h3>
+              <span class="mist-badge mist-badge--idle">時間投入 14%</span>
+            </div>
+            <div class="mist-row">
+              <p class="mist-h1">4</p>
+              <p class="mist-caption mist-subtle">/ 10</p>
+            </div>
+            <div class="mist-progress mist-progress--thin"><div class="mist-progress__bar" style="--mist-progress-value: 40%"></div></div>
+            <p class="mist-caption mist-subtle">範疇：伴侶、家人、朋友、寵物，以及與自己的連結</p>
+            <p class="mist-body">社交與一對一佔 14%，比例不低；週四讀書會 11 週未斷，而且它有固定的一群人。但追問時你確認<span class="mist-body-strong">那 14% 裡約一半是工作協作</span>，真正歸到關係的接近 7%。</p>
+          </div>
+        </div>
+
+        <p class="mist-body mist-muted">62% 的時間換到產出 6 分；身體拿到 3%，換到 2 分。<span class="mist-body-strong">分數低的那幾格，時間也確實沒去那裡。</span>這是分配的結果，不是能力的結果。</p>
+
+        <p class="mist-body mist-muted"><span class="mist-body-strong">分數低不等於要補。</span>有人就是這個形狀，而且過得很好。要不要補、先補哪一塊，等你選完對照基準才有判準；這一段只負責把帳攤開。</p>
+      </div>
+
+      <!-- ══════════ 03 形狀 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">03 · 形狀 SHAPE</p>
+        <h2 class="mist-h2">挑一個你想要的人生形狀</h2>
+        <p class="mist-body mist-muted">這些不是職業，是<span class="mist-body-strong">生活的形狀</span>——同一個職稱可以長成不同形狀，不同職稱也可能是同一個形狀。每一個都附上代價，因為沒有代價的樣板只會讓人選最亮的那個。<span class="mist-body-strong">選了不等於承諾，這只是給後面的對帳一個對照基準。</span></p>
+
+        <div class="mist-specs" id="shapes" role="radiogroup" aria-label="人生形狀樣板"></div>
+
+        <p class="mist-body mist-muted">找不到接近的？可以自己寫一個，或選最接近的再改。樣板存在的理由不是限制選擇，是<span class="mist-body-strong">讓「我不知道」變成一個可以往下走的答案</span>。</p>
+      </div>
+
+      <!-- ══════════ 04 對照 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">04 · 對照 CROSS-CHECK</p>
+        <h2 class="mist-h2">你選的形狀，跟你的資料對得上嗎</h2>
+        <p class="mist-body mist-muted">這一步不是要否決你的選擇。<span class="mist-body-strong">對不上不代表選錯</span>——它可能代表你正要改變，也可能代表你選的是想像中的自己。差別只有你自己知道，但落差必須先被看見。</p>
+
+        <div class="mist-row mist-row--between">
+          <p class="mist-label mist-subtle">你選的形狀 vs 近 26 週的行為</p>
+          <span id="xc-badge"></span>
+        </div>
+        <h3 class="mist-h3" id="xc-verdict"></h3>
+        <p class="mist-body mist-muted" id="xc-say"></p>
+
+        <div class="mist-stack--sm mist-stack" id="xc-list"></div>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <p class="mist-label mist-subtle">這一季唯一要驗證的事</p>
+            <p class="mist-body" id="xc-test"></p>
+            <p class="mist-caption mist-muted" id="xc-cost"></p>
+          </div>
+        </div>
+
+        <p class="mist-body mist-muted">沒方向的人不需要五年計畫，需要一個便宜的測試。<span class="mist-body-strong">一季做完、結果明確、失敗不痛</span>——測完你對自己的了解會比現在多，那時候再談五年目標才有依據。</p>
+      </div>
+
+      <!-- ══════════ 05 約束 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <p class="mist-label mist-subtle">05 · 約束 CONSTRAINTS</p>
+        <h2 class="mist-h2">三個不用有方向也答得出來的問題</h2>
+        <p class="mist-body mist-muted">「你想要什麼」對沒方向的人是很難的題。但<span class="mist-body-strong">「你確定不要什麼」很好答</span>——排除法從來比選擇法容易。這三題問的都是約束與代價，不是志向。</p>
+        <p class="mist-body mist-muted">跟前面的追問不是同一批。<span class="mist-body-strong">02 段確認的是帳怎麼歸、四塊各在哪裡；這三題決定的是名額怎麼分、容量不夠時先砍誰。</span>前者是現況，後者是取捨。</p>
+
+        <div class="mist-steps" id="qsteps" aria-hidden="true">
+          <span class="mist-steps__step"></span><span class="mist-steps__step"></span><span class="mist-steps__step"></span>
+        </div>
+
+        <div class="mist-stack" id="qs">
+
+          <div class="mist-inset" data-q>
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">Q-1</p>
+              <p class="mist-body-strong">有什麼是你確定不要的？</p>
+              <p class="mist-body mist-muted">不用完整，想到一個就講一個。「不要再帶團隊」、「不要搬離這個城市」、「不要收入不穩」——這些會直接砍掉一半的路徑，比選出一條路有效率得多。</p>
+              <p class="mist-caption mist-subtle">用途：反向約束五年路徑的候選集合</p>
+              <div class="mist-row">
+                <button class="mist-btn mist-btn--secondary" type="button" data-open>回答</button>
+                <button class="mist-btn mist-btn--ghost" type="button" data-skip>先跳過</button>
+              </div>
+              <div class="mist-field" data-box hidden>
+                <label class="mist-field__label" for="q1">你確定不要的是</label>
+                <textarea class="mist-field__input" id="q1" placeholder="想到一個就講一個，不用完整。"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="mist-inset" data-q>
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">Q-2</p>
+              <p class="mist-body-strong">過去兩年你放棄過什麼？當時是遇到阻力，還是失去興趣？</p>
+              <p class="mist-body mist-muted">你的行事曆顯示運動在第 6 週之後歸零，還有兩段各持續 3–4 週後消失的行程。這一題問的不是為什麼放棄，是<span class="mist-body-strong">你放棄的模式長什麼樣</span>。</p>
+              <p class="mist-caption mist-subtle">用途：建立「成長式修正 vs 逃避式修改」的個人基準線</p>
+              <div class="mist-row">
+                <button class="mist-btn mist-btn--secondary" type="button" data-open>回答</button>
+                <button class="mist-btn mist-btn--ghost" type="button" data-skip>先跳過</button>
+              </div>
+              <div class="mist-field" data-box hidden>
+                <label class="mist-field__label" for="q2">當時發生的是</label>
+                <textarea class="mist-field__input" id="q2" placeholder="遇到阻力、失去興趣，還是本來就不是真的想要？"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="mist-inset" data-q3>
+            <div class="mist-stack--sm mist-stack">
+              <p class="mist-label mist-subtle">Q-3</p>
+              <p class="mist-body-strong">如果這一季只能保住兩樣，你先放掉哪一個？</p>
+              <p class="mist-body mist-muted">不是問你重視什麼——每個人都會說三個都重要。強迫排序才問得出真的優先順序，而且這個答案直接決定名額怎麼分。</p>
+              <p class="mist-caption mist-subtle">用途：決定累積型常設名額，以及容量不足時先砍誰</p>
+              <div class="mist-stack--sm mist-stack" id="q3-act" role="radiogroup" aria-label="先放掉哪一個">
+                <button class="mist-option" type="button" role="radio" aria-checked="false" data-drop="工作成就">
+                  <span class="mist-option__marker" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="mist-option__body"><span class="mist-option__label">先放掉 工作成就</span></span>
+                </button>
+                <button class="mist-option" type="button" role="radio" aria-checked="false" data-drop="關係">
+                  <span class="mist-option__marker" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="mist-option__body"><span class="mist-option__label">先放掉 關係</span></span>
+                </button>
+                <button class="mist-option" type="button" role="radio" aria-checked="false" data-drop="健康">
+                  <span class="mist-option__marker" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                  <span class="mist-option__body"><span class="mist-option__label">先放掉 健康</span></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ══════════ 06 方向假設 ══════════ -->
+      <div class="mist-card mist-card--lg">
+        <div class="mist-row mist-row--between">
+          <p class="mist-label mist-subtle">06 · 產出 HYPOTHESIS</p>
+          <span class="mist-badge mist-badge--attention">假設 v0 · 不是願景</span>
+        </div>
+        <h2 class="mist-h2">這是你這一季的對照基準</h2>
+
+        <h3 class="mist-h3" id="hyp-quote"></h3>
+        <p class="mist-caption mist-muted" id="hyp-src"></p>
+
+        <p class="mist-body mist-muted"><span class="mist-body-strong">這不是你的願景，是一個借來的形狀。</span>願景要自己長出來，長出來之前你需要的是一個能對照的東西——沒有基準就沒有診斷，沒有診斷就永遠停在「還可以吧」。三個月後拿真實行為回頭比一次，那時候的你會比現在更清楚。</p>
+
+        <div class="mist-inset">
+          <div class="mist-stack--sm mist-stack">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">來源</span><span class="mist-body" id="g-src">樣板 + 你的資料</span></div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">先放掉</span><span class="mist-body" id="g-drop">未回答</span></div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">約束已收集</span><span class="mist-body" id="g-ans">0 / 2</span></div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">首次複審</span><span class="mist-body">2026-12-31</span></div>
+            <hr class="mist-divider">
+            <div class="mist-row mist-row--between"><span class="mist-label mist-subtle">版本</span><span class="mist-body">v0 · 永不覆寫</span></div>
+          </div>
+        </div>
+
+        <div class="mist-row">
+          <a class="mist-btn mist-btn--primary" href="https://claude.ai/code/artifact/04cea755-9563-4896-9f4c-4796edcbf34d">用這個假設產生目標樹草案</a>
+          <button class="mist-btn mist-btn--ghost" type="button" id="btn-other">換一個形狀看看</button>
+        </div>
+        <p class="mist-caption mist-muted">假設會標記為 v0 並記錄今天的時間與來源。三個月後若行為與它持續不符，教練會主動拿出來問——不是催你執行，是問這個形狀還算不算數。</p>
+      </div>
+
+      <!-- ══════════ 附註 ══════════ -->
+      <div class="mist-card">
+        <p class="mist-label mist-subtle">附註 NOTES</p>
+        <p class="mist-caption mist-muted">本頁為黑客松原型，資料為示範用途。這是三站流程的第一站：上傳與方向 → 目標樹草案 → 季度對帳。上方導覽可直接跳到後兩站。</p>
+        <p class="mist-caption mist-muted">設計取捨：樣板會壓縮選擇空間，這是已知的代價。換來的是「我不知道我要什麼」有一個可以往下走的出口，而不是卡在第一個畫面。代價的緩解方式是每一個樣板都標出它的成本，並且把輸出明確標記成假設 v0、而非願景。</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CHECK = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var S = function (t) { return '<span class="mist-body-strong">' + t + '</span>'; };
+
+  /* ---------- role model 樣板 ---------- */
+  var SHAPES = [
+    {
+      id: "S-1", name: "深耕的專家",
+      vision: "在一件事上做到很深，被同行認得。",
+      path: "五年內成為某個具體題目的可被指名者",
+      need: "專業深度、作品的公開痕跡",
+      cost: "換軌成本高。深度越厚，橫向機會越難拿",
+      fit: "高度一致", badgeClass: "mist-badge--done", badgeText: "資料支持",
+      verdict: "你的資料本來就長這個形狀。",
+      say: "這是六個樣板裡跟你行為最一致的一個。這件事有好有壞——一致代表阻力小，也代表這可能是慣性而不是選擇。近三個月的三次獵頭面談是唯一的反向訊號。",
+      items: [
+        ["ok", "同一領域 5 年 3 份工作，" + S("任期越來越長") + "而非越來越短"],
+        ["ok", "履歷技能重複度高，" + S("深度確實在累積")],
+        ["ok", "週四讀書會連續 11 週未斷，是你唯一的長連續行為"],
+        ["no", "但作品的" + S("公開痕跡為零") + "——深度無人可見，「被同行認得」這半句沒有對應行為"],
+        ["no", "3 次獵頭面談指向探路，跟深耕相反。" + S("兩件事同時在發生")]
+      ],
+      test: "把手上已經做完的一個專案整理成可對外的案例，投一個公開場合（社群分享、內部大會、投稿）。",
+      cost2: "一季一次 · 約 3 個晚上 · 失敗只是沒被接受，不影響工作"
+    },
+    {
+      id: "S-2", name: "從零到一的建造者",
+      vision: "一直在把不存在的東西做出來。",
+      path: "五年內主導 3 個從零開始的專案",
+      need: "跨職能的溝通、快速做出東西的能力",
+      cost: "很少東西做到成熟。履歷會看起來跳",
+      fit: "落差大", badgeClass: "mist-badge--attention", badgeText: "缺少關鍵痕跡",
+      verdict: "你的資料裡完全找不到這個形狀。",
+      say: "這不代表不能選，但它代表你選的是一個你還沒開始的方向。這種選擇要用測試驗證，不能直接排進五年計畫——先確認你喜歡的是「做新東西」本身，還是「做新東西」聽起來的樣子。",
+      items: [
+        ["no", S("零筆 side project 痕跡") + "。這個形狀最基本的行為證據不存在"],
+        ["no", "週末幾乎空白——建造需要連續的大塊時間，你目前沒有在保留"],
+        ["ok", "履歷有 design system 經驗，那是從零建立的東西，可以算半個"],
+        ["ok", "3 次獵頭面談說明你在探路，這跟想換形狀是相容的"],
+        ["no", "62% 時間在工作會議。" + S("這個形狀要的是產出時間，不是協調時間")]
+      ],
+      test: "用兩週做完一個很小但完整的東西，做到能給別人用。不求好，只求做完。",
+      cost2: "兩週 · 每晚 1 小時 · 測的是你享不享受這個過程，不是成品"
+    },
+    {
+      id: "S-3", name: "獨立經營者",
+      vision: "時間自己安排，收入自己撐得起來。",
+      path: "五年內月營收覆蓋生活成本，不依賴單一雇主",
+      need: "可販賣的技能、報價與談判、客戶關係",
+      cost: "收入不穩，沒有組織槓桿，行政雜事全歸自己",
+      fit: "落差最大", badgeClass: "mist-badge--attention", badgeText: "三項證據皆缺",
+      verdict: "這是六個形狀裡跟你目前資料距離最遠的一個。",
+      say: "距離遠不是理由不選，但它意味著風險最高、也最需要先測。這個形狀的失敗代價是實際的金錢，所以驗證動作必須比其他形狀更前面——在辭職之前，而不是之後。",
+      items: [
+        ["no", S("零筆接案、報價、客戶往來痕跡")],
+        ["no", "收入來源單一。金錢流沒有第二條腿"],
+        ["no", "履歷全是組織內的角色，沒有對外承接的經驗"],
+        ["ok", "履歷技能（Figma、訪談、design system）本身是可販賣的"],
+        ["ok", "近 3 個月 3 次獵頭面談，說明你對現狀不完全滿意"]
+      ],
+      test: "接一個真實的付費小案，金額不重要，走完報價到交付到收款的完整一輪。",
+      cost2: "一季一件 · 約 20 小時 · 測的是流程與感受，不是收入"
+    },
+    {
+      id: "S-4", name: "帶人的人",
+      vision: "透過別人把事情放大，而不是自己做完。",
+      path: "五年內帶起一個能自己運轉的團隊",
+      need: "判斷力、把話說清楚、忍住自己動手",
+      cost: "自己動手的技藝會退化，成果變得間接",
+      fit: "部分一致", badgeClass: "mist-badge--active", badgeText: "有行為，無紀錄",
+      verdict: "你已經在做這個形狀的一部分，但它沒有進入你的履歷。",
+      say: "行事曆上 14% 的一對一是真實訊號，這個比例不低。但履歷完全沒有帶人的紀錄——這可能是你在做卻沒被承認的事，也可能只是同儕之間的協作被誤讀成帶人。這一格值得先弄清楚。",
+      items: [
+        ["ok", "行事曆" + S("一對一與社交佔 14%") + "，比例明顯高於純執行角色"],
+        ["ok", "design system 經驗天生需要說服與協調"],
+        ["no", S("履歷零帶人紀錄") + "。三份工作都是個人貢獻者頭銜"],
+        ["no", "那 14% 是不是真的在帶人，資料分不出來——可能只是協作"],
+        ["ok", "62% 的會議時間至少說明你不排斥人多的環境"]
+      ],
+      test: "主動帶一個人做完一件事——實習生、新同事、跨組的人都算。做完之後寫下你享受的部分與痛苦的部分。",
+      cost2: "一季一人 · 每週 30 分鐘 · 測的是你要不要，不是你能不能"
+    },
+    {
+      id: "S-5", name: "穩定的支柱",
+      vision: "工作可預測，重心放在關係與身體。",
+      path: "五年內工作維持在可勝任的水準，把餘裕放回生活",
+      need: "守住邊界的能力、一段可持續的關係、一個持續的身體練習",
+      cost: "職涯天花板會來得比較早，收入成長趨緩",
+      fit: "落差反向", badgeClass: "mist-badge--attention", badgeText: "時間分配正好相反",
+      verdict: "這個形狀要的分配，跟你現在的分配幾乎是反過來的。",
+      say: "六個形狀裡只有這一個不以職涯為中心，而它是最常被選、也最常被自己的行為推翻的一個。你的資料顯示你目前把絕大多數時間投在工作上——想要這個形狀，要改的不是目標，是分配。",
+      items: [
+        ["no", S("工作與會議佔 62%") + "。這個形狀通常落在 40% 上下"],
+        ["no", "運動 3%，且第 6 週之後歸零。「持續的身體練習」目前不存在"],
+        ["no", "週末幾乎沒有安排——餘裕沒有被用掉，也沒有被保護"],
+        ["ok", "一對一與社交 14%，關係這一塊有真實基礎"],
+        ["ok", "任期越來越長，說明你並不追求高速換軌"]
+      ],
+      test: "連續 12 週每週保住兩件事：一次運動、一次不談工作的長聚會。只記有沒有發生，不記品質。",
+      cost2: "12 週 · 每週約 3 小時 · 測的是你守不守得住邊界"
+    },
+    {
+      id: "S-6", name: "跨界的連結者",
+      vision: "站在兩三個領域之間，做別人做不到的翻譯。",
+      path: "五年內在兩個領域都有可信度，並靠交界處的問題吃飯",
+      need: "第二個領域的真實基礎、寫作或表達",
+      cost: "每個領域都不會是最深的那個，需要一直解釋自己在做什麼",
+      fit: "落差中等", badgeClass: "mist-badge--active", badgeText: "只有一個領域",
+      verdict: "你目前只有一個領域，這個形狀至少需要兩個。",
+      say: "連續 11 週的讀書會是唯一指向「第二個領域」的訊號，這是你資料裡最有意思的一塊——它是你唯一沒斷過的長連續行為，卻完全不在你的履歷上。先弄清楚那個讀書會在讀什麼，這一格才有得談。",
+      items: [
+        ["ok", S("讀書會連續 11 週未斷") + "——你唯一的長連續行為，可能就是第二個領域的種子"],
+        ["ok", "使用者訪談經驗天生跨在設計與研究之間"],
+        ["no", "履歷" + S("只有一個領域") + "。五年 3 份工作全部同類"],
+        ["no", "零公開寫作或表達痕跡。這個形狀靠說得清楚吃飯"],
+        ["no", "那 16% 未分類的時間可能藏著第二領域，也可能只是雜事"]
+      ],
+      test: "把讀書會裡學到的東西寫成一篇給本行同事看的文章，公開發表。",
+      cost2: "一季一篇 · 約 8 小時 · 測的是兩邊接不接得起來"
+    }
+  ];
+
+  /* ---------- 樣板陣列 ---------- */
+  var gal = document.getElementById("shapes"), selected = 0;
+
+  SHAPES.forEach(function (s, i) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "mist-spec";
+    b.setAttribute("role", "radio");
+    b.setAttribute("aria-checked", i === 0 ? "true" : "false");
+    b.dataset.i = i;
+    b.innerHTML =
+      '<span class="mist-spec__head">' +
+        '<span class="mist-spec__id">' + s.id + '</span>' +
+        '<span class="mist-badge ' + s.badgeClass + '">' + s.fit + '</span>' +
+      '</span>' +
+      '<span class="mist-spec__title">' + s.name + '</span>' +
+      '<span class="mist-spec__lede">「' + s.vision + '」</span>' +
+      '<dl class="mist-spec__rows">' +
+        '<div class="mist-spec__row"><dt class="mist-spec__term">五年</dt><dd class="mist-spec__detail">' + s.path + '</dd></div>' +
+        '<div class="mist-spec__row"><dt class="mist-spec__term">需累積</dt><dd class="mist-spec__detail">' + s.need + '</dd></div>' +
+        '<div class="mist-spec__row"><dt class="mist-spec__term">代價</dt><dd class="mist-spec__detail">' + s.cost + '</dd></div>' +
+      '</dl>' +
+      '<span class="mist-spec__foot">' + CHECK + (i === 0 ? "已選為對照基準" : "選為對照基準") + '</span>';
+    gal.appendChild(b);
+  });
+
+  gal.addEventListener("click", function (e) {
+    var b = e.target.closest(".mist-spec"); if (!b) return;
+    selected = parseInt(b.dataset.i, 10);
+    gal.querySelectorAll(".mist-spec").forEach(function (x, i) {
+      var on = i === selected;
+      x.setAttribute("aria-checked", on ? "true" : "false");
+      x.querySelector(".mist-spec__foot").innerHTML = CHECK + (on ? "已選為對照基準" : "選為對照基準");
+    });
+    renderXC();
+  });
+
+  /* ---------- 反差比對 + 產出 ---------- */
+  var vEl = document.getElementById("xc-verdict"),
+      sEl = document.getElementById("xc-say"),
+      lEl = document.getElementById("xc-list"),
+      tEl = document.getElementById("xc-test"),
+      cEl = document.getElementById("xc-cost"),
+      bEl = document.getElementById("xc-badge"),
+      qEl = document.getElementById("hyp-quote"),
+      rEl = document.getElementById("hyp-src");
+
+  function renderXC() {
+    var s = SHAPES[selected];
+    vEl.textContent = s.verdict;
+    sEl.textContent = s.say;
+    bEl.innerHTML = '<span class="mist-badge ' + s.badgeClass + '">' + s.badgeText + '</span>';
+    lEl.innerHTML = "";
+    s.items.forEach(function (it) {
+      var row = document.createElement("div");
+      row.className = "mist-row";
+      row.innerHTML =
+        '<span class="mist-badge ' + (it[0] === "ok" ? "mist-badge--done" : "mist-badge--attention") + '">' +
+        (it[0] === "ok" ? "支持" : "缺") + '</span>' +
+        '<span class="mist-body mist-grow">' + it[1] + '</span>';
+      lEl.appendChild(row);
+    });
+    tEl.textContent = s.test;
+    cEl.textContent = s.cost2;
+    qEl.textContent = "「" + s.vision + "」";
+    rEl.textContent = "樣板 " + s.id + " " + s.name + " · 借用於 2026-09-04 · 尚未由使用者自己寫出";
+  }
+
+  /* ---------- 三個問題 ---------- */
+  var qs = document.getElementById("qs"),
+      steps = document.getElementById("qsteps").children,
+      gAns = document.getElementById("g-ans"),
+      gDrop = document.getElementById("g-drop");
+
+  function refresh() {
+    var boxes = qs.querySelectorAll("[data-q] textarea"), done = 0;
+    boxes.forEach(function (t) { if (t.value.trim().length > 0) done++; });
+    gAns.textContent = done + " / 2";
+    steps[0].classList.toggle("is-done", boxes[0].value.trim().length > 0);
+    steps[1].classList.toggle("is-done", boxes[1].value.trim().length > 0);
+    steps[2].classList.toggle("is-done", gDrop.textContent !== "未回答");
+  }
+
+  qs.addEventListener("click", function (e) {
+    var drop = e.target.closest("[data-drop]");
+    if (drop) {
+      document.querySelectorAll("#q3-act .mist-option").forEach(function (x) { x.setAttribute("aria-checked", "false"); });
+      drop.setAttribute("aria-checked", "true");
+      gDrop.textContent = drop.dataset.drop;
+      refresh();
+      return;
+    }
+    var q = e.target.closest("[data-q]"); if (!q) return;
+    var box = q.querySelector("[data-box]"), ta = q.querySelector("textarea");
+    if (e.target.closest("[data-open]")) {
+      box.hidden = false;
+      ta.focus();
+    } else if (e.target.closest("[data-skip]")) {
+      ta.value = "";
+      box.hidden = true;
+      refresh();
+    }
+  });
+
+  qs.addEventListener("input", function (e) {
+    if (e.target.tagName === "TEXTAREA") refresh();
+  });
+
+  /* ---------- 時間分配圓餅圖 ---------- */
+  var MIX = [
+    { name: "工作與會議", pct: "62%", arc: 62, start: 0 },
+    { name: "未分類",     pct: "16%", arc: 16, start: 62 },
+    { name: "社交與一對一", pct: "14%", arc: 14, start: 78 },
+    { name: "學習",       pct: "5%",  arc: 5,  start: 92 },
+    { name: "運動",       pct: "3%",  arc: 3,  start: 97 }
+  ];
+
+  var mix   = document.getElementById("mix"),
+      band  = mix.querySelector(".mist-donut__band"),
+      segs  = [].slice.call(mix.querySelectorAll(".mist-donut__seg")),
+      items = [].slice.call(mix.querySelectorAll(".mist-donut__item")),
+      cVal  = mix.querySelector(".mist-donut__value"),
+      cLab  = mix.querySelector(".mist-donut__label");
+
+  function selectMix(i) {
+    var d = MIX[i];
+    /* band 用足額弧長；段本身少 1 做出段與段的間隙（同 reference 的做法） */
+    band.style.setProperty("--mist-arc", d.arc);
+    band.style.setProperty("--mist-arc-start", d.start);
+    segs.forEach(function (x, n) { x.classList.toggle("is-selected", n === i); });
+    items.forEach(function (x, n) { x.classList.toggle("is-selected", n === i); });
+    cVal.textContent = d.pct;
+    cLab.textContent = d.name;
+  }
+
+  mix.addEventListener("click", function (e) {
+    var it = e.target.closest(".mist-donut__item"); if (!it) return;
+    selectMix(items.indexOf(it));
+  });
+
+  document.getElementById("btn-other").addEventListener("click", function () {
+    gal.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  renderXC();
+  refresh();
+})();
+</script>
+</body>
+</html>

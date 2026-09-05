@@ -1,0 +1,833 @@
+<title>對帳教練</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap">
+
+<style>
+:root{
+  --paper:#f6f7f4;
+  --card:#fffffe;
+  --sunk:#eef1ec;
+  --ink:#191e26;
+  --ink-2:#4b5560;
+  --ink-3:#7f8a84;
+  --rule:#dadfd8;
+  --rule-2:#b8bfb6;
+  --accent:#1c5b58;
+  --accent-soft:#e2ebe9;
+  --good:#3f6b3a;   --good-soft:#e7eee4;
+  --warn:#96631a;   --warn-soft:#f4ecda;
+  --crit:#993024;   --crit-soft:#f5e5e2;
+  --shadow:0 1px 2px rgba(25,30,38,.05);
+
+  --serif:"Noto Serif TC",Georgia,"Songti TC",serif;
+  --sans:"Noto Sans TC",-apple-system,"Helvetica Neue",sans-serif;
+  --mono:"IBM Plex Mono","Noto Sans TC",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#12161c; --card:#191f27; --sunk:#151b22;
+    --ink:#e9ece7; --ink-2:#a4aea7; --ink-3:#78827c;
+    --rule:#2a323b; --rule-2:#3e4750;
+    --accent:#63aca6; --accent-soft:#1a2e2d;
+    --good:#82ab79; --good-soft:#1d2a1d;
+    --warn:#c99e51; --warn-soft:#2d2617;
+    --crit:#d17f70; --crit-soft:#2e1e1b;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12161c; --card:#191f27; --sunk:#151b22;
+  --ink:#e9ece7; --ink-2:#a4aea7; --ink-3:#78827c;
+  --rule:#2a323b; --rule-2:#3e4750;
+  --accent:#63aca6; --accent-soft:#1a2e2d;
+  --good:#82ab79; --good-soft:#1d2a1d;
+  --warn:#c99e51; --warn-soft:#2d2617;
+  --crit:#d17f70; --crit-soft:#2e1e1b;
+  --shadow:0 1px 2px rgba(0,0,0,.3);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:15px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:44px 28px 96px}
+
+/* ---- report masthead ---- */
+.masthead{border-top:2px solid var(--ink);padding-top:18px}
+.mast-eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;
+}
+.mast-title{
+  font-family:var(--serif);font-weight:700;font-size:clamp(30px,5vw,44px);
+  line-height:1.15;margin:6px 0 4px;text-wrap:balance;letter-spacing:-.01em;
+}
+.mast-sub{color:var(--ink-2);max-width:62ch;margin:0 0 22px}
+
+.meta{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));
+  gap:1px;background:var(--rule);border:1px solid var(--rule);
+}
+.meta div{background:var(--card);padding:10px 13px}
+.meta dt{
+  font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 3px;
+}
+.meta dd{margin:0;font-family:var(--mono);font-size:14px;font-weight:500;font-variant-numeric:tabular-nums}
+.meta dd small{font-family:var(--sans);font-size:12px;color:var(--ink-3);font-weight:400}
+
+/* ---- section scaffolding: code column + body ---- */
+section{
+  display:grid;grid-template-columns:96px minmax(0,1fr);gap:26px;
+  border-top:1px solid var(--rule-2);padding-top:20px;margin-top:44px;
+}
+.code{
+  font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-3);
+  line-height:1.5;padding-top:4px;
+}
+.code b{display:block;color:var(--accent);font-weight:600;font-size:12px}
+.sec-body{min-width:0}
+h2{
+  font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 6px;
+  letter-spacing:-.005em;
+}
+.lede{color:var(--ink-2);margin:0 0 20px;max-width:64ch;font-size:14px}
+@media (max-width:720px){
+  section{grid-template-columns:1fr;gap:8px}
+  .code{padding-top:0}
+  .code b{display:inline;margin-right:8px}
+}
+
+/* ---- reconciliation table ---- */
+.tscroll{overflow-x:auto;border:1px solid var(--rule);background:var(--card)}
+table{width:100%;border-collapse:collapse;min-width:720px}
+thead th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:600;text-align:left;padding:9px 12px;
+  border-bottom:1px solid var(--rule-2);white-space:nowrap;background:var(--sunk);
+}
+thead th.num,tbody td.num{text-align:right}
+tbody td{
+  padding:12px;border-bottom:1px solid var(--rule);vertical-align:top;font-size:14px;
+}
+tbody tr:last-child td{border-bottom:0}
+tbody tr.grp td{
+  background:var(--sunk);font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3);padding:7px 12px;font-weight:600;
+}
+.br-name{font-weight:500;display:block}
+.br-unit{font-family:var(--mono);font-size:11px;color:var(--ink-3);display:block;margin-top:2px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+/* severity stripe carried on the row's first cell */
+td.stripe{border-left:3px solid transparent;padding-left:14px}
+td.s-good{border-left-color:var(--good)}
+td.s-warn{border-left-color:var(--warn)}
+td.s-crit{border-left-color:var(--crit)}
+td.s-flat{border-left-color:var(--rule-2)}
+
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.06em;padding:2px 6px;border:1px solid;white-space:nowrap;
+}
+.t-cum{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.t-proj{color:var(--ink-2);border-color:var(--rule-2);background:var(--sunk)}
+.t-open{color:var(--warn);border-color:var(--warn);background:var(--warn-soft)}
+
+/* verdict — the split pill is the differentiator */
+.verdict{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.pill{
+  display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);
+  font-size:11px;font-weight:500;padding:2px 7px;border-radius:2px;white-space:nowrap;
+}
+.p-good{color:var(--good);background:var(--good-soft)}
+.p-warn{color:var(--warn);background:var(--warn-soft)}
+.p-crit{color:var(--crit);background:var(--crit-soft)}
+.p-none{color:var(--ink-3);background:var(--sunk)}
+.split{display:flex;border-radius:2px;overflow:hidden;font-family:var(--mono);font-size:11px}
+.split span{padding:2px 7px;font-weight:500;white-space:nowrap}
+.split .ok{color:var(--good);background:var(--good-soft)}
+.split .no{color:var(--crit);background:var(--crit-soft)}
+
+.footmark{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);margin-top:9px;
+  padding-left:2px;line-height:1.7;
+}
+.footmark b{color:var(--ink-2);font-weight:600}
+
+/* ---- hypothesis block (effect assumption) ---- */
+.hyp{
+  border:1px solid var(--rule);border-left:3px solid var(--warn);background:var(--card);
+  padding:14px 16px;margin-top:14px;
+}
+.hyp h3{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--warn);margin:0 0 9px;font-weight:600;
+}
+.hyp dl{margin:0;display:grid;gap:8px}
+.hyp dt{font-family:var(--mono);font-size:11px;color:var(--ink-3);letter-spacing:.04em}
+.hyp dd{margin:2px 0 0;font-size:14px;color:var(--ink)}
+.hyp .concl{
+  margin-top:12px;padding-top:11px;border-top:1px dashed var(--rule-2);
+  font-size:14px;color:var(--crit);font-weight:500;
+}
+
+/* ---- findings ---- */
+.findings{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule)}
+.finding{
+  background:var(--card);padding:14px 16px;display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:baseline;
+}
+.finding .fno{
+  font-family:var(--mono);font-size:11px;color:var(--ink-3);font-weight:600;
+  letter-spacing:.06em;
+}
+.finding h3{font-size:15px;margin:0 0 3px;font-weight:500}
+.finding p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:60ch}
+.finding.na h3,.finding.na p{color:var(--ink-3)}
+@media (max-width:620px){
+  .finding{grid-template-columns:auto minmax(0,1fr);}
+  .finding .pill{grid-column:2}
+}
+
+/* ---- prescription ---- */
+.rx{display:grid;gap:12px}
+.rxrow{
+  border:1px solid var(--rule);background:var(--card);padding:14px 16px;
+  border-top:2px solid var(--accent);
+}
+.rxrow.weak{border-top-color:var(--rule-2)}
+.rx-head{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:7px}
+.rx-head strong{font-size:15px;font-weight:600}
+.rxrow p{margin:0;font-size:13.5px;color:var(--ink-2)}
+.rxrow .once{
+  font-family:var(--mono);font-size:11px;color:var(--accent);margin-top:8px;
+  display:block;letter-spacing:.03em;
+}
+
+/* ---- interactive: gap dispatch ---- */
+.tool{border:1px solid var(--rule-2);background:var(--card);box-shadow:var(--shadow)}
+.tool-head{
+  padding:13px 16px;border-bottom:1px solid var(--rule);background:var(--sunk);
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;
+}
+.tool-head span{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:600;
+}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;padding:16px}
+.ctl{display:grid;gap:7px}
+.ctl > span{
+  font-family:var(--mono);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:600;
+}
+.seg{display:flex;border:1px solid var(--rule-2)}
+.seg button{
+  flex:1;font:500 13px/1 var(--sans);padding:8px 4px;background:var(--card);
+  color:var(--ink-2);border:0;border-right:1px solid var(--rule-2);cursor:pointer;
+}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff;font-weight:600}
+:root[data-theme="dark"] .seg button[aria-pressed="true"],
+.seg button[aria-pressed="true"]{color:var(--paper)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+.answer{border-top:1px solid var(--rule);padding:16px}
+.ans-label{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-3);font-weight:600;margin-bottom:6px;
+}
+.ans-main{font-family:var(--serif);font-size:21px;font-weight:700;margin:0 0 3px;line-height:1.3}
+.ans-unit{font-family:var(--mono);font-size:12px;color:var(--ink-2);margin:0 0 13px}
+.ans-why{display:grid;gap:5px;margin:0;padding:0;list-style:none}
+.ans-why li{
+  font-family:var(--mono);font-size:12px;color:var(--ink-2);
+  padding-left:15px;position:relative;line-height:1.6;
+}
+.ans-why li::before{content:"→";position:absolute;left:0;color:var(--accent)}
+
+/* ---- weekly check ---- */
+.check{border:1px solid var(--rule);background:var(--card)}
+.crow{
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;
+  padding:11px 15px;border-bottom:1px solid var(--rule);
+}
+.crow:last-of-type{border-bottom:0}
+.crow p{margin:0;font-size:14px}
+.crow p em{font-style:normal;font-family:var(--mono);font-size:12.5px;color:var(--accent);font-weight:500}
+.yn{display:flex;gap:6px;flex-shrink:0}
+.yn button{
+  font:500 12px/1 var(--mono);padding:5px 11px;border:1px solid var(--rule-2);
+  background:var(--card);color:var(--ink-2);cursor:pointer;
+}
+.yn button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.yn button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+.gate{
+  margin-top:14px;border:1px solid var(--rule);background:var(--sunk);
+  padding:13px 15px;display:flex;flex-wrap:wrap;gap:12px;
+  align-items:center;justify-content:space-between;
+}
+.gate p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:52ch}
+.locked{
+  font:600 12px/1 var(--mono);padding:9px 14px;border:1px dashed var(--rule-2);
+  background:transparent;color:var(--ink-3);cursor:not-allowed;letter-spacing:.04em;
+  white-space:nowrap;
+}
+
+/* ---- schedule draft ---- */
+.sched{border:1px solid var(--rule);background:var(--card)}
+.srow{
+  display:grid;grid-template-columns:58px minmax(0,1fr) auto auto;gap:12px;
+  align-items:center;padding:10px 14px;border-bottom:1px solid var(--rule);
+}
+.srow:last-of-type{border-bottom:0}
+.srow.gone{opacity:.4}
+.srow.gone .sname{text-decoration:line-through}
+.sday{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent)}
+.sname{font-size:14px;min-width:0}
+.sname small{display:block;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.scost{font-family:var(--mono);font-size:12px;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.del{
+  width:26px;height:26px;border:1px solid var(--rule-2);background:var(--card);
+  color:var(--ink-3);font:400 14px/1 var(--mono);cursor:pointer;flex-shrink:0;
+}
+.del:hover{border-color:var(--crit);color:var(--crit)}
+.del:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.sfoot{
+  padding:11px 14px;border-top:1px solid var(--rule-2);background:var(--sunk);
+  display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;
+}
+.sfoot span{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.sfoot b{color:var(--ink);font-weight:600}
+@media (max-width:560px){
+  .srow{grid-template-columns:52px minmax(0,1fr) auto;row-gap:4px}
+  .scost{grid-column:2}
+}
+
+/* ---- closing note ---- */
+.colophon{
+  margin-top:48px;border-top:2px solid var(--ink);padding-top:16px;
+  display:grid;grid-template-columns:96px minmax(0,1fr);gap:26px;
+}
+.colophon p{margin:0;font-size:13px;color:var(--ink-3);max-width:66ch}
+.colophon p + p{margin-top:8px}
+@media (max-width:720px){.colophon{grid-template-columns:1fr;gap:8px}}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="mast-eyebrow">體測報告 · 第 3 季 / 2026</p>
+    <h1 class="mast-title">季度對帳</h1>
+    <p class="mast-sub">教練把這一季的痕跡歸戶到目標樹各分支之下，算出進展、空白與歸不進去的投入，據此開下一季處方。使用者本季未做任何紀錄。</p>
+
+    <dl class="meta">
+      <div><dt>對帳期間</dt><dd>07/01–09/04</dd></div>
+      <div><dt>痕跡筆數</dt><dd>1,284</dd></div>
+      <div><dt>自動歸戶率</dt><dd>91.2<small>%</small></dd></div>
+      <div><dt>推進名額</dt><dd>3 / 3</dd></div>
+      <div><dt>樂觀係數</dt><dd>—<small> 冷啟動</small></dd></div>
+      <div><dt>季界倒數</dt><dd>26<small> 天</small></dd></div>
+    </dl>
+  </header>
+
+  <!-- ============ 對帳 ============ -->
+  <section>
+    <div class="code"><b>01</b>對帳<br>RECONCILE</div>
+    <div class="sec-body">
+      <h2>行動歸戶結果</h2>
+      <p class="lede">來源：行事曆、信用卡帳單、Figma 檔案修改、WorkPlus、AI 對話紀錄。累積型看能力重測，專案型看完成度——出席率不計入進展。</p>
+
+      <div class="tscroll">
+        <table>
+          <thead>
+            <tr>
+              <th>分支</th>
+              <th>型別</th>
+              <th class="num">本季行動</th>
+              <th>效果重測</th>
+              <th>錨點</th>
+              <th>判定</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="grp"><td colspan="6">累積型 · 常設名額 2</td></tr>
+
+            <tr>
+              <td class="stripe s-crit">
+                <span class="br-name">英文口說</span>
+                <span class="br-unit">shadowing 15 分 / 口說課 1 堂</span>
+              </td>
+              <td><span class="tag t-cum">累積型</span></td>
+              <td class="num">11 次<br>+ 12 堂</td>
+              <td class="num">基準 → Q3<br>持平</td>
+              <td><span class="pill p-none">無外部對象</span></td>
+              <td>
+                <div class="verdict">
+                  <div class="split"><span class="ok">出席 ✓</span><span class="no">效果 ✗</span></div>
+                  <span class="pill p-crit">原地踏步</span>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="stripe s-good">
+                <span class="br-name">體能</span>
+                <span class="br-unit">健身房一次 / 60 分</span>
+              </td>
+              <td><span class="tag t-cum">累積型</span> <span class="tag t-open">名額未定</span></td>
+              <td class="num">9 次</td>
+              <td class="num">深蹲 1RM<br>55 → 62 kg</td>
+              <td><span class="pill p-good">教練約定</span></td>
+              <td>
+                <div class="verdict">
+                  <div class="split"><span class="ok">出席 ✓</span><span class="ok">效果 ✓</span></div>
+                  <span class="pill p-good">有進展</span>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="grp"><td colspan="6">專案型 · 輪替名額 1–2</td></tr>
+
+            <tr>
+              <td class="stripe s-crit">
+                <span class="br-name">HCI 作品集</span>
+                <span class="br-unit">一夜一案 / 180 分 · 高耗能</span>
+              </td>
+              <td><span class="tag t-proj">專案型</span></td>
+              <td class="num">3 次<br>（皆在 7 月）</td>
+              <td class="num">完成度 15%<br>里程碑 60%</td>
+              <td><span class="pill p-crit">缺口</span></td>
+              <td>
+                <div class="verdict">
+                  <span class="pill p-crit">落後 · 45pt</span>
+                  <span class="pill p-warn">8 週零動作</span>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="stripe s-good">
+                <span class="br-name">職涯｜0-to-1 專案主導</span>
+                <span class="br-unit">工作內既有結構</span>
+              </td>
+              <td><span class="tag t-proj">專案型</span></td>
+              <td class="num">142 件</td>
+              <td class="num">完成度 78%<br>里程碑 65%</td>
+              <td><span class="pill p-good">真實 deadline</span></td>
+              <td><div class="verdict"><span class="pill p-good">超前 · 13pt</span></div></td>
+            </tr>
+
+            <tr class="grp"><td colspan="6">年度分支 · 本季未取得名額</td></tr>
+
+            <tr>
+              <td class="stripe s-crit">
+                <span class="br-name">健康</span>
+                <span class="br-unit">未定義單位動作</span>
+              </td>
+              <td><span class="tag t-proj">未分型</span></td>
+              <td class="num">0</td>
+              <td class="num">無基準線</td>
+              <td><span class="pill p-crit">缺口</span></td>
+              <td>
+                <div class="verdict">
+                  <span class="pill p-crit">連續 3 季零行動</span>
+                  <span class="pill p-warn">觸發條件命中</span>
+                </div>
+              </td>
+            </tr>
+
+            <tr class="grp"><td colspan="6">歸不進任何分支 · 隱形投入</td></tr>
+
+            <tr>
+              <td class="stripe s-warn">
+                <span class="br-name">A 公司相關往來</span>
+                <span class="br-unit">行事曆 · 未申報於任何分支</span>
+              </td>
+              <td><span class="tag t-open">未歸戶</span></td>
+              <td class="num">12 件<br>18.5 小時</td>
+              <td class="num">—</td>
+              <td><span class="pill p-none">—</span></td>
+              <td><div class="verdict"><span class="pill p-warn">可能是未承認的新方向</span></div></td>
+            </tr>
+
+            <tr>
+              <td class="stripe s-warn">
+                <span class="br-name">線上課程購買</span>
+                <span class="br-unit">帳單 · 3 筆，其中 2 門零開課紀錄</span>
+              </td>
+              <td><span class="tag t-open">未歸戶</span></td>
+              <td class="num">NT$ 12,400</td>
+              <td class="num">—</td>
+              <td><span class="pill p-none">—</span></td>
+              <td><div class="verdict"><span class="pill p-warn">代理指標警訊</span></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="footmark">
+        <b>歸戶假設：</b>關鍵字 + 分支對照表，跨分支者歸主分支並標記。113 筆（8.8%）待人工判定。<br>
+        <b>已知盲區：</b>不花錢又不進系統的活動無痕——睡眠、自主訓練、獨處。這些只在對帳問答中重建。
+      </p>
+
+      <div class="hyp">
+        <h3>效果假設 · 英文口說</h3>
+        <dl>
+          <div>
+            <dt>教練起草 · 使用者確認（2026-06-28）</dt>
+            <dd>每週一堂口說課 + 每週三次 shadowing，一年內能在英語會議主持討論。</dd>
+          </div>
+          <div>
+            <dt>反證條件（使用者自訂）</dt>
+            <dd>連續兩季重測錄音無可辨差異，即視為此行動組合無效。</dd>
+          </div>
+        </dl>
+        <p class="concl">基準線與 Q3 重測錄音無可辨差異 · 已達成反證條件 1 / 2。系統不判斷「行動該不該做」，只回報假設是否還站得住。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 診斷 ============ -->
+  <section>
+    <div class="code"><b>02</b>診斷<br>DIAGNOSE</div>
+    <div class="sec-body">
+      <h2>本季四項判準</h2>
+      <p class="lede">前三項回溯，第四項前瞻——錨點缺口是唯一能在事情發生前給出警告的判準。</p>
+
+      <div class="findings">
+        <div class="finding">
+          <span class="fno">D-1</span>
+          <div>
+            <h3>落後：HCI 作品集</h3>
+            <p>完成度 15%，Q3 里程碑要求 60%。7 月動了三次後停住，8 週零動作。</p>
+          </div>
+          <span class="pill p-crit">高</span>
+        </div>
+
+        <div class="finding">
+          <span class="fno">D-2</span>
+          <div>
+            <h3>失衡：健康連續三季零行動</h3>
+            <p>命中觸發條件「同一分支連續兩季零進展」。上層目標提前挑戰已排入本次對帳議程——不是催你去做，是問這個目標還算不算數。</p>
+          </div>
+          <span class="pill p-crit">高</span>
+        </div>
+
+        <div class="finding">
+          <span class="fno">D-3</span>
+          <div>
+            <h3>錨點缺口：HCI 作品集、健康</h3>
+            <p>兩個分支皆無外部對象可綁。依錨點缺口判準，這是下一季最可能被拖的兩格。</p>
+          </div>
+          <span class="pill p-warn">中</span>
+        </div>
+
+        <div class="finding na">
+          <span class="fno">D-4</span>
+          <div>
+            <h3>限制因素：資料不足</h3>
+            <p>判斷「是不夠努力，還是能量被別處吸走」需要 2–3 季縱向資料。本季為第一季，此判準尚未可用。</p>
+          </div>
+          <span class="pill p-none">停用</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 處方 ============ -->
+  <section>
+    <div class="code"><b>03</b>處方<br>PRESCRIBE</div>
+    <div class="sec-body">
+      <h2>下一季：裝錨，不加油</h2>
+      <p class="lede">處方的形式是一次性動作，做完就自動運轉。本季只為兩個分支裝錨——同時綁太多會全部壓在一起，反而全數失效。</p>
+
+      <div class="rx">
+        <div class="rxrow">
+          <div class="rx-head"><strong>HCI 作品集</strong><span class="pill p-crit">錨點缺口 · 優先</span></div>
+          <p>約兩位 reviewer，訂 11/15 交件日並先寄出邀約。錨點成立後不得自行往後拉。</p>
+          <span class="once">一次性動作 · 約 40 分鐘 · 之後自動運轉</span>
+        </div>
+
+        <div class="rxrow">
+          <div class="rx-head"><strong>健康</strong><span class="pill p-warn">先定義，再裝錨</span></div>
+          <p>目標樹上沒有單位動作與基準線，因此無法排程也無法判斷。本季先產出四要素草稿由使用者刪減，不排任何量。</p>
+          <span class="once">一次性動作 · 教練起草 · 使用者確認</span>
+        </div>
+
+        <div class="rxrow weak">
+          <div class="rx-head"><strong>英文口說</strong><span class="pill p-none">弱錨</span></div>
+          <p>無外部對象可綁，只能退回較弱形式：下次對帳時被拿出來問，並針對「量不夠 / 方法錯 / 目標不需要這個行動」三者做一次判定。</p>
+          <span class="once">記入下次對帳議程</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 空檔調度 ============ -->
+  <section>
+    <div class="code"><b>04</b>調度<br>DISPATCH</div>
+    <div class="sec-body">
+      <h2>空檔調度</h2>
+      <p class="lede">使用者發起，零紀錄要求。判斷依據是時間流與金錢流，不是感覺——所以它可以被算出來。</p>
+
+      <div class="tool">
+        <div class="tool-head">
+          <span>輸入</span>
+          <span id="cash-state">金錢流 · 近 90 天結餘 +NT$ 48,200</span>
+        </div>
+
+        <div class="controls">
+          <div class="ctl">
+            <span>可用時數</span>
+            <div class="seg" id="seg-hours" role="group" aria-label="可用時數">
+              <button type="button" data-v="0.5">30 分</button>
+              <button type="button" data-v="2" aria-pressed="true">2 小時</button>
+              <button type="button" data-v="4">4 小時</button>
+            </div>
+          </div>
+          <div class="ctl">
+            <span>能量狀態</span>
+            <div class="seg" id="seg-energy" role="group" aria-label="能量狀態">
+              <button type="button" data-v="low">低</button>
+              <button type="button" data-v="mid" aria-pressed="true">中</button>
+              <button type="button" data-v="high">高</button>
+            </div>
+          </div>
+          <div class="ctl">
+            <span>金錢流</span>
+            <div class="seg" id="seg-cash" role="group" aria-label="金錢流">
+              <button type="button" data-v="ok" aria-pressed="true">健康</button>
+              <button type="button" data-v="tight">緊</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="answer" aria-live="polite">
+          <p class="ans-label">建議</p>
+          <p class="ans-main" id="ans-main">HCI 作品集</p>
+          <p class="ans-unit" id="ans-unit">一夜一案 · 180 分 · 高耗能</p>
+          <ul class="ans-why" id="ans-why"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 週檢查 ============ -->
+  <section>
+    <div class="code"><b>05</b>週檢查<br>VERIFY</div>
+    <div class="sec-body">
+      <h2>本週校對</h2>
+      <p class="lede">不問「這週做了什麼」，那是紀錄。教練拿痕跡問，使用者只確認或補一句——成本約兩分鐘。</p>
+
+      <div class="check" id="check">
+        <div class="crow">
+          <p>我看到你 <em>Figma 動了 3 次</em>，最後一次是 8/29，對嗎</p>
+          <div class="yn" role="group"><button type="button" aria-pressed="true">對</button><button type="button">不對</button></div>
+        </div>
+        <div class="crow">
+          <p>你上了 <em>1 堂口說課</em>，shadowing 沒有紀錄，對嗎</p>
+          <div class="yn" role="group"><button type="button" aria-pressed="true">對</button><button type="button">不對</button></div>
+        </div>
+        <div class="crow">
+          <p><em>作品集本週零動作</em>，對嗎</p>
+          <div class="yn" role="group"><button type="button" aria-pressed="true">對</button><button type="button">不對</button></div>
+        </div>
+        <div class="crow">
+          <p>週三晚上那 <em>2.5 小時空檔</em> 歸不進任何分支，對嗎</p>
+          <div class="yn" role="group"><button type="button">對</button><button type="button" aria-pressed="true">不對</button></div>
+        </div>
+      </div>
+
+      <div class="gate">
+        <p>週檢查只問執行。12 週指標在季內鎖住——每週接觸系統就是每週有機會重新談判，所以這條界線寫在機制裡，不靠自制。</p>
+        <button type="button" class="locked" disabled aria-disabled="true">修改目標 · 季界開放 · 剩 26 天</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 下週排程 ============ -->
+  <section>
+    <div class="code"><b>06</b>排程<br>SCHEDULE</div>
+    <div class="sec-body">
+      <h2>下週草案 · 只能刪</h2>
+      <p class="lede">依下週行事曆算出可用時段後排七成，不排滿。冷啟動無樂觀係數，本季刻意排少到很確定做得完。</p>
+
+      <div class="sched" id="sched">
+        <div class="srow">
+          <span class="sday">週一</span>
+          <span class="sname">shadowing<small>掛在通勤後 · 累積型保底</small></span>
+          <span class="scost">15 分 · 低耗能</span>
+          <button type="button" class="del" aria-label="刪除 週一 shadowing">✕</button>
+        </div>
+        <div class="srow">
+          <span class="sday">週三</span>
+          <span class="sname">口說課<small>既有強錨 · 不可刪</small></span>
+          <span class="scost">60 分 · 中耗能</span>
+          <button type="button" class="del" aria-label="刪除 週三 口說課" disabled style="opacity:.3;cursor:not-allowed">✕</button>
+        </div>
+        <div class="srow">
+          <span class="sday">週三</span>
+          <span class="sname">shadowing<small>掛在口說課之後</small></span>
+          <span class="scost">15 分 · 低耗能</span>
+          <button type="button" class="del" aria-label="刪除 週三 shadowing">✕</button>
+        </div>
+        <div class="srow">
+          <span class="sday">週四</span>
+          <span class="sname">HCI 作品集<small>reviewer 邀約已寄出</small></span>
+          <span class="scost">180 分 · 高耗能</span>
+          <button type="button" class="del" aria-label="刪除 週四 HCI 作品集">✕</button>
+        </div>
+        <div class="srow">
+          <span class="sday">週六</span>
+          <span class="sname">健身房<small>週日全天聚會 · 不排隔天</small></span>
+          <span class="scost">60 分 · 中耗能</span>
+          <button type="button" class="del" aria-label="刪除 週六 健身房">✕</button>
+        </div>
+
+        <div class="sfoot">
+          <span>已排 <b id="s-load">5.5</b> / 可用 <b>7.8</b> 小時 · 佔用 <b id="s-pct">71</b>%</span>
+          <span id="s-note">最低週量：shadowing 2 次 · 目前 <b>2</b></span>
+        </div>
+      </div>
+
+      <p class="footmark">
+        <b>沒有新增按鈕。</b>代排的副作用是擁有感下降，給刪除權可保住控制感；把方向限制在只能往少的那邊，剛好對治樂觀。<br>
+        <b>容量不足時的順序：</b>無錨點的專案型 → 有錨點但時程寬鬆 → 有 deadline 壓力 → 累積型最低週量（最後才動）。
+      </p>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <div class="code">附註<br>NOTES</div>
+    <div>
+      <p>本頁為黑客松原型。資料為示範用途，非真實個人紀錄。目標永不覆寫，只增加版本；每次變更記錄時間、理由與當時的能量狀態。</p>
+      <p>本系統不證明行動有效——證明「這個目標該搭配這個行動」需要對照組與數年時間。它只做到讓「有做但沒效」這個所有追蹤工具都會給綠燈的狀態被看見。</p>
+      <p>退場條件：12 週內有 4 週未回應週檢查，自動降頻到月，視為設計不合，不是個人失敗。</p>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  /* ---------- segmented controls ---------- */
+  var state = {hours:2, energy:"mid", cash:"ok"};
+
+  function wireSeg(id, key){
+    var el = document.getElementById(id);
+    el.addEventListener("click", function(e){
+      var b = e.target.closest("button"); if(!b) return;
+      el.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+      b.setAttribute("aria-pressed","true");
+      state[key] = key === "hours" ? parseFloat(b.dataset.v) : b.dataset.v;
+      render();
+    });
+  }
+  wireSeg("seg-hours","hours");
+  wireSeg("seg-energy","energy");
+  wireSeg("seg-cash","cash");
+
+  var CASH = {
+    ok:   "金錢流 · 近 90 天結餘 +NT$ 48,200",
+    tight:"金錢流 · 近 90 天結餘 −NT$ 6,100"
+  };
+
+  function decide(){
+    var h = state.hours, e = state.energy, c = state.cash;
+
+    if(e === "low" || h < 1){
+      return {
+        pick:"shadowing",
+        unit:"一次 15 分 · 低耗能 · 累積型保底",
+        why:[
+          e === "low" ? "能量狀態低，高耗能動作排入必定爆掉" : "可用時數低於單位動作門檻",
+          "累積型斷鏈成本不對稱：斷一週要重來，作品集延一週就只是延一週",
+          "本週最低週量 2 次，這次計入保底"
+        ]
+      };
+    }
+    if(c === "tight"){
+      return {
+        pick:"接案作品集",
+        unit:"一夜一案 · 180 分 · 高耗能",
+        why:[
+          "金錢流轉負，優先補現金而非長期職涯資本",
+          "可用 " + h + " 小時、能量" + (e === "high" ? "高" : "中") + "，容得下高耗能單位動作",
+          "此分支未取得本季名額，計為超額投入並標記"
+        ]
+      };
+    }
+    return {
+      pick:"HCI 作品集",
+      unit:"一夜一案 · 180 分 · " + (h >= 4 ? "高耗能 · 時數充裕" : "高耗能"),
+      why:[
+        "金錢流健康，投長期職涯資本而非短期現金",
+        "此分支落後 45pt 且連續 8 週零動作，四判準中命中兩項",
+        h >= 4 ? "可用 4 小時，足以完成一個完整單位動作" : "可用 2 小時，只排最小可交付段落，不排理想量"
+      ]
+    };
+  }
+
+  var mainEl = document.getElementById("ans-main"),
+      unitEl = document.getElementById("ans-unit"),
+      whyEl  = document.getElementById("ans-why"),
+      cashEl = document.getElementById("cash-state");
+
+  function render(){
+    var r = decide();
+    mainEl.textContent = r.pick;
+    unitEl.textContent = r.unit;
+    whyEl.innerHTML = "";
+    r.why.forEach(function(t){
+      var li = document.createElement("li");
+      li.textContent = t;
+      whyEl.appendChild(li);
+    });
+    cashEl.textContent = CASH[state.cash];
+  }
+  render();
+
+  /* ---------- weekly check: 對 / 不對 ---------- */
+  document.getElementById("check").addEventListener("click", function(e){
+    var b = e.target.closest("button"); if(!b) return;
+    b.parentNode.querySelectorAll("button").forEach(function(x){ x.setAttribute("aria-pressed","false"); });
+    b.setAttribute("aria-pressed","true");
+  });
+
+  /* ---------- schedule: delete only ---------- */
+  var sched  = document.getElementById("sched"),
+      loadEl = document.getElementById("s-load"),
+      pctEl  = document.getElementById("s-pct"),
+      noteEl = document.getElementById("s-note"),
+      CAP    = 7.8;
+
+  sched.addEventListener("click", function(e){
+    var b = e.target.closest(".del"); if(!b || b.disabled) return;
+    var row = b.closest(".srow");
+    row.classList.toggle("gone");
+    b.textContent = row.classList.contains("gone") ? "↺" : "✕";
+    recount();
+  });
+
+  function recount(){
+    var mins = 0, shadow = 0;
+    sched.querySelectorAll(".srow").forEach(function(row){
+      if(row.classList.contains("gone")) return;
+      var m = row.querySelector(".scost").textContent.match(/(\d+)\s*分/);
+      if(m) mins += parseInt(m[1],10);
+      if(row.querySelector(".sname").textContent.indexOf("shadowing") === 0) shadow++;
+    });
+    var hrs = mins / 60;
+    loadEl.textContent = hrs.toFixed(1);
+    pctEl.textContent  = Math.round(hrs / CAP * 100);
+    noteEl.innerHTML = shadow >= 2
+      ? '最低週量：shadowing 2 次 · 目前 <b>' + shadow + '</b>'
+      : '<b style="color:var(--crit)">低於最低週量 · 視為斷鏈</b> · shadowing ' + shadow + ' / 2';
+  }
+})();
+</script>
