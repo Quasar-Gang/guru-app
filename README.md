@@ -52,9 +52,12 @@ lib/
   scheduler.ts               Weekly draft: load, ceiling, chain breaks
   dispatch.ts                Gap dispatch decision
   role-model.ts              Capability → retestable metric, shape, cost
-  api/client.ts              guru-core client with a local fallback
-  mock/snapshot.ts           The demonstration dataset
-docs/API.md                  The backend contract, derived from lib/contracts.ts
+  api/guru-core-types.ts     Wire types, transcribed from guru-core's OpenAPI
+  api/guru-core.ts           The HTTP client for guru-core
+  api/snapshot-adapter.ts    The only place the two vocabularies meet
+  api/client.ts              loadSnapshot() — what the pages call
+  mock/snapshot.ts           The demonstration dataset, and the fallback
+docs/API.md                  How the two map, and what does not
 design/                      Specification and prototypes. Source of truth
 tests/                       Engine tests and a server-render smoke test
 ```
@@ -129,16 +132,36 @@ npm run dev
 ```
 
 `.env.local` may stay empty — the app then renders the built-in demonstration
-dataset with every interaction live. To talk to a real backend, set an absolute
-origin:
+dataset with every interaction live. To read from a running
+[`guru-core`](../guru-core), set both values:
 
 ```dotenv
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+GURU_API_BASE_URL=http://127.0.0.1:8000
+GURU_API_TOKEN=<from POST /v1/auth/google>
 ```
 
-Anything that is not an absolute `http(s)` origin is ignored and the fallback is
+Both are **server-side only**. The bearer token carries no `NEXT_PUBLIC_` prefix
+because that would ship it to the browser; `vite.config.ts` passes it to the
+Worker as a var, and every station reads its data in a server component. In a
+real deployment it is a Worker secret rather than a var.
+
+Anything that is not an absolute `http(s)` origin is ignored and the fixture is
 used, because a relative path cannot be fetched during server rendering and a
 silent half-failure would look like the backend answered.
+
+### What comes from the backend
+
+guru-core owns the loop: it reads the uploads, scores every shape with five cited
+evidence items, writes the append-only hypothesis, generates the plan, and holds
+the quarter against what it predicted. This app maps that onto the three
+stations, section by section, and keeps the fixture wherever guru-core has no
+concept — the capability retest, anchors, the alternative paths, the coach's
+challenges. Those gaps are named rather than filled in, in
+[`docs/API.md`](docs/API.md).
+
+Every read falls back on its own and logs the failure, so one unavailable section
+never blanks a page. The assembled snapshot is held for 30 seconds because
+guru-core rate-limits at 60 requests a minute and one render costs eleven reads.
 
 ## Scripts
 
@@ -156,6 +179,10 @@ silent half-failure would look like the backend answered.
 
 `tests/engine.test.ts` covers the claims: the four booking outcomes, the anchor
 gap, the chain-break warning, the dispatch decision and the horizon scale.
+`tests/adapter.test.ts` covers the backend mapping against payloads shaped like
+the ones guru-core returned during integration — including the two cases live
+data broke first: a task hanging off a leaf milestone, and a plan starting
+tomorrow.
 `tests/render.test.ts` boots the built Worker bundle and checks each station
 server-renders; it skips when `dist/` is absent, so `vitest` stays useful mid-edit.
 
@@ -179,19 +206,23 @@ to Cloudflare Worker-compatible ESM. The Worker entry is `worker/index.ts`;
 
 Honest about what the shell does not do, because the specification is:
 
-- **Fake data, true story.** Import screens are static; nothing parses a PDF or
-  an `.ics`. The reconciliation engine's value is in the booking result.
-- **Attribution rules are hard-coded** — keyword plus branch table, cross-branch
-  traces booked to the primary and flagged. Say this out loud when demoing.
-- **Shape suggestions are pre-written.** They are the one thing station 1 cannot
-  compute with rules, and the highest-risk part of the backend contract.
+- **No sign-in.** The token is configured server-side; there is no login screen,
+  so the app reads one account. Adding OAuth is a workflow, not a field.
+- **No `noEffect` row against live data.** guru-core models no capability
+  retest, and without two measurements there is nothing to compare. Faking one
+  would fake the single outcome this product exists to show.
+- **Every live branch reads as an anchor gap**, because guru-core models no
+  anchors. The criterion is working; the prescriptions beside it are fixture.
 - **Vision and the five-year layer are empty.** Intake produces a one-year
   hypothesis and cannot reach them. They render as "not covered this period".
 - **Money flow has no source.** Credit-card statements are out of scope, so the
   dispatch cash axis is declared by the user, and the page says so.
 - **The constraint criterion is disabled.** It needs two to three quarters of
   history. It is shown as unavailable rather than hidden.
-- **Nothing persists.** Sign-off and deletions change frontend state only.
+- **Only the sign-off persists.** Accepting the draft activates the plan
+  upstream; deletions and the weekly proofread are frontend state.
+- **Without a backend everything is the fixture** — import screens are static,
+  attribution runs the keyword table, and the shape suggestions are pre-written.
 
 ## Licence
 

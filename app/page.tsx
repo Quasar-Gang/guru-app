@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { IntakeStation } from "./components/intake/IntakeStation";
-import { createClient } from "@/lib/api/client";
+import { loadSnapshot } from "@/lib/api/client";
 
 export const metadata: Metadata = {
   title: "方向假設",
@@ -8,6 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default async function IntakePage() {
-  const snapshot = await createClient().getSnapshot();
+  const { snapshot } = await loadSnapshot();
   return <IntakeStation snapshot={snapshot} />;
 }

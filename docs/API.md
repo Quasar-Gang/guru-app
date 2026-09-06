@@ -1,247 +1,144 @@
-# guru-core API — frontend-derived draft
+# Backend integration
 
-Status: **draft**. The backend does not exist yet. This document is written the
-other way round from usual: the frontend already renders every screen from typed
-values, so those types *are* the contract, and this file is their HTTP
-projection. The authority is [`lib/contracts.ts`](../lib/contracts.ts); when the
-two disagree, the TypeScript wins and this file is stale.
+This app renders one `CoachingSnapshot`. `guru-core` speaks a different
+vocabulary — direction runs, fit verdicts, hypotheses, plans, reconciliations.
+This document is the map between them, and the honest list of what does not map.
 
-The design rule the shell followed applies here too: **an interaction earned its
-place only if it exposed a question the backend has to answer.** Every endpoint
-below exists because a control on a page needs it.
+**guru-core's implementation is the authority.** The reference for the API
+itself lives in that repository — [`docs/api/README.md`](../../guru-core/docs/api/README.md)
+for the call sequences and `docs/api/openapi.json` for the exhaustive spec. When
+this document and the running backend disagree, the backend is right.
 
-## Conventions
-
-| | |
+| Our file | Role |
 |---|---|
-| Base | `{origin}/v1` — set `NEXT_PUBLIC_API_BASE_URL` to `{origin}` (absolute, no `/v1`, no trailing slash) |
-| Auth | `Authorization: Bearer <JWT>` on every request once accounts exist. The MVP has no accounts and sends none |
-| Content type | `application/json` both ways |
-| Dates | `YYYY-MM-DD`. Timestamps are RFC 3339 |
-| Empty success | `204 No Content` |
-| Errors | `{ "error": { "code": "snake_case", "message": "human readable" } }` |
+| [`lib/api/guru-core-types.ts`](../lib/api/guru-core-types.ts) | Wire types, transcribed from the exported OpenAPI document |
+| [`lib/api/guru-core.ts`](../lib/api/guru-core.ts) | The HTTP client: auth, the error envelope, one method per route we read |
+| [`lib/api/snapshot-adapter.ts`](../lib/api/snapshot-adapter.ts) | The only place the two vocabularies meet |
+| [`lib/api/client.ts`](../lib/api/client.ts) | `loadSnapshot()` — what the pages call |
 
-The client surfaces errors as `GuruApiError` with `status`, `code` and `message`
-(see [`lib/api/client.ts`](../lib/api/client.ts)).
+## Configuration
 
-Without an absolute origin the client serves the demonstration snapshot from
-[`lib/mock/snapshot.ts`](../lib/mock/snapshot.ts) and never touches the network.
-The fallback returns the same shapes as the remote call, so switching a backend
-on cannot change the rendering contract.
+Server-side only. The bearer token must never reach the browser, so it carries no
+`NEXT_PUBLIC_` prefix; `vite.config.ts` passes both values to the Worker as vars,
+and every station reads its data in a server component.
 
----
+```dotenv
+GURU_API_BASE_URL=http://127.0.0.1:8000
+GURU_API_TOKEN=<from POST /v1/auth/google>
+```
 
-## 1 · Snapshot
+Leave either empty and the app renders the demonstration fixture with every
+interaction intact. That is the demo path, not a broken state.
 
-### `GET /v1/snapshot`
+## What the app reads
 
-Everything the three stations render, in one document. One request rather than
-nine because each station needs a *consistent* view: the ledger's numbers are
-computed from the same trace set the plan was locked against, and paging them in
-separately would let the two drift.
+Eleven reads per snapshot, nine of them concurrent:
 
-Returns `CoachingSnapshot`:
+| Call | Feeds |
+|---|---|
+| `GET /v1/profile` | The horizon anchor and the trace count |
+| `GET /v1/imports` · `GET /v1/integrations` | The four import rows' status and detail |
+| `GET /v1/questions` | Station 1's question set |
+| `GET /v1/quota` | The weekly capacity the draft may spend |
+| `GET /v1/role-models` | Each shape's vision, path, accumulation and cost |
+| `GET /v1/direction/runs/latest` | The shape cards, the cross-check, the unclassified row |
+| `GET /v1/hypotheses` | The goal tree's version and review date |
+| `GET /v1/plans` → `GET /v1/plans/{id}` | The branches |
+| `GET /v1/plans/{id}/tasks` | Bookings, the weekly proofread, the schedule draft |
 
-| Field | Type | Station |
+guru-core rate-limits at 60 requests a minute, so the assembled snapshot is held
+for 30 seconds and shared across the three stations. Nothing on these pages
+changes faster than that; the product's own cadence is a quarter.
+
+Every read falls back on its own and logs the failure. One section being
+unavailable must not blank the page, and a silent partial fallback is the worst
+kind because the page still looks right.
+
+## What the app writes
+
+One call. **Accept and lock this quarter** → `PUT /v1/plans/{id}/status`
+`{"status": "active"}`. A plan is started or archived, never edited into
+something else; wanting a different plan means wanting a different hypothesis.
+
+Nothing else on these pages writes, because nothing else has an affordance that
+maps one to one onto a guru-core route. In particular the app never calls
+`POST /v1/hypotheses`: a hypothesis is append-only, and firing one from a
+navigation link would write a version every time somebody clicked through.
+
+## The mapping
+
+### Station 1 · direction
+
+| Ours | guru-core | Note |
 |---|---|---|
-| `horizon` | `Horizon` | 1 |
-| `imports` | `ImportSource[]` | 1 |
-| `baselineQuestions` | `BaselineQuestion[]` | 1 |
-| `roleModel` | `RoleModelDraft` | 1 |
-| `shapes` | `ShapeSuggestion[]` | 1 |
-| `crossChecks` | `Record<shapeId, CrossCheck>` | 1 |
-| `goalTree` | `GoalTree` | 2 |
-| `challenges` | `Challenge[]` | 2 |
-| `period` | `LedgerPeriod` | 3 |
-| `traces` | `Trace[]` | 3 |
-| `results` | `ReconcileResult[]` | 3 |
-| `diagnosis` | `Diagnosis` | 3 |
-| `prescriptions` | `Prescription[]` | 3 |
-| `weeklyCheck` | `WeeklyCheckItem[]` | 3 |
-| `schedule` | `ScheduleDraft` | 3 |
+| `shapes[].id` / `.name` | `verdicts[].role_model_code` / `_name` | |
+| `shapes[].lede` | `role_models[].vision` | |
+| `shapes[].yearLooksLike` | `role_models[].five_year_path` | |
+| `shapes[].accumulates` | `role_models[].must_accumulate` | |
+| `shapes[].cost` | `verdicts[].cost` | `NOT NULL` upstream; a blank one is rejected in the domain |
+| `shapes[].evidence[]` | `verdicts[].evidence[]` | Exactly five, at least one of each stance, every one citing a report in this run — validated before the row is written |
+| `shapes[].fitLabel` | `verdicts[].fit` | Six-value enum → badge |
+| `crossChecks[].verdict` / `.narrative` | `verdicts[].verdict` / `.note` | |
+| `crossChecks[].items[].mark` | `evidence[].stance` | `for` → supports, `against` → missing |
+| `crossChecks[].test` / `.cost` | `verdicts[].probe.statement` / `.cost` | One cheap test per verdict, sized to a quarter |
+| `baselineQuestions[]` | `GET /v1/questions` | Three, each stating its purpose, each skippable |
+| `imports[].status` | `imports[].status` + `integrations[].connected` | The copy stays ours; only status and detail come over the wire |
 
-When the snapshot grows past one request, split it by station
-(`/v1/intake`, `/v1/goal-tree`, `/v1/ledger`) rather than by entity — the
-consistency requirement is per station, not per table.
+### Station 2 · the goal tree
 
----
-
-## 2 · Station 1 · intake
-
-### `POST /v1/role-model:decompose`
-
-Turns "I want *X*'s *Y*" into three cells plus a retest method.
-
-```json
-{ "person": "<person>", "capability": "<capability, in the user's own words>" }
-```
-
-Returns `CapabilityBreakdown`. When the stated capability cannot be retested as
-phrased, return `tooAbstract: true` with the other fields `null` — do **not**
-invent a metric. A cumulative branch with no retest method sits at "effect
-unknown" forever, and that is the failure this endpoint exists to prevent.
-
-This endpoint is a hard-coded pattern table in the shell
-([`lib/role-model.ts`](../lib/role-model.ts)) and a model call in production. The
-output shape does not change.
-
-### `POST /v1/shapes`
-
-Generates two or three shape suggestions from the imported traces, the baseline
-answers and the role model.
-
-Returns `ShapeSuggestion[]`. **Every card must carry at least one
-`evidence` entry.** A card without its evidence line is a motivational poster,
-not an inference, and it cannot be argued with — which is the entire point of
-showing it. `evidence[].kind` is one of `roleModel`, `imported`,
-`baselineAnswers`; with no imports, only the first and third are available and
-the response should carry fewer cards rather than weaker ones.
-
-This is the highest-risk endpoint in the product: it is the one thing station 1
-cannot compute with rules.
-
-### `GET /v1/shapes/{shapeId}/cross-check`
-
-Runs the imported traces back against the chosen shape.
-
-Returns `CrossCheck`. If the calendar (P0) has not been imported, return
-`available: false` and **no items**. Do not assemble something that looks like a
-comparison out of the baseline answers; that would be a guess presented as a
-reconciliation, and the product's third tone rule forbids promising what the
-software cannot do.
-
-### `POST /v1/hypotheses`
-
-Freezes station 1's output.
-
-```json
-{ "shapeId": "S-2", "horizonId": "1y", "roleModel": { "person": "…", "capability": "…" } }
-```
-
-Returns `Hypothesis` with `version: "v0"`. Hypotheses are **never overwritten**;
-a change creates `v1` and both stay readable. The change history is itself a
-diagnosis — "you rewrote this three times" says more than any encouragement.
-
----
-
-## 3 · Station 2 · goal tree
-
-### `GET /v1/goal-tree`
-
-Returns `GoalTree`. `vision` and the five-year layer may be `null`; the client
-renders them as "not covered this period" rather than blank. Intake produces a
-one-year hypothesis and cannot reach those layers, and pretending otherwise
-would put a borrowed vision on the tree.
-
-### `PATCH /v1/goal-tree/branches/{branchId}`
-
-Accepts partial `Branch` updates. Rejects any write to `quarterIndicator` while
-`lockedUntil` is in the future with `409 quarter_locked` — the time gate is a
-mechanism, not self-discipline. Weekly contact with the system is weekly
-opportunity to renegotiate, so the boundary lives in the server.
-
-### `POST /v1/goal-tree:lock`
-
-```json
-{ "unansweredChallengeIds": ["Q-1", "Q-3"] }
-```
-
-Returns `{ "lockedAt": "2026-06-28", "lockedUntil": "2026-09-30" }`. Unanswered
-challenges are not an error — they are carried onto the next reconciliation
-agenda. Blocking sign-off on them would just teach people to type anything.
-
-### `POST /v1/paths/{pathId}/attractiveness`
-
-```json
-{ "score": 8 }
-```
-
-The first score is only a baseline; trend needs a second quarter. Alternative
-paths are a standing control group, not a backup file: "A is becoming less
-attractive than B" is the only evidence the second causal layer can ever
-produce.
-
----
-
-## 4 · Station 3 · ledger
-
-### `POST /v1/reconcile`
-
-```json
-{ "from": "2026-07-01", "to": "2026-09-04" }
-```
-
-Returns `{ "period": LedgerPeriod, "results": ReconcileResult[], "diagnosis": Diagnosis }`.
-
-`ReconcileResult.status` is the whole product in one enum:
-
-| Status | Meaning |
+| Ours | guru-core |
 |---|---|
-| `active` | Branch has action. Progress, and it accumulates into evidence |
-| `dormant` | Branch has none. This is where imbalance shows up |
-| `unattributed` | Action fits no branch — invisible investment. `branchId` is `null` |
-| `noEffect` | Action happened, retest did not move. **Every other tracker shows this as green** |
+| `goalTree.version` | `hypotheses[-1].version` |
+| `goalTree.lockedUntil` | `hypotheses[-1].review_date` |
+| `branches[]` | Top-level `milestones[]` |
+| `branches[].quarterIndicator` | `milestones[].metric` |
+| `branches[].unitAction` · `durationMin` · `energy` | The milestone's first task: `title`, `duration_minutes`, `task_type` |
+| `branches[].minWeekly` | Habit tasks in their busiest week |
+| `branches[].type` | `cumulative` when the milestone has habit tasks, `project` when it has any, `undefined` when it has none |
+| `branches[].progressPercent` | Done tasks over its tasks |
 
-`Attribution.rule` must be returned to the client and shown. A booking the user
-cannot see the reason for is a booking they cannot dispute. Cross-branch traces
-go to the primary branch with `crossBranch: true`.
+A milestone with no tasks arrives with no unit action, which the page already
+renders as "missing the four elements, cannot be scheduled". That is the right
+answer, not a hole.
 
-`Diagnosis.constraint` is expected to be empty for the first two to three
-quarters. Return it as `severity: "unavailable"` with a reason rather than
-omitting it — a criterion that is not yet usable should say so on the dashboard.
+### Station 3 · the ledger
 
-### `POST /v1/traces:import`
+Milestones nest and tasks do not, so a task hangs off whichever milestone owns
+it — often a leaf. Bookings climb back to the root, or every branch would read as
+zero action while its children carried the work.
 
-```json
-{ "source": "calendar", "format": "ics", "payload": "…" }
-```
+| Ours | guru-core |
+|---|---|
+| `traces[]` | Tasks with `status: done` |
+| `attributions[]` | `task → milestone → root branch`, already booked upstream |
+| `results[].status` `active` / `dormant` | Whether the branch has completed tasks |
+| `results[].status` `unattributed` | The `unclassified` report's `metrics` |
+| `period.autoAttributionRate` | `1 − unclassified.share` |
+| `period.daysToQuarterBoundary` | Days to `hypotheses[-1].review_date` |
+| `weeklyCheck[]` | The last seven days of tasks, phrased as proofreading |
+| `schedule.slots[]` | The next seven days of tasks |
+| `schedule.capacityHours` | `quota.weekly_minutes` |
 
-Accepts an export file. `source` is one of `calendar | notion | resume | health |
-work | ai`. Returns `{ "accepted": 448, "rejected": 0 }`. The MVP ships static
-upload screens; parsing is the backend's problem, and the ledger's value is in
-the booking result, not in how the data arrived.
+The keyword rule table is **not** used against live data. guru-core has already
+booked the work; re-attributing an attributed row through a guess would be worse,
+not better. The table still runs the fixture, and the page still shows it,
+because it is the first version of the rule a backend attribution pass would use.
 
-### `POST /v1/dispatch`
+## What does not map, and stays a fixture
 
-```json
-{ "hours": 2, "energy": "mid", "cash": "ok" }
-```
+Named rather than quietly filled in:
 
-Returns `DispatchAnswer` — a pick, its unit action, and the reasons. Every reason
-must trace back to time flow or money flow. This endpoint requires no record
-keeping from the user, only a question, which is why it is expected to be the
-most-used call in the product.
+| Missing | Consequence |
+|---|---|
+| **Capability retest** — no baseline, no retest | **No `noEffect` row can appear against live data.** Without two measurements there is nothing to compare, and faking one would fake the single outcome this product exists to show |
+| **Anchors** | Every live branch reads as an anchor gap. That is the criterion working, not a mapping shortcut; the anchor prescriptions stay fixture |
+| **Alternative paths** | The standing control group has no backend home, so the attractiveness sliders are local |
+| **Coach challenges** | The three questions the coach cannot answer are fixture. `structure.assumptions[]` is the nearest thing upstream, but an assumption is not a question |
+| **Role-model free text** | guru-core scores a catalogue; it takes no "I want X's Y" input |
+| **Apple Health** | No importer upstream, so the row reads "not connected" |
+| **Horizon** | guru-core sizes by `duration_weeks` and `review_date`. Only the anchor date is live; the quarters and the retest schedule stay arithmetic here |
+| **Reconciliation narrative** | `POST /v1/reconciliations` exists and is read-ready, but opening a review is a write with a decision attached, and no control on these pages asks for one |
 
-**Known gap.** Credit-card statements are out of scope, so money flow has no
-automatic source and `cash` is a declared input. The UI says so. When statements
-come back, `cash` becomes a computed field and this request drops the axis.
-
-### `GET /v1/schedule/next-week` · `PATCH /v1/schedule/slots/{slotId}`
-
-Returns `ScheduleDraft`. The only accepted patch is `{ "removed": true | false }`
-and it is rejected with `409 slot_fixed` for slots whose `fixed` is true —
-those are existing external anchors and not the coach's to move.
-
-**There is no create endpoint, and that is deliberate.** Drafting for someone
-lowers their sense of ownership; the delete right gives it back, and limiting
-edits to the "less" direction is exactly the correction that optimism needs.
-
-### `POST /v1/weekly-check`
-
-```json
-{ "answers": [{ "id": "w-1", "answer": "yes" }] }
-```
-
-The weekly check asks about execution only. It must not accept goal edits — see
-`PATCH /v1/goal-tree/branches/{branchId}`. If four weeks in a twelve-week
-quarter go unanswered, the server drops the cadence to monthly and records it as
-a design mismatch, not a personal failure.
-
----
-
-## 5 · Not in this API
-
-Registration, multiple users and permissions; live OAuth connectors; social
-accountability; on-chain staking. They are named in the specification and are
-deliberately outside the MVP boundary. See
-[`design/docs/01-solution.md`](../design/docs/01-solution.md) section 10.
+`SnapshotOrigins` records which sections were live for each read and is logged
+once per snapshot, so a partial fallback is visible in the server log rather than
+inferred from the page.

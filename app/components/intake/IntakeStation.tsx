@@ -164,7 +164,7 @@ export function IntakeStation({ snapshot }: { snapshot: CoachingSnapshot }) {
             {answeredCount} / {snapshot.baselineQuestions.length} · 全部選填
           </span>
         </div>
-        <h2 className="mist-h2">七題全部可以跳過</h2>
+        <h2 className="mist-h2">這幾題全部可以跳過</h2>
         <p className="mist-body mist-muted">
           它們不是門檻，是<span className="mist-body-strong">刻度</span>
           ——答了，後面的排程與處方會更貼你；不答，系統會用預設值，並且在用到的地方標明那是預設值。
@@ -198,9 +198,9 @@ export function IntakeStation({ snapshot }: { snapshot: CoachingSnapshot }) {
         </div>
 
         <p className="mist-body mist-muted">
-          第一題講得出來就寫，我們直接拿它當對照基準。
-          <span className="mist-body-strong">講不出來才是常態，不是缺陷</span>
-          ——跳過它，下一段會用另一種方式問同一件事：不是問你要什麼，是問你想要誰的什麼能力。
+          <span className="mist-body-strong">跳過會被記成一個答案，不是遺漏</span>
+          ——它跟你答了一樣會被下游用到。答不出方向感也沒關係，下一段會用另一種方式問同一件事：
+          不是問你要什麼，是問你想要誰的什麼能力。
         </p>
       </div>
 

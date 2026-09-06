@@ -51,6 +51,7 @@ const vendoredPrefixes = ["app/styles/"];
 const displayPrefixes = [
   "app/",
   "lib/api/client.ts",
+  "lib/api/snapshot-adapter.ts",
   "lib/attribution.ts",
   "lib/dispatch.ts",
   "lib/horizon.ts",

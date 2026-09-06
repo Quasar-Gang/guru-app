@@ -1,5 +1,5 @@
 import vinext from "vinext";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import hostingConfig from "./.openai/hosting.json";
 import { sites } from "./build/sites-vite-plugin";
 
@@ -11,9 +11,19 @@ const { d1, r2 } = hostingConfig;
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 
+// Server-side configuration reaches the Worker as plain vars. `NEXT_PUBLIC_`
+// inlining is not an option here: the guru-core bearer token must stay on the
+// server, so it travels as a binding and is read at runtime, never bundled into
+// client code. In a real deployment these are Worker secrets, not vars.
+const serverEnv = loadEnv(process.env.NODE_ENV ?? "development", process.cwd(), "");
+
 const localBindingConfig = {
   main: "./worker/index.ts",
   compatibility_flags: ["nodejs_compat"],
+  vars: {
+    GURU_API_BASE_URL: serverEnv.GURU_API_BASE_URL ?? "",
+    GURU_API_TOKEN: serverEnv.GURU_API_TOKEN ?? "",
+  },
   d1_databases: d1
     ? [
         {

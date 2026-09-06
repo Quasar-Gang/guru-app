@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PlanStation } from "../components/plan/PlanStation";
-import { createClient } from "@/lib/api/client";
+import { loadSnapshot } from "@/lib/api/client";
+import { acceptPlan } from "./actions";
 
 export const metadata: Metadata = {
   title: "目標樹草案",
@@ -8,6 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default async function PlanPage() {
-  const snapshot = await createClient().getSnapshot();
-  return <PlanStation snapshot={snapshot} />;
+  const { snapshot } = await loadSnapshot();
+  return <PlanStation snapshot={snapshot} onAccept={acceptPlan} />;
 }

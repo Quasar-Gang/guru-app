@@ -19,7 +19,14 @@ import { PARKED } from "@/lib/mock/snapshot";
 
 const ENERGY_LABEL = { low: "低", mid: "中", high: "高" } as const;
 
-export function PlanStation({ snapshot }: { snapshot: CoachingSnapshot }) {
+export function PlanStation({
+  snapshot,
+  onAccept,
+}: {
+  snapshot: CoachingSnapshot;
+  /** Persists the sign-off when a backend is configured. Optional by design. */
+  onAccept?: () => Promise<{ ok: boolean; message: string | null }>;
+}) {
   const { goalTree, challenges, horizon } = snapshot;
   const [paths, setPaths] = useState(goalTree.paths);
   const [scored, setScored] = useState(false);
@@ -305,7 +312,10 @@ export function PlanStation({ snapshot }: { snapshot: CoachingSnapshot }) {
         ) : (
           <>
             <div className="mist-row">
-              <button type="button" className="mist-btn mist-btn--primary" onClick={() => setLocked(true)}>
+              <button type="button" className="mist-btn mist-btn--primary" onClick={() => {
+                  setLocked(true);
+                  void onAccept?.();
+                }}>
                 接受並鎖定本季
               </button>
               <button

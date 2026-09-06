@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { LedgerStation } from "../components/ledger/LedgerStation";
-import { createClient } from "@/lib/api/client";
+import { loadSnapshot } from "@/lib/api/client";
 
 export const metadata: Metadata = {
   title: "季度對帳",
@@ -8,6 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default async function LedgerPage() {
-  const snapshot = await createClient().getSnapshot();
+  const { snapshot } = await loadSnapshot();
   return <LedgerStation snapshot={snapshot} />;
 }
